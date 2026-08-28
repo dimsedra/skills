@@ -27,7 +27,7 @@ When this file contains CSS variable overrides, custom stylesheet links, section
 - **If Found:** Read the file in full and strictly tailor the explanations, diagram choices, code annotation depth, CSS variables, and HTML section structures to match the recorded rules.
 
 ### 2. Feedback Ingestion Protocol
-- Whenever the user gives feedback regarding how things are explained, formatted, styled, or structured (e.g. *"aku lebih suka penjelasan analogi hardware dulu"*, *"border container buat 1200px"*, *"posisikan verification di atas code diffs"*):
+- Whenever the user gives feedback regarding how things are explained, formatted, styled, or structured (e.g. *"I prefer real-world hardware analogies before code"*, *"Set container max-width to 1200px"*, *"Place verification output before code diffs"*):
   1. Acknowledge the feedback naturally in chat.
   2. Create or update `.reporting-preferences.md` at the workspace root.
   3. Distill the user's feedback into concise, actionable bullet points under the appropriate section.
