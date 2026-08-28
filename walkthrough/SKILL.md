@@ -24,6 +24,7 @@ Generate a structured post-implementation walkthrough report that transparently 
 6. **Delegated HTML Generation**: Use the stylesheets (`report.css`) and modular components from `report-in-html` to generate the HTML report.
 7. **Chat Bloat Prevention**: Write the HTML file directly to disk rather than dumping large HTML documents into the chat transcript.
 8. **Diligent Reporter Posture**: Act as a diligent engineering partner reporting to the user. Explain *why* choices were made, *what* files changed, *how* the code functions, and *how* it was verified.
+9. **Conversational Language Alignment**: Write all explanations, analysis, titles, and annotations in the active language of the conversation with the user (e.g. Indonesian if the conversation is conducted in Indonesian). Keep code identifiers and syntax in their original language.
 
 ---
 

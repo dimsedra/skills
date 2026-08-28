@@ -34,6 +34,7 @@ This skill is a modular design system and component toolkit for any orchestrator
 7. **No Leaked Markdown**: Convert all text, bullets, bolding, and code snippets into proper HTML tags (`<p>`, `<ul>`, `<li>`, `<strong>`, `<code>`, `<pre>`). Never leave raw `**bold**` or ` `backticks` ` unparsed.
 8. **Chat Bloat Prevention**: Write the complete HTML report directly to disk and deliver the live HTTP URL alongside a concise 2–3 bullet summary.
 9. **High-Contrast Diagramming**: Any embedded Mermaid diagram must use the container classes and theme initialization defined in `REPORT-TEMPLATE.html` to guarantee legibility across both dark and light modes.
+10. **Conversational Language Alignment**: Generate all document prose, section titles, summaries, diagrams, and annotations in the primary conversational language used by the user (e.g. Indonesian if the user speaks Indonesian, English if in English). Technical code symbols, identifiers, and syntax remain in their native format.
 
 ---
 

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastering Arsitektur Real-Time: WebSockets pada Kitchen Display System (KDS)</title>
+  <link rel="stylesheet" href="report.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        darkMode: true,
+        background: '#121215',
+        primaryColor: '#18181b',
+        primaryTextColor: '#fafafa',
+        primaryBorderColor: '#3f3f46',
+        lineColor: '#71717a',
+        secondaryColor: '#27272a',
+        tertiaryColor: '#09090b'
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- 1. Header & Metadata -->
+    <header>
+      <div class="header-top">
+        <div class="badge-group">
+          <span class="badge"><span class="badge-dot"></span>Mastery Deep-Dive</span>
+          <span class="badge badge-pass">Senior Engineering Lens</span>
+          <span class="badge">Domain: Sistem Terdistribusi Real-Time</span>
+        </div>
+        <button id="theme-toggle" class="badge" onclick="toggleTheme()">🌓 Tema</button>
+      </div>
+      <h1>Membedah Arsitektur WebSocket pada Kitchen Display System (KDS)</h1>
+      <div class="meta-bar">
+        <span class="meta-item"><strong>Target Arsitektur:</strong> Pipeline KDS Full-Duplex yang Resilien</span>
+        <span class="meta-item"><strong>Fondasi Protokol:</strong> RFC 6455 & Distributed Pub/Sub</span>
+        <span class="meta-item"><strong>Core Invariant:</strong> State Machine Tiket Monotonik Tanpa Data Loss di Jaringan Dapur yang Ekstrem</span>
+      </div>
+    </header>
+
+    <main>
+      <!-- 2. Mental Model & Core Invariants -->
+      <section>
+        <h2>1. Mental Model & Intuisi Sistem</h2>
+        <article class="card card-summary">
+          <h3>The Governing Invariant (Prinsip Dasar)</h3>
+          <p>
+            Kitchen Display System (KDS) bukan sekadar aplikasi chat biasa di mana pesan yang hilang bisa dimaklumi. KDS adalah <strong>state machine terdistribusi untuk operasional restoran</strong>. Jika satu frame WebSocket berisi pesanan steak hilang, atau sinyal "Batalkan Meja 4" datang terlambat/out-of-order, akibatnya fatal: makanan terbuang, koki salah masak, dan restoran merugi.
+          </p>
+          <p>
+            Prinsip mutlak dalam arsitektur WebSocket KDS level senior adalah: <strong>"Jangan pernah menganggap status koneksi socket mencerminkan status data bisnis."</strong> Koneksi WebSocket hanyalah pipa transfer data yang rapuh (*ephemeral*); tablet KDS harus bertindak sebagai *reconciliation engine* mandiri dengan pelacakan urutan monotonik, buffer offline, dan mekanisme *catch-up recovery*.
+          </p>
+          
+          <h3>Analogi Dapur Nyata: Protokol "Line Expeditor"</h3>
+          <p>
+            Bayangkan koneksi WebSocket seperti suara Head Expeditor yang berteriak di dapur:
+          </p>
+          <ul class="list-secondary">
+            <li><strong>The Shout (Inbound Frame):</strong> Expeditor berteriak: "2 Ribeye Medium Rare Meja 12!"</li>
+            <li><strong>The Read-Back (Application ACK):</strong> Koki panggangan langsung menjawab: "2 Ribeye Med Rare Meja 12 Siap!" Jika dalam 2 detik expeditor tidak mendengar jawaban balik, ia akan mengulang teriakannya.</li>
+            <li><strong>The Kitchen Noise / Network Partition:</strong> Jika suara blender menenggelamkan teriakan expeditor, koki segera melihat papan tulis fisik (Snapshot Re-synchronization) agar tidak ada pesanan yang terlewat.</li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- 3. Fondasi Teori CS & Riset Eksternal -->
+      <section>
+        <h2>2. Fondasi Teori CS & Riset Terverifikasi</h2>
+        <p>
+          Membangun KDS yang tangguh memerlukan pemahaman mendalam tentang cara kerja RFC 6455 di atas lapisan transport TCP dan mengapa HTTP polling biasa tidak mencukupi.
+        </p>
+
+        <div class="grid-2">
+          <article class="card">
+            <h3>Mekanisme Protokol: RFC 6455 Full-Duplex Layering</h3>
+            <p>
+              WebSocket diawali dengan handshake HTTP Upgrade (<code>101 Switching Protocols</code>). Setelah tersambung, koneksi TCP berganti ke mode frame biner/teks dengan overhead sangat kecil (frame header 2–14 byte, jauh lebih hemat dibanding HTTP header yang mencapai ~800 byte).
+            </p>
+            <p>
+              RFC 6455 menyediakan control frame bawaan: <code>0x9 (Ping)</code> dan <code>0xA (Pong)</code>. Namun, <strong>API JavaScript di browser tidak mengekspos frame control ini ke developer</strong>. Oleh karena itu, frontend KDS wajib mengimplementasikan *Application-Level Heartbeat* manual untuk mendeteksi socket yang mati suri (*zombie socket*).
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Masalah "Half-Open Socket" pada Wi-Fi Dapur yang Ekstrem</h3>
+            <p>
+              Di lingkungan dapur restoran, halangan fisik (dinding stainless steel, microwave, kulkas freezer besar) kerap menimbulkan *packet loss* mendadak. Saat tablet masuk ke area blind spot, socket di OS tetap berstatus <code>ESTABLISHED</code> karena timeout TCP keep-alive bawaan OS mobile bisa mencapai 2 jam.
+            </p>
+            <p>
+              Tanpa heartbeat berkala (misalnya interval 5 detik), server akan terus memompa pesanan ke socket yang sudah mati (*black hole*), mengakibatkan pesanan di layar koki tidak pernah muncul.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 4. Topologi Arsitektur (Mermaid.js) -->
+      <section>
+        <h2>3. Topologi Arsitektur & Distributed Fanout</h2>
+        <p>
+          Dalam dapur multi-stasiun (Panggangan/Grill, Penggorengan/Fryer, Salad, Expo), pesanan dari POS atau platform online masuk melalui API Gateway, diteruskan ke message broker (Redis Pub/Sub), dan di-fanout secara spesifik ke layar stasiun yang bersangkutan.
+        </p>
+
+        <div class="diagram-container">
+          <div class="mermaid">
+sequenceDiagram
+  autonumber
+  actor Pelayan as POS Terminal / Waiter App
+  participant API as Orders API Gateway
+  participant Redis as Redis Pub/Sub & Stream Store
+  participant WS as WebSocket Gateway Cluster
+  participant KDS as Layar KDS (Stasiun Grill)
+
+  Pelayan->>API: POST /api/orders (Meja 7: 1x Wagyu Steak)
+  API->>Redis: XADD stream:orders (Seq: 1042, Station: GRILL)
+  Redis->>WS: Broadcast Event (Channel: station:grill)
+  WS->>KDS: WS Frame: TICKET_CREATED (Seq: 1042)
+  
+  Note over KDS: Proses & Render Tiket di Layar
+  KDS-->>WS: WS Frame: ACK (Seq: 1042, Station: GRILL)
+  
+  alt Koki Menekan Tombol Selesai (Bump Ticket)
+    KDS->>WS: WS Frame: BUMP_ITEM (ItemId: 55, Status: READY)
+    WS->>Redis: Publish station:expo (Item 55 Siap Disajikan)
+    Redis->>API: Persist ke Database (Status: READY)
+  end
+          </div>
+        </div>
+
+        <article class="card" style="margin-top: 1rem;">
+          <h3>Lifecycle State Machine Koneksi Tablet</h3>
+          <div class="diagram-container">
+            <div class="mermaid">
+stateDiagram-v2
+  [*] --> Terputus
+  Terputus --> Menghubungkan : Mount Layar / Trigger Reconnect
+  Menghubungkan --> Terhubung : Handshake 101 Berhasil
+  Terhubung --> HeartbeatAktif : Mulai Watchdog 5 Detik
+  
+  state Terhubung {
+    HeartbeatAktif --> PingTerkirim : Kirim Application Ping
+    PingTerkirim --> HeartbeatAktif : Terima Application Pong
+    PingTerkirim --> SocketMatiSuri : 3 Detik Tanpa Pong (Timeout)
+  }
+
+  SocketMatiSuri --> Terputus : Paksa Tutup & Bersihkan Resource
+  Terputus --> Reconnecting : Exponential Backoff + Jitter
+  Reconnecting --> Menghubungkan : Waktu Jitter Selesai
+  Terhubung --> Rekonsiliasi : Terkoneksi Ulang
+  Rekonsiliasi --> Terhubung : Ambil Snapshot Tiket yang Tertinggal
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- 5. Bedah Kode & Mekanika Line-by-Line -->
+      <section>
+        <h2>4. Implementasi Kode & Bedah Logika Line-by-Line</h2>
+        <p>
+          Berikut dua komponen utama pada sistem produksi: <strong>Resilient Client-Side Connection Manager</strong> (Frontend Tablet) dan <strong>Server-Side Redis Pub/Sub Fanout Hub</strong> (Backend Gateway).
+        </p>
+
+        <!-- Snippet 1: Client Resilient Socket -->
+        <details open>
+          <summary><code>src/kds/network/ResilientKDSClient.ts</code> — Heartbeat Watchdog & Jittered Reconnection</summary>
+          <pre><code>export class ResilientKDSClient {
+  private ws: WebSocket | null = null;
+  private url: string;
+  private stationId: string;
+  private lastMonotonicSeq = 0;
+  private reconnectAttempts = 0;
+  private heartbeatTimer?: number;
+  private pongTimeoutTimer?: number;
+
+  private readonly HEARTBEAT_INTERVAL_MS = 5000;
+  private readonly PONG_TIMEOUT_MS = 3000;
+  private readonly MAX_BACKOFF_MS = 15000;
+
+  constructor(url: string, stationId: string) {
+    this.url = url;
+    this.stationId = stationId;
+  }
+
+  public connect(): void {
+    this.cleanup();
+    this.ws = new WebSocket(`${this.url}?station=${this.stationId}`);
+
+    this.ws.onopen = () => {
+      this.reconnectAttempts = 0;
+      this.startHeartbeatWatchdog();
+      this.reconcileMissedEvents();
+    };
+
+    this.ws.onmessage = (event) => {
+      const payload = JSON.parse(event.data);
+      if (payload.type === 'PONG') {
+        clearTimeout(this.pongTimeoutTimer);
+        return;
+      }
+      this.handleOrderEvent(payload);
+    };
+
+    this.ws.onclose = () => this.scheduleReconnection();
+    this.ws.onerror = () => this.ws?.close();
+  }
+
+  private startHeartbeatWatchdog(): void {
+    this.heartbeatTimer = window.setInterval(() => {
+      if (this.ws?.readyState === WebSocket.OPEN) {
+        this.ws.send(JSON.stringify({ type: 'PING', timestamp: Date.now() }));
+        this.pongTimeoutTimer = window.setTimeout(() => {
+          console.warn('[KDS] Heartbeat pong timeout! Socket mati suri. Memaksa close.');
+          this.ws?.close();
+        }, this.PONG_TIMEOUT_MS);
+      }
+    }, this.HEARTBEAT_INTERVAL_MS);
+  }
+
+  private scheduleReconnection(): void {
+    this.cleanup();
+    this.reconnectAttempts++;
+    
+    // Exponential Backoff dengan Full Jitter
+    const baseBackoff = Math.min(this.MAX_BACKOFF_MS, 1000 * Math.pow(1.5, this.reconnectAttempts));
+    const jitteredDelay = Math.random() * baseBackoff;
+
+    window.setTimeout(() => this.connect(), jitteredDelay);
+  }
+
+  private handleOrderEvent(event: { seq: number; type: string; ticket: any }): void {
+    // Verifikasi urutan monotonik: Deteksi duplikat atau paket yang hilang
+    if (event.seq <= this.lastMonotonicSeq) {
+      console.warn(`[KDS] Mengabaikan event duplikat atau usang: seq ${event.seq}`);
+      return;
+    }
+    
+    if (event.seq > this.lastMonotonicSeq + 1) {
+      console.warn(`[KDS] Gap urutan terdeteksi (ekspektasi ${this.lastMonotonicSeq + 1}, terima ${event.seq}). Memicu resync snapshot.`);
+      this.reconcileMissedEvents();
+    }
+
+    this.lastMonotonicSeq = event.seq;
+    // Dispatch ke reactive store lokal (misal: Zustand)
+    this.dispatchTicketToStore(event.ticket);
+  }
+
+  private async reconcileMissedEvents(): Promise<void> {
+    const res = await fetch(`/api/kds/snapshot?station=${this.stationId}&sinceSeq=${this.lastMonotonicSeq}`);
+    const data = await res.json();
+    this.hydrateLocalStore(data.activeTickets);
+    this.lastMonotonicSeq = data.latestSeq;
+  }
+
+  private cleanup(): void {
+    clearInterval(this.heartbeatTimer);
+    clearTimeout(this.pongTimeoutTimer);
+    if (this.ws) {
+      this.ws.onopen = null;
+      this.ws.onmessage = null;
+      this.ws.onclose = null;
+      this.ws.onerror = null;
+      this.ws.close();
+      this.ws = null;
+    }
+  }
+}</code></pre>
+
+          <div class="code-annotation">
+            <h4>Bedah Logika & Mekanika (Input - Proses - Output)</h4>
+            <ul class="logic-breakdown">
+              <li><strong>Inisialisasi (Baris 1-17):</strong> Membuat instans client untuk stasiun dapur tertentu (misal: <code>GRILL</code>) dan menyimpan urutan nomor urut terakhir (<code>lastMonotonicSeq</code>).</li>
+              <li><strong>Terminasi Socket Mati Suri (Baris 43-52):</strong> Mengirim <code>PING</code> setiap 5 detik. Jika dalam 3 detik tidak ada balasan <code>PONG</code>, panggil <code>ws.close()</code> secara paksa tanpa menunggu timeout TCP bawaan OS yang berjam-jam.</li>
+              <li><strong>Exponential Backoff + Full Jitter (Baris 54-63):</strong> Menghitung waktu tunggu dengan rumus <code>Math.random() * (1000 * 1.5^attempts)</code> maks 15 detik. Ini mencegah **Thundering Herd Problem** (20 tablet serentak menyerang server saat router Wi-Fi dapur baru restart).</li>
+              <li><strong>Deteksi Gap Urutan Monotonik (Baris 65-79):</strong> Membandingkan nomor <code>event.seq</code> dengan <code>lastMonotonicSeq</code>. Jika nomor sama/lebih kecil diabaikan (anti-duplikat), jika melompat (ada paket hilang) langsung panggil <code>reconcileMissedEvents()</code>.</li>
+              <li><strong>Rekonsiliasi & Output (Baris 81-86):</strong> Meng-update state UI lokal via REST snapshot sehingga koki selalu melihat daftar pesanan yang akurat tanpa tiket siluman.</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- Snippet 2: Server Gateway -->
+        <details>
+          <summary><code>src/server/gateway/KDSWebSocketGateway.ts</code> — Fanout Stasiun via Redis Pub/Sub</summary>
+          <pre><code>import { WebSocketServer, WebSocket } from 'ws';
+import { createClient } from 'redis';
+
+export class KDSWebSocketGateway {
+  private wss: WebSocketServer;
+  private redisSub = createClient({ url: process.env.REDIS_URL });
+  private stationClients = new Map&lt;string, Set&lt;WebSocket&gt;&gt;();
+
+  constructor(port: number) {
+    this.wss = new WebSocketServer({ port });
+    this.init();
+  }
+
+  private async init(): Promise&lt;void&gt; {
+    await this.redisSub.connect();
+
+    // Subscribe ke pola channel multi-stasiun
+    await this.redisSub.pSubscribe('kds:station:*', (message, channel) => {
+      const stationId = channel.replace('kds:station:', '');
+      this.broadcastToStation(stationId, message);
+    });
+
+    this.wss.on('connection', (ws: WebSocket, req) => {
+      const url = new URL(req.url || '', 'http://localhost');
+      const station = url.searchParams.get('station') || 'DEFAULT';
+
+      if (!this.stationClients.has(station)) {
+        this.stationClients.set(station, new Set());
+      }
+      this.stationClients.get(station)!.add(ws);
+
+      ws.on('message', (raw) => {
+        try {
+          const msg = JSON.parse(raw.toString());
+          if (msg.type === 'PING') {
+            ws.send(JSON.stringify({ type: 'PONG', timestamp: Date.now() }));
+          }
+        } catch (err) {
+          console.error('[Gateway] Format pesan tidak valid', err);
+        }
+      });
+
+      ws.on('close', () => {
+        this.stationClients.get(station)?.delete(ws);
+      });
+    });
+  }
+
+  private broadcastToStation(stationId: string, message: string): void {
+    const clients = this.stationClients.get(stationId);
+    if (!clients || clients.size === 0) return;
+
+    for (const ws of clients) {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(message);
+      }
+    }
+  }
+}</code></pre>
+
+          <div class="code-annotation">
+            <h4>Bedah Logika & Mekanika (Input - Proses - Output)</h4>
+            <ul class="logic-breakdown">
+              <li><strong>Input Ingress:</strong> Menerima pesan broadcast dari Redis Pub/Sub pada channel <code>kds:station:*</code>.</li>
+              <li><strong>Routing & Fanout (Baris 16-20, 47-56):</strong> Meneruskan event HANYA ke tablet stasiun yang bersangkutan (misal stasiun <code>GRILL</code> tidak akan menerima event stasiun <code>SALAD</code>), menghemat bandwidth dan parsing CPU di tablet.</li>
+              <li><strong>Respon Cepat Pong (Baris 31-38):</strong> Langsung membalas <code>PONG</code> saat client mengirim probe keep-alive tanpa alokasi memori berlebih.</li>
+              <li><strong>Pencegahan Memory Leak (Baris 41-43):</strong> Menghapus referensi socket dari <code>Set&lt;WebSocket&gt;</code> saat koneksi terputus agar tidak terjadi memory leak di Node.js.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <!-- 6. Trade-offs, Failure Modes & Edge Cases -->
+      <section>
+        <h2>5. Trade-offs & Failure Modes Level Senior</h2>
+        <div class="grid-2">
+          <article class="card card-warning">
+            <h3>Edge Cases & Hidden Failure Modes</h3>
+            <ul class="list-secondary">
+              <li>
+                <strong>The "Ghost Cook Bump" (Jebakan Optimistic UI):</strong> Koki menekan tombol "Selesai Dimasak" tepat saat sinyal Wi-Fi terputus. Jika UI langsung menghilangkan tiket tanpa antrean retry offline, pesanan hilang dari layar tablet tapi di server masih berstatus pending (driver pengantar menunggu selamanya).
+                <em>Solusi: Gunakan antrean offline IndexedDB dengan persistent replay.</em>
+              </li>
+              <li>
+                <strong>Balapan Pembatalan Out-of-Order:</strong> Kasir membatalkan item 500ms setelah order dibuat. Jika latensi jaringan menunda event pembuatan, sinyal pembatalan bisa tiba lebih dulu.
+                <em>Solusi: Gunakan Monotonic Sequence ID / Lamport Timestamps. Jika pembatalan tiba untuk ID yang belum ada, buat tombstone record di state lokal.</em>
+              </li>
+            </ul>
+          </article>
+          <article class="card card-success">
+            <h3>Trade-offs Arsitektur: WebSocket vs SSE vs Long Polling</h3>
+            <ul class="list-secondary">
+              <li>
+                <strong>WebSocket vs Server-Sent Events (SSE):</strong> SSE lebih simpel dan berjalan di atas HTTP/2, tapi sifatnya <em>unidirectional</em> (hanya server ke client). Karena KDS butuh komunikasi 2 arah berfrekuensi tinggi (koki bump status, pause timer, kirim ACK), WebSocket jauh lebih hemat karena tanpa overhead HTTP header di setiap bump.
+              </li>
+              <li>
+                <strong>Redis Pub/Sub vs Redis Streams:</strong> Redis Pub/Sub sangat cepat dengan latensi sub-milidetik untuk broadcast, tapi tidak menyimpan riwayat. Kita kombinasikan dengan <em>Redis Streams (XADD)</em> atau database utama agar tablet yang baru reconnect bisa memutar ulang (*replay*) tiket yang tertinggal.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7. Sitasi Referensi Resmi -->
+      <section>
+        <h2>6. Sitasi Referensi Resmi & Terpercaya</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Sumber / Organisasi</th>
+              <th>Topik / Dokumen</th>
+              <th>Tautan Referensi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IETF RFC Editor</td>
+              <td>RFC 6455: The WebSocket Protocol (Frame Formats & Control Frames)</td>
+              <td><a href="https://datatracker.ietf.org/doc/html/rfc6455" target="_blank" rel="noopener">Spesifikasi RFC 6455</a></td>
+            </tr>
+            <tr>
+              <td>AWS Architecture Blog</td>
+              <td>Exponential Backoff And Jitter for Distributed Systems</td>
+              <td><a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/" target="_blank" rel="noopener">AWS Architecture Blog</a></td>
+            </tr>
+            <tr>
+              <td>Redis Core Documentation</td>
+              <td>Pub/Sub vs Streams: High Throughput Fanout & Event Persistence</td>
+              <td><a href="https://redis.io/docs/interact/pubsub/" target="_blank" rel="noopener">Dokumentasi Redis Pub/Sub</a></td>
+            </tr>
+            <tr>
+              <td>MDN Web Docs</td>
+              <td>Writing WebSocket client applications & Handling Half-Open Connections</td>
+              <td><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API" target="_blank" rel="noopener">MDN WebSockets API</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <span>Master-It Pedagogical Engine — Kitchen Display Systems</span>
+      <span>Didesain untuk Pemahaman Arsitektur & Rekayasa Perangkat Lunak yang Transferable</span>
+    </footer>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>

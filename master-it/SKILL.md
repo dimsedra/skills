@@ -38,6 +38,7 @@ Transform any codebase module, subsystem, design pattern, or external software e
 6. **Delegated HTML Deliverable**: Deliver the lesson via a standalone, monochromatic HTML document using `report-in-html` with dark/light theme toggle, Mermaid architecture flows, and responsive layouts.
 7. **Auto-Launch Local Live Server**: Automatically start a lightweight background HTTP server and deliver an active `http://localhost:<port>/<filename>.html` link. Never provide raw `file:///` URLs.
 8. **In-Chat Socratic Dialogue (Post-Delivery Only)**: Keep the HTML file dedicated purely to documentation. After delivering the live URL, offer an optional in-chat Socratic dialogue with 2–3 thought-provoking scenario/what-if questions to test mental models.
+9. **Conversational Language Alignment**: The language used in the HTML lesson (headings, prose, annotations, analogies, and trade-offs) must automatically match the primary conversational language used by the user (e.g. Bahasa Indonesia if the user communicates in Indonesian, English if in English). Technical terms, code symbols, and syntax remain in standard technical form.
 
 ---
 
