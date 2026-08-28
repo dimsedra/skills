@@ -1,25 +1,33 @@
 # Reporting & Learning Preferences Schema
 
-This specification defines how AI agents discover, respect, and persist user-specific explanation preferences across sessions in `./.reporting-preferences.md`.
+This specification defines how AI agents discover, respect, and persist user-specific explanation, CSS styling, and HTML template structure preferences across sessions in `./.reporting-preferences.md`.
 
 ---
 
-## 1. File Location & Naming Convention
+## 1. Precedence & Override Authority
+
+> **RULE:** Preferences defined in `.reporting-preferences.md` **ALWAYS override** skill defaults (`report.css`, `REPORT-TEMPLATE.html`, and standard section schemas).
+
+When this file contains CSS variable overrides, custom stylesheet links, section reorderings, or layout modifications, the generating agent MUST adapt the generated HTML and CSS to reflect those custom specifications.
+
+---
+
+## 2. File Location & Naming Convention
 
 - **Standard Path:** `.reporting-preferences.md` at the root of the project workspace.
 - **Git Visibility:** Committed to repository so preferences persist across chat sessions, teammates, and cold starts.
 
 ---
 
-## 2. Invariant Rules for AI Agents
+## 3. Invariant Rules for AI Agents
 
 ### 1. Lazy Discovery & Creation (No Speculative Files)
-- **Before Generation:** When `walkthrough` or `master-it` is invoked, the agent MUST check if `.reporting-preferences.md` exists in the workspace root.
+- **Before Generation:** When `walkthrough`, `master-it`, or any report skill is invoked, the agent MUST check if `.reporting-preferences.md` exists in the workspace root.
 - **If NOT Found:** Do NOT create a blank or placeholder file. Proceed using standard skill defaults. Keep the project clean.
-- **If Found:** Read the file in full and strictly tailor the explanations, diagram choices, code annotation depth, and tone to match the recorded rules.
+- **If Found:** Read the file in full and strictly tailor the explanations, diagram choices, code annotation depth, CSS variables, and HTML section structures to match the recorded rules.
 
 ### 2. Feedback Ingestion Protocol
-- Whenever the user gives feedback regarding how things are explained, formatted, visualized, or structured (e.g. *"aku lebih suka penjelasan analogi hardware dulu"*, *"jangan pakai sequence diagram kalau pelakunya cuma 2"*, *"tampilkan terminal verification di paling atas"*):
+- Whenever the user gives feedback regarding how things are explained, formatted, styled, or structured (e.g. *"aku lebih suka penjelasan analogi hardware dulu"*, *"border container buat 1200px"*, *"posisikan verification di atas code diffs"*):
   1. Acknowledge the feedback naturally in chat.
   2. Create or update `.reporting-preferences.md` at the workspace root.
   3. Distill the user's feedback into concise, actionable bullet points under the appropriate section.
@@ -27,7 +35,7 @@ This specification defines how AI agents discover, respect, and persist user-spe
 
 ---
 
-## 3. Standard Markdown Template Structure
+## 4. Standard Markdown Template Structure
 
 ```markdown
 # Project Reporting & Learning Preferences
@@ -42,6 +50,17 @@ Learned preferences and guidelines for walkthroughs, reports, and master-it less
 ## Walkthrough & Verification Style (`walkthrough`)
 - **Verification Priority:** [e.g. Always place full test command stdout/stderr at the very top of the report]
 - **Diff Granularity:** [e.g. Use side-by-side split view with line highlights for changes exceeding 15 lines]
+
+## CSS & Styling Overrides (Overrides `report.css`)
+- **Container Width:** [e.g. `--container-max-width: 1200px;`]
+- **Brand Colors & Accent:** [e.g. `--accent-primary: #3b82f6; --token-keyword: #ec4899;`]
+- **Custom Font Family:** [e.g. `--font-sans: 'Inter', system-ui, sans-serif;`]
+- **Custom Stylesheet Link:** [e.g. Use `./docs/custom-report.css` in addition to or in place of base `report.css`]
+
+## HTML Layout & Template Overrides (Overrides `REPORT-TEMPLATE.html`)
+- **Section Ordering:** [e.g. Place Section 4 (Verification) before Section 2 (Code Changes)]
+- **Header & Branding:** [e.g. Include company badge `<span class="badge">Team Core</span>` in header]
+- **Custom Sections:** [e.g. Always include a "Performance & Memory Benchmarks" section for backend tasks]
 
 ## Visuals & Diagrams
 - **Mermaid Preferences:** [e.g. Prefer stateDiagram-v2 over sequence diagrams for stateful client workflows]
