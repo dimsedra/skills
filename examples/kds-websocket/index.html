@@ -125,24 +125,23 @@
           <div class="mermaid">
 sequenceDiagram
   autonumber
-  actor Pelayan as POS Terminal / Waiter App
-  participant API as Orders API Gateway
-  participant Redis as Redis Pub/Sub & Stream Store
-  participant WS as WebSocket Gateway Cluster
-  participant KDS as Layar KDS (Stasiun Grill)
+  actor Pelayan as POS Terminal
+  participant API as Orders API
+  participant Redis as Redis Pub/Sub
+  participant WS as WS Gateway
+  participant KDS as Layar KDS (Grill)
 
-  Pelayan->>API: POST /api/orders (Meja 7: 1x Wagyu Steak)
-  API->>Redis: XADD stream:orders (Seq: 1042, Station: GRILL)
-  Redis->>WS: Broadcast Event (Channel: station:grill)
-  WS->>KDS: WS Frame: TICKET_CREATED (Seq: 1042)
+  Pelayan->>API: POST /api/orders (Meja 7: Steak)
+  API->>Redis: XADD stream:orders (Seq: 1042)
+  Redis->>WS: Broadcast (kds:station:grill)
+  WS->>KDS: TICKET_CREATED (Seq: 1042)
+  Note over KDS: Render Tiket di Layar
+  KDS-->>WS: ACK (Seq: 1042)
   
-  Note over KDS: Proses & Render Tiket di Layar
-  KDS-->>WS: WS Frame: ACK (Seq: 1042, Station: GRILL)
-  
-  alt Koki Menekan Tombol Selesai (Bump Ticket)
-    KDS->>WS: WS Frame: BUMP_ITEM (ItemId: 55, Status: READY)
-    WS->>Redis: Publish station:expo (Item 55 Siap Disajikan)
-    Redis->>API: Persist ke Database (Status: READY)
+  alt Koki Menekan Selesai (Bump)
+    KDS->>WS: BUMP_ITEM (ItemId: 55)
+    WS->>Redis: Publish (Item 55 Ready)
+    Redis->>API: Persist DB (Status: READY)
   end
           </div>
         </div>
@@ -152,22 +151,23 @@ sequenceDiagram
           <div class="diagram-container">
             <div class="mermaid">
 stateDiagram-v2
+  direction TB
   [*] --> Terputus
-  Terputus --> Menghubungkan : Mount Layar / Trigger Reconnect
-  Menghubungkan --> Terhubung : Handshake 101 Berhasil
-  Terhubung --> HeartbeatAktif : Mulai Watchdog 5 Detik
+  Terputus --> Menghubungkan: Trigger Connect
+  Menghubungkan --> Terhubung: Handshake 101 OK
   
   state Terhubung {
-    HeartbeatAktif --> PingTerkirim : Kirim Application Ping
-    PingTerkirim --> HeartbeatAktif : Terima Application Pong
-    PingTerkirim --> SocketMatiSuri : 3 Detik Tanpa Pong (Timeout)
+    direction TB
+    HeartbeatAktif --> PingTerkirim: Kirim PING (5s)
+    PingTerkirim --> HeartbeatAktif: Terima PONG
+    PingTerkirim --> SocketMatiSuri: Timeout 3s
   }
 
-  SocketMatiSuri --> Terputus : Paksa Tutup & Bersihkan Resource
-  Terputus --> Reconnecting : Exponential Backoff + Jitter
-  Reconnecting --> Menghubungkan : Waktu Jitter Selesai
-  Terhubung --> Rekonsiliasi : Terkoneksi Ulang
-  Rekonsiliasi --> Terhubung : Ambil Snapshot Tiket yang Tertinggal
+  SocketMatiSuri --> Terputus: Paksa Close
+  Terputus --> Reconnecting: Backoff + Jitter
+  Reconnecting --> Menghubungkan: Timer Selesai
+  Terhubung --> Rekonsiliasi: Reconnected
+  Rekonsiliasi --> Terhubung: Snapshot OK
             </div>
           </div>
         </article>
@@ -520,6 +520,45 @@ export class KDSWebSocketGateway {
         document.querySelectorAll(`.code-line-highlight[data-step="${targetId}"]`).forEach(el => el.classList.remove('active'));
         step.classList.remove('active');
       });
+    });
+
+    // Diagram Fullscreen Modal & Expand Button Handler
+    const modal = document.createElement('div');
+    modal.className = 'diagram-modal';
+    modal.innerHTML = `
+      <div class="diagram-modal-content">
+        <button class="diagram-modal-close">✕ Tutup (Esc)</button>
+        <div class="diagram-modal-body"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalBody = modal.querySelector('.diagram-modal-body');
+    const closeModal = () => modal.classList.remove('active');
+    modal.querySelector('.diagram-modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Attach Expand button to every diagram container once Mermaid has rendered
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.diagram-container').forEach(container => {
+          if (!container.querySelector('.diagram-expand-btn')) {
+            const btn = document.createElement('button');
+            btn.className = 'diagram-expand-btn';
+            btn.innerHTML = '⛶ Fullscreen / Expand';
+            btn.title = 'Buka diagram dalam tampilan layar penuh';
+            btn.addEventListener('click', () => {
+              const svg = container.querySelector('svg');
+              if (svg) {
+                modalBody.innerHTML = svg.outerHTML;
+                modal.classList.add('active');
+              }
+            });
+            container.appendChild(btn);
+          }
+        });
+      }, 500);
     });
   </script>
 </body>

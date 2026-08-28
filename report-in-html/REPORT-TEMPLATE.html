@@ -94,6 +94,44 @@
     }
 
     initTheme();
+
+    // Diagram Fullscreen Modal & Expand Button Handler
+    const modal = document.createElement('div');
+    modal.className = 'diagram-modal';
+    modal.innerHTML = `
+      <div class="diagram-modal-content">
+        <button class="diagram-modal-close">✕ Close (Esc)</button>
+        <div class="diagram-modal-body"></div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalBody = modal.querySelector('.diagram-modal-body');
+    const closeModal = () => modal.classList.remove('active');
+    modal.querySelector('.diagram-modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.diagram-container').forEach(container => {
+          if (!container.querySelector('.diagram-expand-btn')) {
+            const btn = document.createElement('button');
+            btn.className = 'diagram-expand-btn';
+            btn.innerHTML = '⛶ Expand';
+            btn.title = 'View full size diagram in fullscreen modal';
+            btn.addEventListener('click', () => {
+              const svg = container.querySelector('svg');
+              if (svg) {
+                modalBody.innerHTML = svg.outerHTML;
+                modal.classList.add('active');
+              }
+            });
+            container.appendChild(btn);
+          }
+        });
+      }, 500);
+    });
   </script>
 </body>
 </html>

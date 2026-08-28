@@ -360,10 +360,11 @@ pre code {
 
 /* Diagrams & Mermaid High Contrast Override */
 .diagram-container {
+  position: relative;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1.5rem 1rem;
+  padding: 2.5rem 1rem 1.5rem;
   overflow-x: auto;
   text-align: center;
   margin-bottom: 1.25rem;
@@ -372,6 +373,91 @@ pre code {
 .diagram-container svg {
   max-width: 100%;
   height: auto;
+  min-width: 600px;
+}
+
+.diagram-expand-btn {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+  z-index: 10;
+}
+
+.diagram-expand-btn:hover {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+/* Fullscreen Modal for Diagrams */
+.diagram-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(9, 9, 11, 0.92);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  padding: 2rem;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+
+.diagram-modal.active {
+  display: flex;
+}
+
+.diagram-modal-content {
+  position: relative;
+  max-width: 95vw;
+  max-height: 90vh;
+  width: auto;
+  overflow: auto;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.diagram-modal-content svg {
+  min-width: 850px;
+  max-width: 100%;
+  height: auto;
+}
+
+.diagram-modal-close {
+  position: absolute;
+  top: 0.85rem;
+  right: 1rem;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.diagram-modal-close:hover {
+  background-color: var(--bg-elevated);
 }
 
 .diagram-container svg text,
