@@ -102,27 +102,37 @@ graph TD
 </section>
 ```
 
-### Key Code Highlights & Diffs (With Annotated Logic Breakdown)
+### Key Code Highlights & Diffs (Split-View Side-by-Side)
+For medium and large diffs, use the two-column split layout with sticky annotation cards, interactive hover synchronization, and independent horizontal scrollbars:
+
 ```html
 <section>
   <h2>Key Implementation Diffs</h2>
   
   <details open>
     <summary><code>src/services/auth.ts</code> — Token Verification Hook</summary>
-    <pre><code>// Added secure token validation with expiration checks
-<span class="diff-line-add">+ export async function verifyToken(token: string): Promise&lt;Session&gt; {</span>
-<span class="diff-line-add">+   const decoded = await jwt.verify(token, process.env.JWT_SECRET);</span>
-<span class="diff-line-add">+   return sessionStore.get(decoded.id);</span>
-<span class="diff-line-add">+ }</span></code></pre>
+    
+    <div class="split-code-layout">
+      <!-- Left Pane: Code with Horizontal Scroll -->
+      <div class="split-code-pane">
+        <pre><code class="language-typescript"><span class="code-line-highlight" data-step="step-1"><span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">verifyToken</span>(token: <span class="token type">string</span>): <span class="token class-name">Promise</span>&lt;<span class="token type">Session</span>&gt; {
+  <span class="token keyword">const</span> decoded = <span class="token keyword">await</span> jwt.<span class="token function">verify</span>(token, process.env.JWT_SECRET);</span>
+<span class="code-line-highlight" data-step="step-2">  <span class="token keyword">return</span> sessionStore.<span class="token function">get</span>(decoded.id);
+}</span></code></pre>
+      </div>
 
-    <div class="code-annotation">
-      <h4>Logic & Mechanics</h4>
-      <ul class="logic-breakdown">
-        <li><strong>Input:</strong> Raw JWT token string from HTTP request authorization cookie/header.</li>
-        <li><strong>Verification (Line 114):</strong> Cryptographically validates signature and expiration against server secret; rejects tampered payloads immediately.</li>
-        <li><strong>Session Retrieval (Line 115):</strong> Fetches live active session instance from cache/store using the decoded user ID.</li>
-        <li><strong>Output:</strong> Returns resolved <code>Session</code> entity or throws <code>JsonWebTokenError</code> on failure.</li>
-      </ul>
+      <!-- Right Pane: Sticky Annotations with Vertical Scroll -->
+      <div class="split-annotation-pane">
+        <article class="annotation-step" data-target="step-1">
+          <h4>① Cryptographic Signature Verification</h4>
+          <p><strong>Input:</strong> Raw JWT token string from authorization cookie. Validates signature and rejects tampered tokens.</p>
+        </article>
+
+        <article class="annotation-step" data-target="step-2">
+          <h4>② Active Session Lookup</h4>
+          <p><strong>Output:</strong> Resolves and returns the live active <code>Session</code> entity from in-memory session reservoir.</p>
+        </article>
+      </div>
     </div>
   </details>
 </section>

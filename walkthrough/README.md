@@ -24,4 +24,5 @@ npx skills add dimsedra/skills --skill walkthrough
 
 - `SKILL.md`: Main instructions, invariants, adaptive depth definitions, and reporting rules.
 - `SCHEMA.md`: Content schema, component catalog, and annotated code diff blueprints.
+- `examples/auth-session-refactor/`: Complete real-world walkthrough deliverable example showcasing distributed session refactoring with live terminal test proofs and split-view diffs.
 - Dependency: Uses `report-in-html` for HTML generation and styling.
