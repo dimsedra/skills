@@ -63,10 +63,10 @@
           <div class="mermaid">
 sequenceDiagram
   autonumber
-  actor User as Web / Tablet Client
+  actor User as Web Client
   participant Ingress as API Gateway
   participant Auth as Auth Middleware
-  participant Redis as Redis Session Store
+  participant Redis as Redis Store
   participant DB as PostgreSQL DB
 
   User->>Ingress: POST /api/v2/login (Credentials)
@@ -74,9 +74,9 @@ sequenceDiagram
   DB-->>Ingress: User Record (Valid)
   Ingress->>Redis: SET session:uuid {userId, roles} EX 86400
   Redis-->>Ingress: OK
-  Ingress-->>User: 200 OK + Set-Cookie: __Host-Session=uuid; HttpOnly; Secure
+  Ingress-->>User: 200 OK (Set-Cookie: __Host-Session=uuid)
 
-  Note over User,Ingress: Subsequent Authenticated Requests
+  Note over User, Ingress: Subsequent Authenticated Requests
   User->>Auth: GET /api/v2/dashboard (Cookie: __Host-Session)
   Auth->>Redis: GET session:uuid
   alt Active Session Found
