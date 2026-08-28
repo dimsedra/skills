@@ -22,4 +22,5 @@ npx skills add dimsedra/skills --skill master-it
 
 - `SKILL.md`: Core invariants, execution phase gates, failure modes, and red flags.
 - `LESSON-FORMAT.md`: Full HTML lesson schema, component taxonomy, and Socratic question guidelines.
+- `examples/kds-websocket/`: Comprehensive throwable example lesson demonstrating WebSocket architecture in a Restaurant Kitchen Display System.
 - Dependency: Uses `report-in-html` for HTML generation and styling.
