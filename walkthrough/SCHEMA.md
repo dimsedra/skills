@@ -34,7 +34,7 @@ All walkthrough HTML files MUST:
   <h1>Feature Title or Implementation Name</h1>
   <div class="meta-bar">
     <span class="meta-item"><strong>Date:</strong> 2026-08-28</span>
-    <span class="meta-item"><strong>Reporter:</strong> Antigravity (Tyler)</span>
+    <span class="meta-item"><strong>Reporter:</strong> AI Agent</span>
     <span class="meta-item"><strong>Target Files:</strong> 4 modified, 2 new</span>
   </div>
 </header>
@@ -102,7 +102,7 @@ graph TD
 </section>
 ```
 
-### Key Code Highlights & Diffs
+### Key Code Highlights & Diffs (With Annotated Logic Breakdown)
 ```html
 <section>
   <h2>Key Implementation Diffs</h2>
@@ -110,10 +110,20 @@ graph TD
   <details open>
     <summary><code>src/services/auth.ts</code> — Token Verification Hook</summary>
     <pre><code>// Added secure token validation with expiration checks
-<span class="diff-line-add">+ export async function verifyToken(token: string): Promise<Session> {</span>
+<span class="diff-line-add">+ export async function verifyToken(token: string): Promise&lt;Session&gt; {</span>
 <span class="diff-line-add">+   const decoded = await jwt.verify(token, process.env.JWT_SECRET);</span>
 <span class="diff-line-add">+   return sessionStore.get(decoded.id);</span>
 <span class="diff-line-add">+ }</span></code></pre>
+
+    <div class="code-annotation">
+      <h4>Logic & Mechanics</h4>
+      <ul class="logic-breakdown">
+        <li><strong>Input:</strong> Raw JWT token string from HTTP request authorization cookie/header.</li>
+        <li><strong>Verification (Line 114):</strong> Cryptographically validates signature and expiration against server secret; rejects tampered payloads immediately.</li>
+        <li><strong>Session Retrieval (Line 115):</strong> Fetches live active session instance from cache/store using the decoded user ID.</li>
+        <li><strong>Output:</strong> Returns resolved <code>Session</code> entity or throws <code>JsonWebTokenError</code> on failure.</li>
+      </ul>
+    </div>
   </details>
 </section>
 ```

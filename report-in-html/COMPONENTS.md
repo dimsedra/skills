@@ -103,7 +103,9 @@ All components use semantic HTML classes and require **zero inline styles**.
 
 ---
 
-## 5. Color-Coded Code Diffs & Highlights
+## 5. Annotated Code Diffs & Highlights
+
+Always pair code diffs with an explicit **Logic & Mechanics Breakdown** (Input -> Process / Cause-Effect -> Output) using the `.code-annotation` container:
 
 ```html
 <details open>
@@ -123,6 +125,16 @@ All components use semantic HTML classes and require **zero inline styles**.
 <span class="diff-line-add">+   return false;</span>
 <span class="diff-line-add">+ }</span>
 }</code></pre>
+
+  <div class="code-annotation">
+    <h4>Logic & Mechanics</h4>
+    <ul class="logic-breakdown">
+      <li><strong>Input:</strong> Client IP address (<code>ip: string</code>) and request cost (<code>cost = 1</code>).</li>
+      <li><strong>Lazy Refill (Lines 116–117):</strong> Fetches or creates bucket state and lazily replenishes tokens based on elapsed millisecond timestamp.</li>
+      <li><strong>Atomic Check & Deduct (Lines 119–122):</strong> Deducts cost immediately if sufficient capacity remains, preventing race conditions.</li>
+      <li><strong>Output:</strong> Returns <code>true</code> if token consumed successfully; <code>false</code> if rate limit exceeded.</li>
+    </ul>
+  </div>
 </details>
 
 <details>
@@ -134,6 +146,14 @@ All components use semantic HTML classes and require **zero inline styles**.
 <span class="diff-line-add">+ if (!token) return res.status(401).json({ error: 'Missing session token' });</span>
   next();
 }</code></pre>
+
+  <div class="code-annotation">
+    <h4>Logic & Mechanics</h4>
+    <ul class="logic-breakdown">
+      <li><strong>Deprecation (Lines 131–132):</strong> Removed insecure raw authorization header fallback.</li>
+      <li><strong>Secure Cookie (Lines 133–134):</strong> Enforces <code>__Secure-session</code> HTTP-only cookie validation before propagating to downstream route handlers.</li>
+    </ul>
+  </div>
 </details>
 ```
 

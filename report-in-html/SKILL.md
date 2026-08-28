@@ -5,9 +5,9 @@ description: "Use when creating standalone, interactive HTML reports for code au
 
 # Report In HTML
 
-Generate clean, standalone, minimalist, monochromatic HTML reports with integrated dark/light theme switching, high-contrast Mermaid diagrams, color-coded diff blocks, and terminal evidence containers.
+Generate clean, standalone, minimalist, monochromatic HTML reports with integrated dark/light theme switching, high-contrast Mermaid diagrams, annotated code diff blocks, and terminal evidence containers.
 
-This skill is a plug-and-play report generator for any orchestrator skill or ad-hoc reporting task.
+This skill is a modular design system and component toolkit for any orchestrator skill or ad-hoc reporting task.
 
 ---
 
@@ -25,22 +25,25 @@ This skill is a plug-and-play report generator for any orchestrator skill or ad-
 
 ## Core Invariants
 
-1. **Pure Semantic HTML & Zero Inline Styles**: All styling belongs strictly in `report.css`. HTML tags MUST NOT contain `style="..."` attributes or `<style>` blocks.
-2. **Auto-Launch Live HTTP Server**: Never rely on raw `file:///` URLs. Automatically launch a lightweight local HTTP server as a background daemon process (e.g. `python -m http.server <port>` or `npx serve`) and serve the report over `http://localhost:<port>/<filename>.html`.
-3. **Theme Switcher & LocalStorage Memory**: Every generated HTML file must include the lightweight theme toggle script from `REPORT-TEMPLATE.html` to support seamless Dark/Light switching with user preference persistence.
-4. **No Leaked Markdown**: Convert all text, bullets, bolding, and code snippets into proper HTML tags (`<p>`, `<ul>`, `<li>`, `<strong>`, `<code>`, `<pre>`). Never leave raw `**bold**` or ` `backticks` ` unparsed.
-5. **Chat Bloat Prevention**: Write the complete HTML report directly to disk and deliver the live HTTP URL alongside a concise 2–3 bullet summary.
-6. **High-Contrast Diagramming**: Any embedded Mermaid diagram must use the container classes and theme initialization defined in `REPORT-TEMPLATE.html` to guarantee legibility across both dark and light modes.
+1. **Context-Adaptive Composition (No Rigid Template Copying)**: `REPORT-TEMPLATE.html` and `COMPONENTS.md` serve as a reference foundation and UI toolkit. Do NOT clone the template 1:1 blindly. Tailor the sections, visual hierarchy, diagrams, grids, and tables dynamically to fit the specific feature, architecture, or audit context.
+2. **Annotated Code Highlights (No Naked Diffs)**: Every code diff or snippet must be paired with an explicit **Logic & Mechanics Breakdown** using `.code-annotation` (Input -> Process / Cause & Effect -> Output) with line-by-line rationale for critical logic.
+3. **Pure Semantic HTML & Zero Inline Styles**: All styling belongs strictly in `report.css`. HTML tags MUST NOT contain `style="..."` attributes or `<style>` blocks.
+4. **Monochromatic Visual Identity**: Preserve the high-contrast monochromatic design language (dark mode default with light mode toggle) across all custom layouts.
+5. **Auto-Launch Live HTTP Server**: Never rely on raw `file:///` URLs. Automatically launch a lightweight local HTTP server as a background daemon process (e.g. `python -m http.server <port>` or `npx serve`) and serve the report over `http://localhost:<port>/<filename>.html`.
+6. **Theme Switcher & LocalStorage Memory**: Every generated HTML file must include the lightweight theme toggle script from `REPORT-TEMPLATE.html` to support seamless Dark/Light switching with user preference persistence.
+7. **No Leaked Markdown**: Convert all text, bullets, bolding, and code snippets into proper HTML tags (`<p>`, `<ul>`, `<li>`, `<strong>`, `<code>`, `<pre>`). Never leave raw `**bold**` or ` `backticks` ` unparsed.
+8. **Chat Bloat Prevention**: Write the complete HTML report directly to disk and deliver the live HTTP URL alongside a concise 2–3 bullet summary.
+9. **High-Contrast Diagramming**: Any embedded Mermaid diagram must use the container classes and theme initialization defined in `REPORT-TEMPLATE.html` to guarantee legibility across both dark and light modes.
 
 ---
 
 ## Workflow
 
 ```
-[Report Requested / Invoked] ──► [Copy or Link report.css] ──► [Assemble Components from COMPONENTS.md]
+[Report Requested / Invoked] ──► [Copy or Link report.css] ──► [Select & Compose Tailored Layout]
                                                                         │
                                                                         ▼
-                                                             [Audit Pure HTML Hygiene]
+                                                             [Audit HTML & Annotations]
                                                                         │
                                                                         ▼
                                                              [Auto-Launch Live Server]
@@ -52,17 +55,18 @@ This skill is a plug-and-play report generator for any orchestrator skill or ad-
 ### Step 1: Scaffold Assets
 Ensure `report.css` is present in the output directory or referenced via a valid relative path.
 
-### Step 2: Select & Assemble Components
-1. Copy [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html) as the base document shell.
+### Step 2: Dynamically Compose Layout
+1. Use [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html) for document boilerplate, `<head>` styles, theme toggle script, and Mermaid initializer.
 2. Populate the header with `<span class="badge">` status pills and metadata items.
-3. Assemble the main body using pre-styled components from [COMPONENTS.md](COMPONENTS.md):
-   - **Executive Summaries**: `<article class="card card-summary">`
-   - **Diff Highlights**: `<details><summary>...</summary><pre><code>...<span class="diff-line-add">...`
-   - **Verification Evidence**: `<div class="test-summary-bar">` and `<div class="terminal-output">`
-   - **Architecture Diagrams**: `<div class="diagram-container"><div class="mermaid">...`
-   - **Edge Cases & Guardrails**: `<div class="grid-2"><article class="card">...`
+3. Compose the main body dynamically using components from [COMPONENTS.md](COMPONENTS.md) tailored to the task:
+   - **Executive Summaries**: `<article class="card card-summary">` for problem & solution framing.
+   - **Annotated Diffs**: `<details><summary>...</summary><pre><code>...</code></pre><div class="code-annotation">...</div></details>` breaking down Input, Key Logic, and Output.
+   - **Architecture / Data Flow**: `<div class="diagram-container"><div class="mermaid">...` when visual flows clarify subsystem interactions.
+   - **Verification Evidence**: `<div class="test-summary-bar">` and `<div class="terminal-output">` with real test execution logs.
+   - **Edge Cases & Guardrails**: `<div class="grid-2">` or custom grids for boundary notes and tradeoffs.
 
-### Step 3: Validate HTML Hygiene
+### Step 3: Validate HTML Hygiene & Annotations
+- Confirm all code snippets include a `.code-annotation` block detailing Input-Process-Output.
 - Confirm zero instances of `style=` in the generated HTML.
 - Confirm zero unparsed Markdown symbols (`**`, `##`, `*`, ```` ``` ````).
 - Ensure all `<pre><code>` blocks have escaped HTML entities (`&lt;`, `&gt;`, `&amp;`).
@@ -78,6 +82,8 @@ Ensure `report.css` is present in the output directory or referenced via a valid
 
 | Failure Mode | Root Cause | Guardrail / Fix |
 |---|---|---|
+| **Cookie-Cutter Cloning** | Copying `REPORT-TEMPLATE.html` 1:1 regardless of the task context. | Treat templates as a toolkit; select and adapt components strictly based on what is being reported. |
+| **Naked Code Diffs** | Dumping code diffs without logic explanations. | Always attach `.code-annotation` with Input-Process-Output and line-by-line mechanics. |
 | **Raw File URL Delivery** | Giving the user a `file:///` link which has CORS/browser restrictions. | Auto-launch a background HTTP server and deliver `http://localhost:<port>/<filename>.html`. |
 | **Inline Style Pollution** | Adding `style="..."` directly on tags. | Use semantic classes from `report.css` (`.badge-pass`, `.diff-line-add`, `.card-summary`). |
 | **Markdown Leakage** | Pasting raw markdown text inside HTML elements. | Convert all text to semantic HTML (`<strong>`, `<code>`, `<ol>`, `<li>`). |
@@ -88,6 +94,6 @@ Ensure `report.css` is present in the output directory or referenced via a valid
 
 ## Disclosed References
 
-- [report.css](report.css): Core monochromatic CSS engine with dark/light themes, colored diffs, and responsive layout.
+- [report.css](report.css): Core monochromatic CSS engine with dark/light themes, annotated diffs, and responsive layout.
 - [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html): Master HTML boilerplate with theme toggle and Mermaid integration.
 - [COMPONENTS.md](COMPONENTS.md): Reusable component snippet catalog for rapid report assembly.
