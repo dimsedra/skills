@@ -17,6 +17,7 @@ Or install a specific skill:
 ```bash
 npx skills add dimsedra/skills --skill html-presentation
 npx skills add dimsedra/skills --skill issue-it
+npx skills add dimsedra/skills --skill master-it
 npx skills add dimsedra/skills --skill report-in-html
 npx skills add dimsedra/skills --skill walkthrough
 ```
@@ -28,6 +29,9 @@ Builds modular, responsive HTML presentation decks with full-bleed viewport fitt
 
 ### `issue-it`
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
+
+### `master-it`
+Transforms codebase modules, subsystems, and external CS topics into deep, durable, senior-level interactive HTML lessons backed by grounded research, annotated code mechanics, and post-delivery Socratic dialogue.
 
 ### `report-in-html`
 Generates standalone, interactive HTML reports with light/dark theme toggle, high-contrast Mermaid diagrams, color-coded diff views, and terminal execution logs.
@@ -49,6 +53,10 @@ skills/
 ├── issue-it/
 │   ├── SKILL.md
 │   ├── ISSUE-FORMAT.md
+│   └── README.md
+├── master-it/
+│   ├── SKILL.md
+│   ├── LESSON-FORMAT.md
 │   └── README.md
 ├── report-in-html/
 │   ├── SKILL.md
