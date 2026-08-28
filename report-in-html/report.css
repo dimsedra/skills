@@ -425,11 +425,11 @@ pre code {
   color: var(--token-builtin) !important;
 }
 
-/* Diagrams & Mermaid High Contrast Override */
+/* Diagrams & Mermaid (Unified Dark Canvas) */
 .diagram-container {
   position: relative;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background-color: #121215;
+  border: 1px solid #27272a;
   border-radius: var(--radius-md);
   padding: 2.5rem 1rem 1.5rem;
   overflow-x: auto;
@@ -447,9 +447,9 @@ pre code {
   position: absolute;
   top: 0.65rem;
   right: 0.65rem;
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  background-color: #18181b;
+  border: 1px solid #3f3f46;
+  color: #a1a1aa;
   border-radius: var(--radius-sm);
   padding: 0.25rem 0.6rem;
   font-size: 0.75rem;
@@ -462,9 +462,9 @@ pre code {
 }
 
 .diagram-expand-btn:hover {
-  background-color: var(--bg-elevated);
-  color: var(--text-primary);
-  border-color: var(--text-muted);
+  background-color: #27272a;
+  color: #ffffff;
+  border-color: #71717a;
 }
 
 /* Fullscreen Modal for Diagrams */
@@ -475,7 +475,7 @@ pre code {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(9, 9, 11, 0.92);
+  background-color: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(8px);
   z-index: 9999;
   padding: 2rem;
@@ -494,11 +494,11 @@ pre code {
   max-height: 90vh;
   width: auto;
   overflow: auto;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background-color: #121215;
+  border: 1px solid #27272a;
   border-radius: var(--radius-lg);
   padding: 3rem 2rem 2rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
 }
@@ -513,9 +513,9 @@ pre code {
   position: absolute;
   top: 0.85rem;
   right: 1rem;
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  background-color: #18181b;
+  border: 1px solid #3f3f46;
+  color: #fafafa;
   border-radius: var(--radius-sm);
   padding: 0.3rem 0.75rem;
   font-size: 0.85rem;
@@ -524,72 +524,15 @@ pre code {
 }
 
 .diagram-modal-close:hover {
-  background-color: var(--bg-elevated);
+  background-color: #27272a;
 }
 
-.diagram-container svg text,
-.diagram-container svg text *,
-.diagram-container svg tspan,
-.diagram-container .labelText,
-.diagram-container .labelText > tspan,
-.diagram-container text.labelText,
-.diagram-container .loopText,
-.diagram-container .loopText > tspan,
-.diagram-container text.loopText,
-.diagram-container .messageText,
-.diagram-container .messageText > tspan,
-.diagram-container text.messageText,
-.diagram-container .noteText,
-.diagram-container .noteText > tspan {
-  fill: var(--text-primary) !important;
-  color: var(--text-primary) !important;
-  stroke: none !important;
-  font-weight: 500 !important;
-  opacity: 1 !important;
-}
-
-.diagram-container .actor {
-  stroke: var(--border-color) !important;
-  fill: var(--bg-tertiary) !important;
-}
-
-.diagram-container .actor text,
-.diagram-container text.actor > tspan {
-  fill: var(--text-primary) !important;
-  font-weight: 600 !important;
-}
-
-.diagram-container .actor-line {
-  stroke: var(--text-muted) !important;
-  stroke-dasharray: 3, 3;
-}
-
-.diagram-container .messageLine0,
-.diagram-container .messageLine1 {
-  stroke: var(--text-secondary) !important;
-}
-
-.diagram-container #arrowhead path,
-.diagram-container #crosshead path {
-  fill: var(--text-secondary) !important;
-  stroke: var(--text-secondary) !important;
-}
-
-.diagram-container .labelBox {
-  fill: var(--bg-tertiary) !important;
-  stroke: var(--border-color) !important;
-}
-
-.diagram-container .loopLine {
-  stroke: var(--border-color) !important;
-  stroke-dasharray: 4, 4;
-}
-
+/* Sequence Diagram & Note Box Dark Canvas Overrides */
 .diagram-container svg .note,
 .diagram-container svg rect.note,
 .diagram-container svg [class*="note"] {
-  fill: var(--bg-tertiary) !important;
-  stroke: var(--border-color) !important;
+  fill: #18181b !important;
+  stroke: #3f3f46 !important;
 }
 
 .diagram-container svg text.noteText,
@@ -597,96 +540,47 @@ pre code {
 .diagram-container svg .noteText tspan,
 .diagram-container svg .note text,
 .diagram-container svg text[class*="note"] {
-  fill: var(--text-primary) !important;
+  fill: #fafafa !important;
   stroke: none !important;
-  color: var(--text-primary) !important;
+  color: #fafafa !important;
+  font-weight: 500 !important;
 }
 
-/* Universal Mermaid State Diagram & Flowchart High-Contrast Theming */
-.diagram-container svg .node rect,
-.diagram-container svg .node circle,
-.diagram-container svg .node ellipse,
-.diagram-container svg .node polygon,
-.diagram-container svg .node path,
-.diagram-container svg .statediagram-state rect,
-.diagram-container svg .stateGroup rect,
-.diagram-container svg .state-plain rect {
-  fill: var(--bg-tertiary) !important;
-  stroke: var(--border-color) !important;
-  stroke-width: 1.5px !important;
+.diagram-container .actor {
+  stroke: #3f3f46 !important;
+  fill: #18181b !important;
 }
 
-/* State Diagram Cluster / Composite Box */
-.diagram-container svg .statediagram-cluster rect,
-.diagram-container svg .cluster rect {
-  fill: var(--bg-secondary) !important;
-  stroke: var(--border-color) !important;
-  stroke-width: 1.5px !important;
-}
-
-.diagram-container svg .statediagram-cluster text,
-.diagram-container svg .cluster text {
-  fill: var(--text-primary) !important;
-  font-weight: 700 !important;
-}
-
-/* State Start & End Nodes */
-.diagram-container svg .start-state,
-.diagram-container svg .state-start circle,
-.diagram-container svg circle.state-start,
-.diagram-container svg .node.state-start circle {
-  fill: var(--text-primary) !important;
-  stroke: var(--text-primary) !important;
-}
-
-.diagram-container svg .end-state,
-.diagram-container svg .state-end circle,
-.diagram-container svg circle.state-end,
-.diagram-container svg .node.state-end circle {
-  fill: var(--text-primary) !important;
-  stroke: var(--text-primary) !important;
-}
-
-/* Edge Labels / Transition Text Boxes (e.g. Backoff + Jitter, Trigger Connect) */
-.diagram-container svg .edgeLabel,
-.diagram-container svg .edgeLabel rect,
-.diagram-container svg .label-container {
-  background-color: var(--bg-primary) !important;
-  fill: var(--bg-primary) !important;
-}
-
-.diagram-container svg .edgeLabel text,
-.diagram-container svg .edgeLabel tspan,
-.diagram-container svg .edgeLabel span,
-.diagram-container svg .edgeLabel p,
-.diagram-container svg .edgeLabel div {
-  color: var(--text-primary) !important;
-  fill: var(--text-primary) !important;
-  background-color: transparent !important;
+.diagram-container .actor text,
+.diagram-container text.actor > tspan {
+  fill: #fafafa !important;
   font-weight: 600 !important;
-  font-size: 0.8rem !important;
 }
 
-/* Transition Lines & Arrowheads */
-.diagram-container svg .transition,
-.diagram-container svg .edgePath path,
-.diagram-container svg .edgePaths path,
-.diagram-container svg path.edge,
-.diagram-container svg path.transition {
-  stroke: var(--text-secondary) !important;
-  stroke-width: 1.5px !important;
+.diagram-container .actor-line {
+  stroke: #71717a !important;
+  stroke-dasharray: 3, 3;
 }
 
-.diagram-container svg marker path,
-.diagram-container svg #statediagram-barbEnd path,
-.diagram-container svg #statediagram-pointEnd path {
-  fill: var(--text-secondary) !important;
-  stroke: var(--text-secondary) !important;
+.diagram-container .messageLine0,
+.diagram-container .messageLine1 {
+  stroke: #d4d4d8 !important;
 }
 
-/* Divider inside State Boxes */
-.diagram-container svg .divider {
-  stroke: var(--border-color) !important;
+.diagram-container #arrowhead path,
+.diagram-container #crosshead path {
+  fill: #d4d4d8 !important;
+  stroke: #d4d4d8 !important;
+}
+
+.diagram-container .labelBox {
+  fill: #18181b !important;
+  stroke: #3f3f46 !important;
+}
+
+.diagram-container .loopLine {
+  stroke: #3f3f46 !important;
+  stroke-dasharray: 4, 4;
 }
 
 /* Terminal & Verification Logs */
