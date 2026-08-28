@@ -294,31 +294,35 @@ stateDiagram-v2
 }</code></pre>
             </div>
 
-            <!-- Right Pane: Sticky Annotations -->
             <div class="split-annotation-pane">
               <article class="annotation-step" data-target="client-init">
-                <h4>① Inisialisasi & Konfigurasi Timer</h4>
-                <p><strong>Input:</strong> Target stasiun dapur (misal: <code>GRILL</code>) dan pelacakan urutan nomor urut terakhir (<code>lastMonotonicSeq</code>). Menyiapkan batas watchdog 5s dan batas backoff 15s.</p>
+                <h4>① Inisialisasi & Parameter Konfigurasi (Baris 1–17)</h4>
+                <p><strong>Tujuan Arsitektur:</strong> Menyiapkan state mesin koneksi terisolasi untuk satu layar fisik stasiun dapur tertentu (contoh: stasiun <code>GRILL</code>).</p>
+                <p><strong>Invariant & State:</strong> Menyimpan <code>lastMonotonicSeq</code> sebagai penanda urutan mutlak data pesanan lokal. Konfigurasi <code>HEARTBEAT_INTERVAL_MS</code> (5000ms) dan <code>PONG_TIMEOUT_MS</code> (3000ms) disetel agresif karena lingkungan dapur tidak mentoleransi delay pelaporan status pesanan.</p>
               </article>
 
               <article class="annotation-step" data-target="client-heartbeat">
-                <h4>② Watchdog Terminasi Zombie Socket</h4>
-                <p><strong>Mekanika:</strong> Mengirim <code>PING</code> setiap 5 detik. Jika dalam 3 detik tidak ada balasan <code>PONG</code>, panggil <code>ws.close()</code> secara paksa tanpa menunggu timeout TCP bawaan OS yang bisa memakan waktu 2 jam.</p>
+                <h4>② Watchdog Timer & Deteksi Zombie Socket (Baris 35–45)</h4>
+                <p><strong>Mekanika Input & Trigger:</strong> Interval <code>setInterval</code> memicu probe ping setiap 5 detik. Saat socket dalam status <code>OPEN</code>, pesan payload <code>{ type: 'PING' }</code> ditembakkan ke backend.</p>
+                <p><strong>Mitigasi Half-Open Connection:</strong> Bersamaan dengan ping, watchdog memasang <code>pongTimeoutTimer</code> 3000ms. Jika router Wi-Fi dapur mati mendadak (kabel power tercabut), OS tidak mengirim sinyal FIN/RST sehingga TCP stack bisa berasumsi koneksi masih hidup selama berjam-jam (<em>zombie half-open state</em>). Timer ini memaksa <code>ws.close()</code> lokal agar state beralih ke reconnecting.</p>
               </article>
 
               <article class="annotation-step" data-target="client-reconnect">
-                <h4>③ Exponential Backoff + Full Jitter</h4>
-                <p><strong>Anti-Thundering Herd:</strong> Menghitung delay dengan formula <code>Math.random() * (1000 * 1.5^attempts)</code>. Menghindari tabrakan serentak puluhan tablet saat access point Wi-Fi dapur baru menyala kembali.</p>
+                <h4>③ Exponential Backoff dengan Full Jitter (Baris 47–56)</h4>
+                <p><strong>Kalkulasi Delay:</strong> <code>baseBackoff = min(15000, 1000 * 1.5^attempts)</code> kemudian dikalikan <code>Math.random()</code>.</p>
+                <p><strong>Pencegahan Thundering Herd:</strong> Di restoran dengan 30 tablet KDS, jika router access point dapur restart serentak, tanpa jitter semua 30 tablet akan menyerang server pada milidetik yang sama berulang-ulang (<em>retry storm</em>). Full Jitter menyebarkan request secara seragam dari 0 hingga <code>baseBackoff</code>.</p>
               </article>
 
               <article class="annotation-step" data-target="client-seq">
-                <h4>④ Deteksi Gap Urutan Monotonik</h4>
-                <p><strong>Verifikasi State:</strong> Membandingkan <code>event.seq</code>. Nomor duplikat/usang langsung diabaikan. Jika nomor urut melompat (terjadi packet loss), otomatis memicu pemulihan snapshot.</p>
+                <h4>④ Deteksi Gap Urutan Monotonik (Baris 58–73)</h4>
+                <p><strong>Verifikasi State:</strong> Setiap event membawa sequence number integer (<code>seq</code>). Jika <code>event.seq &lt;= lastMonotonicSeq</code>, event langsung di-drop untuk mencegah <em>duplicate processing</em> (misal koki melihat tiket ganda).</p>
+                <p><strong>Deteksi Packet Loss:</strong> Jika <code>event.seq &gt; lastMonotonicSeq + 1</code>, sistem mendeteksi ada pesanan di tengah yang hilang karena packet drop di Wi-Fi. Client seketika memicu <code>reconcileMissedEvents()</code> untuk menyinkronkan data yang terlewat.</p>
               </article>
 
               <article class="annotation-step" data-target="client-resync">
-                <h4>⑤ Snapshot Catch-up Recovery</h4>
-                <p><strong>Output:</strong> Mengambil active tickets terbaru dari REST API snapshot untuk menyinkronkan data yang terlewat selama jaringan terputus.</p>
+                <h4>⑤ Rekonsiliasi Snapshot via REST Fallback (Baris 75–80)</h4>
+                <p><strong>Proses Hidrasi:</strong> Memanggil REST endpoint <code>/api/kds/snapshot?sinceSeq=X</code> untuk mengambil array tiket aktif terbaru langsung dari database utama.</p>
+                <p><strong>Output UI:</strong> Meng-update reactive UI store (misal Zustand/Redux) secara atomik dan memajukan pointer <code>lastMonotonicSeq</code> ke latest sequence, memastikan koki tidak pernah kehilangan pesanan penting.</p>
               </article>
             </div>
           </div>
@@ -363,12 +367,12 @@ stateDiagram-v2
       <span class="token keyword">this</span>.stationClients.<span class="token function">get</span>(station)!.<span class="token function">add</span>(ws);</span>
 
 <span class="code-line-highlight" data-step="server-ping">      ws.<span class="token function">on</span>(<span class="token string">'message'</span>, (raw) =&gt; {
-        <span class="token keyword">try</span> {
+        try {
           <span class="token keyword">const</span> msg = JSON.<span class="token function">parse</span>(raw.<span class="token function">toString</span>());
           <span class="token keyword">if</span> (msg.type === <span class="token string">'PING'</span>) {
             ws.<span class="token function">send</span>(JSON.<span class="token function">stringify</span>({ type: <span class="token string">'PONG'</span>, timestamp: Date.<span class="token function">now</span>() }));
           }
-        } <span class="token keyword">catch</span> (err) {
+        } catch (err) {
           console.<span class="token function">error</span>(<span class="token string">'[Gateway] Format pesan tidak valid'</span>, err);
         }
       });</span>
@@ -392,36 +396,36 @@ stateDiagram-v2
 }</code></pre>
             </div>
 
-            <!-- Right Pane: Sticky Annotations -->
             <div class="split-annotation-pane">
               <article class="annotation-step" data-target="server-init">
-                <h4>① Setup Gateway & Client Registry</h4>
-                <p>Membuat server WebSocket mandiri dan inisialisasi koneksi Redis subscriber serta Map registry untuk client per stasiun.</p>
+                <h4>① Setup Gateway & Client Registry (Baris 1–13)</h4>
+                <p><strong>Tujuan Arsitektur:</strong> Memisahkan antrean komunikasi antara stasiun masak yang berbeda (Grill, Salad, Beverage, Expo).</p>
+                <p><strong>Struktur Data:</strong> Menggunakan <code>Map&lt;string, Set&lt;WebSocket&gt;&gt;</code> yang memberikan kompleksitas O(1) untuk registrasi socket baru dan O(N) terisolasi per stasiun saat broadcast tanpa membebani stasiun lain.</p>
               </article>
 
               <article class="annotation-step" data-target="server-sub">
-                <h4>② Pattern-Based Redis Subscription</h4>
-                <p><strong>Ingress:</strong> Mendengarkan channel <code>kds:station:*</code> secara dinamis agar gateway dapat mendistribusikan event stasiun tanpa hardcode.</p>
+                <h4>② Dynamic Pattern-Based Redis Subscription (Baris 15–22)</h4>
+                <p><strong>Ingress Event Bus:</strong> Menggunakan Redis <code>pSubscribe('kds:station:*')</code> sehingga gateway dapat mendengarkan seluruh event stasiun dapur secara dinamis tanpa perlu restart gateway saat ada penambahan stasiun dapur baru di restoran.</p>
               </article>
 
               <article class="annotation-step" data-target="server-conn">
-                <h4>③ Routing Registry per Stasiun</h4>
-                <p>Mengelompokkan koneksi tablet ke dalam <code>Set&lt;WebSocket&gt;</code> berdasarkan parameter <code>?station=GRILL</code>.</p>
+                <h4>③ Client Routing & Registry Allocation (Baris 24–33)</h4>
+                <p><strong>Mekanika:</strong> Mengekstrak parameter query <code>?station=GRILL</code> saat handshake upgrade HTTP ke WebSocket. Jika set stasiun belum ada di memory, inisialisasi <code>new Set()</code> baru dan tambahkan socket client ke dalamnya.</p>
               </article>
 
               <article class="annotation-step" data-target="server-ping">
-                <h4>④ Fast-Path Heartbeat Pong Echo</h4>
-                <p>Merespons <code>PING</code> dari tablet seketika dengan pesan <code>PONG</code> tanpa membebani event loop backend.</p>
+                <h4>④ Heartbeat Echo Fast-Path (Baris 35–44)</h4>
+                <p><strong>Zero-Allocation Ping Response:</strong> Saat frame <code>PING</code> diterima dari tablet, gateway seketika membalas dengan frame <code>PONG</code> tanpa menyentuh database atau operasi I/O berat, menjaga event loop Node.js tetap ringan untuk message routing.</p>
               </article>
 
               <article class="annotation-step" data-target="server-clean">
-                <h4>⑤ Pencegahan Memory Leak</h4>
-                <p>Menghapus referensi socket dari Set saat socket tertutup agar tidak terjadi akumulasi objek di V8 heap.</p>
+                <h4>⑤ Pencegahan Memory Leak saat Diskoneksi (Baris 46–48)</h4>
+                <p><strong>Garbage Collection Safety:</strong> Pada event <code>close</code>, referensi socket langsung dihapus dari <code>Set</code> stasiun. Mencegah akumulasi zombie object di memory heap V8 saat ribuan tablet reconnect sepanjang jam operasional restoran.</p>
               </article>
 
               <article class="annotation-step" data-target="server-broadcast">
-                <h4>⑥ Targeted Station Fanout</h4>
-                <p><strong>Output:</strong> Memancarkan pesan hanya ke tablet yang terdaftar di stasiun tersebut, menghemat network bandwidth di tablet lain.</p>
+                <h4>⑥ Targeted Station Fanout (Baris 50–60)</h4>
+                <p><strong>Output Pipeline:</strong> Mengiterasi seluruh socket aktif di stasiun target dan memancarkan payload JSON pesanan. Menghemat bandwidth Wi-Fi dapur dan beban parsing CPU tablet di stasiun lain hingga 80%.</p>
               </article>
             </div>
           </div>
