@@ -173,17 +173,21 @@ stateDiagram-v2
         </article>
       </section>
 
-      <!-- 5. Bedah Kode & Mekanika Line-by-Line -->
+      <!-- 5. Bedah Kode & Mekanika Line-by-Line (Split-View Side-by-Side) -->
       <section>
-        <h2>4. Implementasi Kode & Bedah Logika Line-by-Line</h2>
+        <h2>4. Implementasi Kode & Bedah Logika (Side-by-Side Split View)</h2>
         <p>
-          Berikut dua komponen utama pada sistem produksi: <strong>Resilient Client-Side Connection Manager</strong> (Frontend Tablet) dan <strong>Server-Side Redis Pub/Sub Fanout Hub</strong> (Backend Gateway).
+          Hover atau klik salah satu kartu penjelasan di panel kanan untuk menyorot (*highlight*) baris kodenya di panel kiri secara *real-time*. Kedua panel memiliki *horizontal scrollbar* independen tanpa pemotongan kode (*no truncation*).
         </p>
 
         <!-- Snippet 1: Client Resilient Socket -->
         <details open>
           <summary><code>src/kds/network/ResilientKDSClient.ts</code> — Heartbeat Watchdog & Jittered Reconnection</summary>
-          <pre><code>export class ResilientKDSClient {
+          
+          <div class="split-code-layout">
+            <!-- Left Pane: Code with Horizontal Scroll -->
+            <div class="split-code-pane">
+              <pre><code><span class="code-line-highlight" data-step="client-init">export class ResilientKDSClient {
   private ws: WebSocket | null = null;
   private url: string;
   private stationId: string;
@@ -199,7 +203,7 @@ stateDiagram-v2
   constructor(url: string, stationId: string) {
     this.url = url;
     this.stationId = stationId;
-  }
+  }</span>
 
   public connect(): void {
     this.cleanup();
@@ -224,7 +228,7 @@ stateDiagram-v2
     this.ws.onerror = () => this.ws?.close();
   }
 
-  private startHeartbeatWatchdog(): void {
+<span class="code-line-highlight" data-step="client-heartbeat">  private startHeartbeatWatchdog(): void {
     this.heartbeatTimer = window.setInterval(() => {
       if (this.ws?.readyState === WebSocket.OPEN) {
         this.ws.send(JSON.stringify({ type: 'PING', timestamp: Date.now() }));
@@ -234,9 +238,9 @@ stateDiagram-v2
         }, this.PONG_TIMEOUT_MS);
       }
     }, this.HEARTBEAT_INTERVAL_MS);
-  }
+  }</span>
 
-  private scheduleReconnection(): void {
+<span class="code-line-highlight" data-step="client-reconnect">  private scheduleReconnection(): void {
     this.cleanup();
     this.reconnectAttempts++;
     
@@ -245,9 +249,9 @@ stateDiagram-v2
     const jitteredDelay = Math.random() * baseBackoff;
 
     window.setTimeout(() => this.connect(), jitteredDelay);
-  }
+  }</span>
 
-  private handleOrderEvent(event: { seq: number; type: string; ticket: any }): void {
+<span class="code-line-highlight" data-step="client-seq">  private handleOrderEvent(event: { seq: number; type: string; ticket: any }): void {
     // Verifikasi urutan monotonik: Deteksi duplikat atau paket yang hilang
     if (event.seq <= this.lastMonotonicSeq) {
       console.warn(`[KDS] Mengabaikan event duplikat atau usang: seq ${event.seq}`);
@@ -262,14 +266,14 @@ stateDiagram-v2
     this.lastMonotonicSeq = event.seq;
     // Dispatch ke reactive store lokal (misal: Zustand)
     this.dispatchTicketToStore(event.ticket);
-  }
+  }</span>
 
-  private async reconcileMissedEvents(): Promise<void> {
+<span class="code-line-highlight" data-step="client-resync">  private async reconcileMissedEvents(): Promise<void> {
     const res = await fetch(`/api/kds/snapshot?station=${this.stationId}&sinceSeq=${this.lastMonotonicSeq}`);
     const data = await res.json();
     this.hydrateLocalStore(data.activeTickets);
     this.lastMonotonicSeq = data.latestSeq;
-  }
+  }</span>
 
   private cleanup(): void {
     clearInterval(this.heartbeatTimer);
@@ -284,23 +288,46 @@ stateDiagram-v2
     }
   }
 }</code></pre>
+            </div>
 
-          <div class="code-annotation">
-            <h4>Bedah Logika & Mekanika (Input - Proses - Output)</h4>
-            <ul class="logic-breakdown">
-              <li><strong>Inisialisasi (Baris 1-17):</strong> Membuat instans client untuk stasiun dapur tertentu (misal: <code>GRILL</code>) dan menyimpan urutan nomor urut terakhir (<code>lastMonotonicSeq</code>).</li>
-              <li><strong>Terminasi Socket Mati Suri (Baris 43-52):</strong> Mengirim <code>PING</code> setiap 5 detik. Jika dalam 3 detik tidak ada balasan <code>PONG</code>, panggil <code>ws.close()</code> secara paksa tanpa menunggu timeout TCP bawaan OS yang berjam-jam.</li>
-              <li><strong>Exponential Backoff + Full Jitter (Baris 54-63):</strong> Menghitung waktu tunggu dengan rumus <code>Math.random() * (1000 * 1.5^attempts)</code> maks 15 detik. Ini mencegah **Thundering Herd Problem** (20 tablet serentak menyerang server saat router Wi-Fi dapur baru restart).</li>
-              <li><strong>Deteksi Gap Urutan Monotonik (Baris 65-79):</strong> Membandingkan nomor <code>event.seq</code> dengan <code>lastMonotonicSeq</code>. Jika nomor sama/lebih kecil diabaikan (anti-duplikat), jika melompat (ada paket hilang) langsung panggil <code>reconcileMissedEvents()</code>.</li>
-              <li><strong>Rekonsiliasi & Output (Baris 81-86):</strong> Meng-update state UI lokal via REST snapshot sehingga koki selalu melihat daftar pesanan yang akurat tanpa tiket siluman.</li>
-            </ul>
+            <!-- Right Pane: Sticky Annotations -->
+            <div class="split-annotation-pane">
+              <article class="annotation-step" data-target="client-init">
+                <h4>① Inisialisasi & Konfigurasi Timer</h4>
+                <p><strong>Input:</strong> Target stasiun dapur (misal: <code>GRILL</code>) dan pelacakan urutan nomor urut terakhir (<code>lastMonotonicSeq</code>). Menyiapkan batas watchdog 5s dan batas backoff 15s.</p>
+              </article>
+
+              <article class="annotation-step" data-target="client-heartbeat">
+                <h4>② Watchdog Terminasi Zombie Socket</h4>
+                <p><strong>Mekanika:</strong> Mengirim <code>PING</code> setiap 5 detik. Jika dalam 3 detik tidak ada balasan <code>PONG</code>, panggil <code>ws.close()</code> secara paksa tanpa menunggu timeout TCP bawaan OS yang bisa memakan waktu 2 jam.</p>
+              </article>
+
+              <article class="annotation-step" data-target="client-reconnect">
+                <h4>③ Exponential Backoff + Full Jitter</h4>
+                <p><strong>Anti-Thundering Herd:</strong> Menghitung delay dengan formula <code>Math.random() * (1000 * 1.5^attempts)</code>. Menghindari tabrakan serentak puluhan tablet saat access point Wi-Fi dapur baru menyala kembali.</p>
+              </article>
+
+              <article class="annotation-step" data-target="client-seq">
+                <h4>④ Deteksi Gap Urutan Monotonik</h4>
+                <p><strong>Verifikasi State:</strong> Membandingkan <code>event.seq</code>. Nomor duplikat/usang langsung diabaikan. Jika nomor urut melompat (terjadi packet loss), otomatis memicu pemulihan snapshot.</p>
+              </article>
+
+              <article class="annotation-step" data-target="client-resync">
+                <h4>⑤ Snapshot Catch-up Recovery</h4>
+                <p><strong>Output:</strong> Mengambil active tickets terbaru dari REST API snapshot untuk menyinkronkan data yang terlewat selama jaringan terputus.</p>
+              </article>
+            </div>
           </div>
         </details>
 
         <!-- Snippet 2: Server Gateway -->
         <details>
           <summary><code>src/server/gateway/KDSWebSocketGateway.ts</code> — Fanout Stasiun via Redis Pub/Sub</summary>
-          <pre><code>import { WebSocketServer, WebSocket } from 'ws';
+          
+          <div class="split-code-layout">
+            <!-- Left Pane: Code with Horizontal Scroll -->
+            <div class="split-code-pane">
+              <pre><code><span class="code-line-highlight" data-step="server-init">import { WebSocketServer, WebSocket } from 'ws';
 import { createClient } from 'redis';
 
 export class KDSWebSocketGateway {
@@ -311,27 +338,27 @@ export class KDSWebSocketGateway {
   constructor(port: number) {
     this.wss = new WebSocketServer({ port });
     this.init();
-  }
+  }</span>
 
-  private async init(): Promise&lt;void&gt; {
+<span class="code-line-highlight" data-step="server-sub">  private async init(): Promise&lt;void&gt; {
     await this.redisSub.connect();
 
     // Subscribe ke pola channel multi-stasiun
     await this.redisSub.pSubscribe('kds:station:*', (message, channel) => {
       const stationId = channel.replace('kds:station:', '');
       this.broadcastToStation(stationId, message);
-    });
+    });</span>
 
-    this.wss.on('connection', (ws: WebSocket, req) => {
+<span class="code-line-highlight" data-step="server-conn">    this.wss.on('connection', (ws: WebSocket, req) => {
       const url = new URL(req.url || '', 'http://localhost');
       const station = url.searchParams.get('station') || 'DEFAULT';
 
       if (!this.stationClients.has(station)) {
         this.stationClients.set(station, new Set());
       }
-      this.stationClients.get(station)!.add(ws);
+      this.stationClients.get(station)!.add(ws);</span>
 
-      ws.on('message', (raw) => {
+<span class="code-line-highlight" data-step="server-ping">      ws.on('message', (raw) => {
         try {
           const msg = JSON.parse(raw.toString());
           if (msg.type === 'PING') {
@@ -340,15 +367,15 @@ export class KDSWebSocketGateway {
         } catch (err) {
           console.error('[Gateway] Format pesan tidak valid', err);
         }
-      });
+      });</span>
 
-      ws.on('close', () => {
+<span class="code-line-highlight" data-step="server-clean">      ws.on('close', () => {
         this.stationClients.get(station)?.delete(ws);
       });
     });
-  }
+  }</span>
 
-  private broadcastToStation(stationId: string, message: string): void {
+<span class="code-line-highlight" data-step="server-broadcast">  private broadcastToStation(stationId: string, message: string): void {
     const clients = this.stationClients.get(stationId);
     if (!clients || clients.size === 0) return;
 
@@ -357,17 +384,42 @@ export class KDSWebSocketGateway {
         ws.send(message);
       }
     }
-  }
+  }</span>
 }</code></pre>
+            </div>
 
-          <div class="code-annotation">
-            <h4>Bedah Logika & Mekanika (Input - Proses - Output)</h4>
-            <ul class="logic-breakdown">
-              <li><strong>Input Ingress:</strong> Menerima pesan broadcast dari Redis Pub/Sub pada channel <code>kds:station:*</code>.</li>
-              <li><strong>Routing & Fanout (Baris 16-20, 47-56):</strong> Meneruskan event HANYA ke tablet stasiun yang bersangkutan (misal stasiun <code>GRILL</code> tidak akan menerima event stasiun <code>SALAD</code>), menghemat bandwidth dan parsing CPU di tablet.</li>
-              <li><strong>Respon Cepat Pong (Baris 31-38):</strong> Langsung membalas <code>PONG</code> saat client mengirim probe keep-alive tanpa alokasi memori berlebih.</li>
-              <li><strong>Pencegahan Memory Leak (Baris 41-43):</strong> Menghapus referensi socket dari <code>Set&lt;WebSocket&gt;</code> saat koneksi terputus agar tidak terjadi memory leak di Node.js.</li>
-            </ul>
+            <!-- Right Pane: Sticky Annotations -->
+            <div class="split-annotation-pane">
+              <article class="annotation-step" data-target="server-init">
+                <h4>① Setup Gateway & Client Registry</h4>
+                <p>Membuat server WebSocket mandiri dan inisialisasi koneksi Redis subscriber serta Map registry untuk client per stasiun.</p>
+              </article>
+
+              <article class="annotation-step" data-target="server-sub">
+                <h4>② Pattern-Based Redis Subscription</h4>
+                <p><strong>Ingress:</strong> Mendengarkan channel <code>kds:station:*</code> secara dinamis agar gateway dapat mendistribusikan event stasiun tanpa hardcode.</p>
+              </article>
+
+              <article class="annotation-step" data-target="server-conn">
+                <h4>③ Routing Registry per Stasiun</h4>
+                <p>Mengelompokkan koneksi tablet ke dalam <code>Set&lt;WebSocket&gt;</code> berdasarkan parameter <code>?station=GRILL</code>.</p>
+              </article>
+
+              <article class="annotation-step" data-target="server-ping">
+                <h4>④ Fast-Path Heartbeat Pong Echo</h4>
+                <p>Merespons <code>PING</code> dari tablet seketika dengan pesan <code>PONG</code> tanpa membebani event loop backend.</p>
+              </article>
+
+              <article class="annotation-step" data-target="server-clean">
+                <h4>⑤ Pencegahan Memory Leak</h4>
+                <p>Menghapus referensi socket dari Set saat socket tertutup agar tidak terjadi akumulasi objek di V8 heap.</p>
+              </article>
+
+              <article class="annotation-step" data-target="server-broadcast">
+                <h4>⑥ Targeted Station Fanout</h4>
+                <p><strong>Output:</strong> Memancarkan pesan hanya ke tablet yang terdaftar di stasiun tersebut, menghemat network bandwidth di tablet lain.</p>
+              </article>
+            </div>
           </div>
         </details>
       </section>
@@ -455,6 +507,20 @@ export class KDSWebSocketGateway {
     }
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // Interactive Hover Synchronization between Annotations and Code Pane
+    document.querySelectorAll('.annotation-step').forEach(step => {
+      step.addEventListener('mouseenter', () => {
+        const targetId = step.getAttribute('data-target');
+        document.querySelectorAll(`.code-line-highlight[data-step="${targetId}"]`).forEach(el => el.classList.add('active'));
+        step.classList.add('active');
+      });
+      step.addEventListener('mouseleave', () => {
+        const targetId = step.getAttribute('data-target');
+        document.querySelectorAll(`.code-line-highlight[data-step="${targetId}"]`).forEach(el => el.classList.remove('active'));
+        step.classList.remove('active');
+      });
+    });
   </script>
 </body>
 </html>

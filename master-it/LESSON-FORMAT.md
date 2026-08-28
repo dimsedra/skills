@@ -128,14 +128,18 @@ sequenceDiagram
         </div>
       </section>
 
-      <!-- 5. Code Mechanics & Line-by-Line Breakdown -->
+      <!-- 5. Code Mechanics & Line-by-Line Breakdown (Split-View Side-by-Side) -->
       <section>
         <h2>4. Concrete Implementation & Line-by-Line Mechanics</h2>
-        <p>In-depth inspection of the critical implementation paths. Every snippet includes an annotated logic breakdown.</p>
+        <p>Side-by-side inspection of critical code paths. Hovering over an annotation card highlights the corresponding lines in the code pane. Both panes scroll horizontally without line truncation.</p>
         
         <details open>
           <summary><code>src/services/rate-limiter.ts</code> — Atomic Token Refill & Consumption</summary>
-          <pre><code>export class TokenReservoir {
+          
+          <div class="split-code-layout">
+            <!-- Left Pane: Code with Horizontal Scroll -->
+            <div class="split-code-pane">
+              <pre><code><span class="code-line-highlight" data-step="step-init">export class TokenReservoir {
   private tokens: number;
   private lastRefillTimestamp: number;
   private readonly capacity: number;
@@ -146,36 +150,45 @@ sequenceDiagram
     this.refillRatePerSecond = refillRate;
     this.tokens = capacity;
     this.lastRefillTimestamp = Date.now();
-  }
+  }</span>
 
-  public tryAcquire(cost = 1): boolean {
+<span class="code-line-highlight" data-step="step-acquire">  public tryAcquire(cost = 1): boolean {
     this.refill();
     if (this.tokens &gt;= cost) {
       this.tokens -= cost;
       return true;
     }
     return false;
-  }
+  }</span>
 
-  private refill(): void {
+<span class="code-line-highlight" data-step="step-refill">  private refill(): void {
     const now = Date.now();
     const elapsedSeconds = (now - this.lastRefillTimestamp) / 1000;
     if (elapsedSeconds &gt; 0) {
       this.tokens = Math.min(this.capacity, this.tokens + (elapsedSeconds * this.refillRatePerSecond));
       this.lastRefillTimestamp = now;
     }
-  }
+  }</span>
 }</code></pre>
+            </div>
 
-          <div class="code-annotation">
-            <h4>Logic & Mechanics Breakdown</h4>
-            <ul class="logic-breakdown">
-              <li><strong>Input:</strong> Requested cost integer (<code>cost = 1</code>) and current clock epoch (<code>Date.now()</code>).</li>
-              <li><strong>Lazy Refill Mechanics (Lines 23–29):</strong> Calculates token accrual on-demand rather than running a high-overhead background timer interval, keeping CPU utilization O(1).</li>
-              <li><strong>Capacity Clamping (Line 27):</strong> <code>Math.min(capacity, tokens + accrual)</code> prevents overflow bursts beyond the configured ceiling.</li>
-              <li><strong>Atomic State Mutation (Lines 16–18):</strong> Immediately reduces token count within synchronous single-threaded execution, ensuring concurrency safety in Node.js event loop.</li>
-              <li><strong>Output:</strong> Boolean flag indicating whether the operation is granted immediate dispatch or throttled.</li>
-            </ul>
+            <!-- Right Pane: Sticky Annotations -->
+            <div class="split-annotation-pane">
+              <article class="annotation-step" data-target="step-init">
+                <h4>① Constructor & Invariant Setup</h4>
+                <p><strong>Input:</strong> Configures max capacity and continuous refill rate.</p>
+              </article>
+
+              <article class="annotation-step" data-target="step-acquire">
+                <h4>② Atomic Token Consumption</h4>
+                <p><strong>Mechanics:</strong> Deducts cost immediately if sufficient capacity remains.</p>
+              </article>
+
+              <article class="annotation-step" data-target="step-refill">
+                <h4>③ Lazy O(1) Refill Computation</h4>
+                <p><strong>Output:</strong> Replenishes tokens on-demand without wasteful background intervals.</p>
+              </article>
+            </div>
           </div>
         </details>
       </section>

@@ -154,6 +154,52 @@ Always pair code diffs with an explicit **Logic & Mechanics Breakdown** (Input -
       <li><strong>Secure Cookie (Lines 133–134):</strong> Enforces <code>__Secure-session</code> HTTP-only cookie validation before propagating to downstream route handlers.</li>
     </ul>
   </div>
+### Split-View Side-by-Side (Recommended for Deep Dives)
+
+For medium/large code blocks, place the code on the left and sticky step cards on the right with interactive hover highlight synchronization and horizontal scrollbars:
+
+```html
+<details open>
+  <summary><code>src/security/rate-limiter.ts</code> — Token Bucket Rate Limiter</summary>
+  
+  <div class="split-code-layout">
+    <!-- Left Pane: Code with Horizontal Scroll -->
+    <div class="split-code-pane">
+      <pre><code><span class="code-line-highlight" data-step="step-1">export class TokenBucketRateLimiter {
+  private buckets = new Map&lt;string, { tokens: number; lastRefill: number }&gt;();</span>
+
+<span class="code-line-highlight" data-step="step-2">  public tryConsume(ip: string, cost = 1): boolean {
+    const now = Date.now();
+    const bucket = this.getOrInitBucket(ip, now);
+    this.refill(bucket, now);</span>
+    
+<span class="code-line-highlight" data-step="step-3">    if (bucket.tokens &gt;= cost) {
+      bucket.tokens -= cost;
+      return true;
+    }
+    return false;
+  }</span>
+}</code></pre>
+    </div>
+
+    <!-- Right Pane: Sticky Annotations -->
+    <div class="split-annotation-pane">
+      <article class="annotation-step" data-target="step-1">
+        <h4>① State Initialization</h4>
+        <p><strong>Input:</strong> Manages in-memory token state per client IP address.</p>
+      </article>
+
+      <article class="annotation-step" data-target="step-2">
+        <h4>② Lazy Refill Calculation</h4>
+        <p><strong>Mechanics:</strong> Replenishes tokens on-demand upon incoming request arrival.</p>
+      </article>
+
+      <article class="annotation-step" data-target="step-3">
+        <h4>③ Atomic Consumption</h4>
+        <p><strong>Output:</strong> Returns <code>true</code> if capacity remains; throttles request otherwise.</p>
+      </article>
+    </div>
+  </div>
 </details>
 ```
 
