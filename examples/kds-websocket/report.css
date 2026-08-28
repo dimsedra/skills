@@ -432,6 +432,23 @@ pre code {
   stroke-dasharray: 4, 4;
 }
 
+.diagram-container svg .note,
+.diagram-container svg rect.note,
+.diagram-container svg [class*="note"] {
+  fill: var(--bg-tertiary) !important;
+  stroke: var(--border-color) !important;
+}
+
+.diagram-container svg text.noteText,
+.diagram-container svg .noteText text,
+.diagram-container svg .noteText tspan,
+.diagram-container svg .note text,
+.diagram-container svg text[class*="note"] {
+  fill: var(--text-primary) !important;
+  stroke: none !important;
+  color: var(--text-primary) !important;
+}
+
 /* Terminal & Verification Logs */
 .terminal-output {
   background-color: #060709;
