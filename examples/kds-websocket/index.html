@@ -37,6 +37,10 @@
       fontFamily: 'system-ui, -apple-system, sans-serif'
     });
   </script>
+  <!-- Prism.js for IDE-Grade Syntax Highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -187,104 +191,104 @@ stateDiagram-v2
           <div class="split-code-layout">
             <!-- Left Pane: Code with Horizontal Scroll -->
             <div class="split-code-pane">
-              <pre><code><span class="code-line-highlight" data-step="client-init">export class ResilientKDSClient {
-  private ws: WebSocket | null = null;
-  private url: string;
-  private stationId: string;
-  private lastMonotonicSeq = 0;
-  private reconnectAttempts = 0;
-  private heartbeatTimer?: number;
-  private pongTimeoutTimer?: number;
+              <pre><code class="language-typescript"><span class="code-line-highlight" data-step="client-init"><span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ResilientKDSClient</span> {
+  <span class="token keyword">private</span> ws: <span class="token class-name">WebSocket</span> | <span class="token keyword">null</span> = <span class="token keyword">null</span>;
+  <span class="token keyword">private</span> url: <span class="token type">string</span>;
+  <span class="token keyword">private</span> stationId: <span class="token type">string</span>;
+  <span class="token keyword">private</span> lastMonotonicSeq = <span class="token number">0</span>;
+  <span class="token keyword">private</span> reconnectAttempts = <span class="token number">0</span>;
+  <span class="token keyword">private</span> heartbeatTimer?: <span class="token type">number</span>;
+  <span class="token keyword">private</span> pongTimeoutTimer?: <span class="token type">number</span>;
 
-  private readonly HEARTBEAT_INTERVAL_MS = 5000;
-  private readonly PONG_TIMEOUT_MS = 3000;
-  private readonly MAX_BACKOFF_MS = 15000;
+  <span class="token keyword">private</span> <span class="token keyword">readonly</span> HEARTBEAT_INTERVAL_MS = <span class="token number">5000</span>;
+  <span class="token keyword">private</span> <span class="token keyword">readonly</span> PONG_TIMEOUT_MS = <span class="token number">3000</span>;
+  <span class="token keyword">private</span> <span class="token keyword">readonly</span> MAX_BACKOFF_MS = <span class="token number">15000</span>;
 
-  constructor(url: string, stationId: string) {
-    this.url = url;
-    this.stationId = stationId;
+  <span class="token keyword">constructor</span>(url: <span class="token type">string</span>, stationId: <span class="token type">string</span>) {
+    <span class="token keyword">this</span>.url = url;
+    <span class="token keyword">this</span>.stationId = stationId;
   }</span>
 
-  public connect(): void {
-    this.cleanup();
-    this.ws = new WebSocket(`${this.url}?station=${this.stationId}`);
+  <span class="token keyword">public</span> <span class="token function">connect</span>(): <span class="token type">void</span> {
+    <span class="token keyword">this</span>.<span class="token function">cleanup</span>();
+    <span class="token keyword">this</span>.ws = <span class="token keyword">new</span> <span class="token class-name">WebSocket</span>(<span class="token string">`${this.url}?station=${this.stationId}`</span>);
 
-    this.ws.onopen = () => {
-      this.reconnectAttempts = 0;
-      this.startHeartbeatWatchdog();
-      this.reconcileMissedEvents();
+    <span class="token keyword">this</span>.ws.onopen = () =&gt; {
+      <span class="token keyword">this</span>.reconnectAttempts = <span class="token number">0</span>;
+      <span class="token keyword">this</span>.<span class="token function">startHeartbeatWatchdog</span>();
+      <span class="token keyword">this</span>.<span class="token function">reconcileMissedEvents</span>();
     };
 
-    this.ws.onmessage = (event) => {
-      const payload = JSON.parse(event.data);
-      if (payload.type === 'PONG') {
-        clearTimeout(this.pongTimeoutTimer);
-        return;
+    <span class="token keyword">this</span>.ws.onmessage = (event) =&gt; {
+      <span class="token keyword">const</span> payload = JSON.<span class="token function">parse</span>(event.data);
+      <span class="token keyword">if</span> (payload.type === <span class="token string">'PONG'</span>) {
+        <span class="token function">clearTimeout</span>(<span class="token keyword">this</span>.pongTimeoutTimer);
+        <span class="token keyword">return</span>;
       }
-      this.handleOrderEvent(payload);
+      <span class="token keyword">this</span>.<span class="token function">handleOrderEvent</span>(payload);
     };
 
-    this.ws.onclose = () => this.scheduleReconnection();
-    this.ws.onerror = () => this.ws?.close();
+    <span class="token keyword">this</span>.ws.onclose = () =&gt; <span class="token keyword">this</span>.<span class="token function">scheduleReconnection</span>();
+    <span class="token keyword">this</span>.ws.onerror = () =&gt; <span class="token keyword">this</span>.ws?.<span class="token function">close</span>();
   }
 
-<span class="code-line-highlight" data-step="client-heartbeat">  private startHeartbeatWatchdog(): void {
-    this.heartbeatTimer = window.setInterval(() => {
-      if (this.ws?.readyState === WebSocket.OPEN) {
-        this.ws.send(JSON.stringify({ type: 'PING', timestamp: Date.now() }));
-        this.pongTimeoutTimer = window.setTimeout(() => {
-          console.warn('[KDS] Heartbeat pong timeout! Socket mati suri. Memaksa close.');
-          this.ws?.close();
-        }, this.PONG_TIMEOUT_MS);
+<span class="code-line-highlight" data-step="client-heartbeat">  <span class="token keyword">private</span> <span class="token function">startHeartbeatWatchdog</span>(): <span class="token type">void</span> {
+    <span class="token keyword">this</span>.heartbeatTimer = window.<span class="token function">setInterval</span>(() =&gt; {
+      <span class="token keyword">if</span> (<span class="token keyword">this</span>.ws?.readyState === WebSocket.OPEN) {
+        <span class="token keyword">this</span>.ws.<span class="token function">send</span>(JSON.<span class="token function">stringify</span>({ type: <span class="token string">'PING'</span>, timestamp: Date.<span class="token function">now</span>() }));
+        <span class="token keyword">this</span>.pongTimeoutTimer = window.<span class="token function">setTimeout</span>(() =&gt; {
+          console.<span class="token function">warn</span>(<span class="token string">'[KDS] Heartbeat pong timeout! Socket mati suri. Memaksa close.'</span>);
+          <span class="token keyword">this</span>.ws?.<span class="token function">close</span>();
+        }, <span class="token keyword">this</span>.PONG_TIMEOUT_MS);
       }
-    }, this.HEARTBEAT_INTERVAL_MS);
+    }, <span class="token keyword">this</span>.HEARTBEAT_INTERVAL_MS);
   }</span>
 
-<span class="code-line-highlight" data-step="client-reconnect">  private scheduleReconnection(): void {
-    this.cleanup();
-    this.reconnectAttempts++;
+<span class="code-line-highlight" data-step="client-reconnect">  <span class="token keyword">private</span> <span class="token function">scheduleReconnection</span>(): <span class="token type">void</span> {
+    <span class="token keyword">this</span>.<span class="token function">cleanup</span>();
+    <span class="token keyword">this</span>.reconnectAttempts++;
     
-    // Exponential Backoff dengan Full Jitter
-    const baseBackoff = Math.min(this.MAX_BACKOFF_MS, 1000 * Math.pow(1.5, this.reconnectAttempts));
-    const jitteredDelay = Math.random() * baseBackoff;
+    <span class="token comment">// Exponential Backoff dengan Full Jitter</span>
+    <span class="token keyword">const</span> baseBackoff = Math.<span class="token function">min</span>(<span class="token keyword">this</span>.MAX_BACKOFF_MS, <span class="token number">1000</span> * Math.<span class="token function">pow</span>(<span class="token number">1.5</span>, <span class="token keyword">this</span>.reconnectAttempts));
+    <span class="token keyword">const</span> jitteredDelay = Math.<span class="token function">random</span>() * baseBackoff;
 
-    window.setTimeout(() => this.connect(), jitteredDelay);
+    window.<span class="token function">setTimeout</span>(() =&gt; <span class="token keyword">this</span>.<span class="token function">connect</span>(), jitteredDelay);
   }</span>
 
-<span class="code-line-highlight" data-step="client-seq">  private handleOrderEvent(event: { seq: number; type: string; ticket: any }): void {
-    // Verifikasi urutan monotonik: Deteksi duplikat atau paket yang hilang
-    if (event.seq <= this.lastMonotonicSeq) {
-      console.warn(`[KDS] Mengabaikan event duplikat atau usang: seq ${event.seq}`);
-      return;
+<span class="code-line-highlight" data-step="client-seq">  <span class="token keyword">private</span> <span class="token function">handleOrderEvent</span>(event: { seq: <span class="token type">number</span>; type: <span class="token type">string</span>; ticket: <span class="token type">any</span> }): <span class="token type">void</span> {
+    <span class="token comment">// Verifikasi urutan monotonik: Deteksi duplikat atau paket yang hilang</span>
+    <span class="token keyword">if</span> (event.seq &lt;= <span class="token keyword">this</span>.lastMonotonicSeq) {
+      console.<span class="token function">warn</span>(<span class="token string">`[KDS] Mengabaikan event duplikat atau usang: seq ${event.seq}`</span>);
+      <span class="token keyword">return</span>;
     }
     
-    if (event.seq > this.lastMonotonicSeq + 1) {
-      console.warn(`[KDS] Gap urutan terdeteksi (ekspektasi ${this.lastMonotonicSeq + 1}, terima ${event.seq}). Memicu resync snapshot.`);
-      this.reconcileMissedEvents();
+    <span class="token keyword">if</span> (event.seq &gt; <span class="token keyword">this</span>.lastMonotonicSeq + <span class="token number">1</span>) {
+      console.<span class="token function">warn</span>(<span class="token string">`[KDS] Gap urutan terdeteksi (ekspektasi ${this.lastMonotonicSeq + 1}, terima ${event.seq}). Memicu resync snapshot.`</span>);
+      <span class="token keyword">this</span>.<span class="token function">reconcileMissedEvents</span>();
     }
 
-    this.lastMonotonicSeq = event.seq;
-    // Dispatch ke reactive store lokal (misal: Zustand)
-    this.dispatchTicketToStore(event.ticket);
+    <span class="token keyword">this</span>.lastMonotonicSeq = event.seq;
+    <span class="token comment">// Dispatch ke reactive store lokal (misal: Zustand)</span>
+    <span class="token keyword">this</span>.<span class="token function">dispatchTicketToStore</span>(event.ticket);
   }</span>
 
-<span class="code-line-highlight" data-step="client-resync">  private async reconcileMissedEvents(): Promise<void> {
-    const res = await fetch(`/api/kds/snapshot?station=${this.stationId}&sinceSeq=${this.lastMonotonicSeq}`);
-    const data = await res.json();
-    this.hydrateLocalStore(data.activeTickets);
-    this.lastMonotonicSeq = data.latestSeq;
+<span class="code-line-highlight" data-step="client-resync">  <span class="token keyword">private</span> <span class="token keyword">async</span> <span class="token function">reconcileMissedEvents</span>(): <span class="token class-name">Promise</span>&lt;<span class="token type">void</span>&gt; {
+    <span class="token keyword">const</span> res = <span class="token keyword">await</span> <span class="token function">fetch</span>(<span class="token string">`/api/kds/snapshot?station=${this.stationId}&amp;sinceSeq=${this.lastMonotonicSeq}`</span>);
+    <span class="token keyword">const</span> data = <span class="token keyword">await</span> res.<span class="token function">json</span>();
+    <span class="token keyword">this</span>.<span class="token function">hydrateLocalStore</span>(data.activeTickets);
+    <span class="token keyword">this</span>.lastMonotonicSeq = data.latestSeq;
   }</span>
 
-  private cleanup(): void {
-    clearInterval(this.heartbeatTimer);
-    clearTimeout(this.pongTimeoutTimer);
-    if (this.ws) {
-      this.ws.onopen = null;
-      this.ws.onmessage = null;
-      this.ws.onclose = null;
-      this.ws.onerror = null;
-      this.ws.close();
-      this.ws = null;
+  <span class="token keyword">private</span> <span class="token function">cleanup</span>(): <span class="token type">void</span> {
+    <span class="token function">clearInterval</span>(<span class="token keyword">this</span>.heartbeatTimer);
+    <span class="token function">clearTimeout</span>(<span class="token keyword">this</span>.pongTimeoutTimer);
+    <span class="token keyword">if</span> (<span class="token keyword">this</span>.ws) {
+      <span class="token keyword">this</span>.ws.onopen = <span class="token keyword">null</span>;
+      <span class="token keyword">this</span>.ws.onmessage = <span class="token keyword">null</span>;
+      <span class="token keyword">this</span>.ws.onclose = <span class="token keyword">null</span>;
+      <span class="token keyword">this</span>.ws.onerror = <span class="token keyword">null</span>;
+      <span class="token keyword">this</span>.ws.<span class="token function">close</span>();
+      <span class="token keyword">this</span>.ws = <span class="token keyword">null</span>;
     }
   }
 }</code></pre>
@@ -327,61 +331,61 @@ stateDiagram-v2
           <div class="split-code-layout">
             <!-- Left Pane: Code with Horizontal Scroll -->
             <div class="split-code-pane">
-              <pre><code><span class="code-line-highlight" data-step="server-init">import { WebSocketServer, WebSocket } from 'ws';
-import { createClient } from 'redis';
+              <pre><code class="language-typescript"><span class="code-line-highlight" data-step="server-init"><span class="token keyword">import</span> { <span class="token class-name">WebSocketServer</span>, <span class="token class-name">WebSocket</span> } <span class="token keyword">from</span> <span class="token string">'ws'</span>;
+<span class="token keyword">import</span> { <span class="token function">createClient</span> } <span class="token keyword">from</span> <span class="token string">'redis'</span>;
 
-export class KDSWebSocketGateway {
-  private wss: WebSocketServer;
-  private redisSub = createClient({ url: process.env.REDIS_URL });
-  private stationClients = new Map&lt;string, Set&lt;WebSocket&gt;&gt;();
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">KDSWebSocketGateway</span> {
+  <span class="token keyword">private</span> wss: <span class="token class-name">WebSocketServer</span>;
+  <span class="token keyword">private</span> redisSub = <span class="token function">createClient</span>({ url: process.env.REDIS_URL });
+  <span class="token keyword">private</span> stationClients = <span class="token keyword">new</span> <span class="token class-name">Map</span>&lt;<span class="token type">string</span>, <span class="token class-name">Set</span>&lt;<span class="token class-name">WebSocket</span>&gt;&gt;();
 
-  constructor(port: number) {
-    this.wss = new WebSocketServer({ port });
-    this.init();
+  <span class="token keyword">constructor</span>(port: <span class="token type">number</span>) {
+    <span class="token keyword">this</span>.wss = <span class="token keyword">new</span> <span class="token class-name">WebSocketServer</span>({ port });
+    <span class="token keyword">this</span>.<span class="token function">init</span>();
   }</span>
 
-<span class="code-line-highlight" data-step="server-sub">  private async init(): Promise&lt;void&gt; {
-    await this.redisSub.connect();
+<span class="code-line-highlight" data-step="server-sub">  <span class="token keyword">private</span> <span class="token keyword">async</span> <span class="token function">init</span>(): <span class="token class-name">Promise</span>&lt;<span class="token type">void</span>&gt; {
+    <span class="token keyword">await</span> <span class="token keyword">this</span>.redisSub.<span class="token function">connect</span>();
 
-    // Subscribe ke pola channel multi-stasiun
-    await this.redisSub.pSubscribe('kds:station:*', (message, channel) => {
-      const stationId = channel.replace('kds:station:', '');
-      this.broadcastToStation(stationId, message);
+    <span class="token comment">// Subscribe ke pola channel multi-stasiun</span>
+    <span class="token keyword">await</span> <span class="token keyword">this</span>.redisSub.<span class="token function">pSubscribe</span>(<span class="token string">'kds:station:*'</span>, (message, channel) =&gt; {
+      <span class="token keyword">const</span> stationId = channel.<span class="token function">replace</span>(<span class="token string">'kds:station:'</span>, <span class="token string">''</span>);
+      <span class="token keyword">this</span>.<span class="token function">broadcastToStation</span>(stationId, message);
     });</span>
 
-<span class="code-line-highlight" data-step="server-conn">    this.wss.on('connection', (ws: WebSocket, req) => {
-      const url = new URL(req.url || '', 'http://localhost');
-      const station = url.searchParams.get('station') || 'DEFAULT';
+<span class="code-line-highlight" data-step="server-conn">    <span class="token keyword">this</span>.wss.<span class="token function">on</span>(<span class="token string">'connection'</span>, (ws: <span class="token class-name">WebSocket</span>, req) =&gt; {
+      <span class="token keyword">const</span> url = <span class="token keyword">new</span> <span class="token class-name">URL</span>(req.url || <span class="token string">''</span>, <span class="token string">'http://localhost'</span>);
+      <span class="token keyword">const</span> station = url.searchParams.<span class="token function">get</span>(<span class="token string">'station'</span>) || <span class="token string">'DEFAULT'</span>;
 
-      if (!this.stationClients.has(station)) {
-        this.stationClients.set(station, new Set());
+      <span class="token keyword">if</span> (!<span class="token keyword">this</span>.stationClients.<span class="token function">has</span>(station)) {
+        <span class="token keyword">this</span>.stationClients.<span class="token function">set</span>(station, <span class="token keyword">new</span> <span class="token class-name">Set</span>());
       }
-      this.stationClients.get(station)!.add(ws);</span>
+      <span class="token keyword">this</span>.stationClients.<span class="token function">get</span>(station)!.<span class="token function">add</span>(ws);</span>
 
-<span class="code-line-highlight" data-step="server-ping">      ws.on('message', (raw) => {
-        try {
-          const msg = JSON.parse(raw.toString());
-          if (msg.type === 'PING') {
-            ws.send(JSON.stringify({ type: 'PONG', timestamp: Date.now() }));
+<span class="code-line-highlight" data-step="server-ping">      ws.<span class="token function">on</span>(<span class="token string">'message'</span>, (raw) =&gt; {
+        <span class="token keyword">try</span> {
+          <span class="token keyword">const</span> msg = JSON.<span class="token function">parse</span>(raw.<span class="token function">toString</span>());
+          <span class="token keyword">if</span> (msg.type === <span class="token string">'PING'</span>) {
+            ws.<span class="token function">send</span>(JSON.<span class="token function">stringify</span>({ type: <span class="token string">'PONG'</span>, timestamp: Date.<span class="token function">now</span>() }));
           }
-        } catch (err) {
-          console.error('[Gateway] Format pesan tidak valid', err);
+        } <span class="token keyword">catch</span> (err) {
+          console.<span class="token function">error</span>(<span class="token string">'[Gateway] Format pesan tidak valid'</span>, err);
         }
       });</span>
 
-<span class="code-line-highlight" data-step="server-clean">      ws.on('close', () => {
-        this.stationClients.get(station)?.delete(ws);
+<span class="code-line-highlight" data-step="server-clean">      ws.<span class="token function">on</span>(<span class="token string">'close'</span>, () =&gt; {
+        <span class="token keyword">this</span>.stationClients.<span class="token function">get</span>(station)?.<span class="token function">delete</span>(ws);
       });
     });
   }</span>
 
-<span class="code-line-highlight" data-step="server-broadcast">  private broadcastToStation(stationId: string, message: string): void {
-    const clients = this.stationClients.get(stationId);
-    if (!clients || clients.size === 0) return;
+<span class="code-line-highlight" data-step="server-broadcast">  <span class="token keyword">private</span> <span class="token function">broadcastToStation</span>(stationId: <span class="token type">string</span>, message: <span class="token type">string</span>): <span class="token type">void</span> {
+    <span class="token keyword">const</span> clients = <span class="token keyword">this</span>.stationClients.<span class="token function">get</span>(stationId);
+    <span class="token keyword">if</span> (!clients || clients.size === <span class="token number">0</span>) <span class="token keyword">return</span>;
 
-    for (const ws of clients) {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(message);
+    <span class="token keyword">for</span> (<span class="token keyword">const</span> ws <span class="token keyword">of</span> clients) {
+      <span class="token keyword">if</span> (ws.readyState === WebSocket.OPEN) {
+        ws.<span class="token function">send</span>(message);
       }
     }
   }</span>

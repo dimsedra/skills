@@ -24,6 +24,19 @@
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 10px;
+
+  /* Syntax Highlighting Tokens (Dark Mode) */
+  --token-keyword: #ff7b72;
+  --token-function: #d2a8ff;
+  --token-type: #ffa657;
+  --token-string: #a5d6ff;
+  --token-number: #79c0ff;
+  --token-comment: #8b949e;
+  --token-operator: #ff7b72;
+  --token-punctuation: #c9d1d9;
+  --token-property: #79c0ff;
+  --token-boolean: #ff7b72;
+  --token-builtin: #ffa657;
 }
 
 [data-theme="light"] {
@@ -49,6 +62,19 @@
   --diff-add-text: #1a7f37;
   --diff-del-bg: #ffebe9;
   --diff-del-text: #cf222e;
+
+  /* Syntax Highlighting Tokens (Light Mode) */
+  --token-keyword: #cf222e;
+  --token-function: #8250df;
+  --token-type: #953800;
+  --token-string: #0a3069;
+  --token-number: #0550ae;
+  --token-comment: #6e7781;
+  --token-operator: #cf222e;
+  --token-punctuation: #24292f;
+  --token-property: #0550ae;
+  --token-boolean: #cf222e;
+  --token-builtin: #953800;
 }
 
 * {
@@ -356,6 +382,47 @@ pre code {
   padding: 0.1rem 0.5rem;
   margin: 0 -0.5rem;
   border-left: 2px solid var(--diff-del-text);
+}
+
+/* Syntax Highlighting Token Styles (IDE-Grade Color Palette) */
+.token.comment, .token.prolog, .token.doctype, .token.cdata {
+  color: var(--token-comment) !important;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: var(--token-punctuation) !important;
+}
+
+.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol, .token.deleted {
+  color: var(--token-number) !important;
+}
+
+.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted {
+  color: var(--token-string) !important;
+}
+
+.token.operator, .token.entity, .token.url {
+  color: var(--token-operator) !important;
+}
+
+.token.atrule, .token.attr-value, .token.keyword {
+  color: var(--token-keyword) !important;
+  font-weight: 600;
+}
+
+.token.function {
+  color: var(--token-function) !important;
+  font-weight: 500;
+}
+
+.token.class-name, .token.type {
+  color: var(--token-type) !important;
+  font-weight: 600;
+}
+
+.token.regex, .token.important, .token.variable {
+  color: var(--token-builtin) !important;
 }
 
 /* Diagrams & Mermaid High Contrast Override */
