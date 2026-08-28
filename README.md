@@ -16,6 +16,7 @@ Or install a specific skill:
 
 ```bash
 npx skills add dimsedra/skills --skill html-presentation
+npx skills add dimsedra/skills --skill issue-it
 npx skills add dimsedra/skills --skill report-in-html
 npx skills add dimsedra/skills --skill walkthrough
 ```
@@ -24,6 +25,9 @@ npx skills add dimsedra/skills --skill walkthrough
 
 ### `html-presentation`
 Builds modular, responsive HTML presentation decks with full-bleed viewport fitting (16:9), keyboard navigation, background live preview server, and high-fidelity PDF print export.
+
+### `issue-it`
+Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
 
 ### `report-in-html`
 Generates standalone, interactive HTML reports with light/dark theme toggle, high-contrast Mermaid diagrams, color-coded diff views, and terminal execution logs.
@@ -42,6 +46,10 @@ skills/
 │   ├── EXTENSIONS.md
 │   ├── SCRIPTS.md
 │   └── SLIDE-FORMAT.md
+├── issue-it/
+│   ├── SKILL.md
+│   ├── ISSUE-FORMAT.md
+│   └── README.md
 ├── report-in-html/
 │   ├── SKILL.md
 │   ├── COMPONENTS.md
