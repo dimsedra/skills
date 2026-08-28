@@ -44,8 +44,8 @@
   --bg-secondary: #fbfbfb;
   --bg-tertiary: #f4f4f5;
   --bg-elevated: #e4e4e7;
-  --border-color: #e4e4e7;
-  --border-subtle: #f0f0f2;
+  --border-color: #d4d4d8;
+  --border-subtle: #e4e4e7;
   --text-primary: #09090b;
   --text-secondary: #52525b;
   --text-muted: #a1a1aa;
@@ -600,6 +600,93 @@ pre code {
   fill: var(--text-primary) !important;
   stroke: none !important;
   color: var(--text-primary) !important;
+}
+
+/* Universal Mermaid State Diagram & Flowchart High-Contrast Theming */
+.diagram-container svg .node rect,
+.diagram-container svg .node circle,
+.diagram-container svg .node ellipse,
+.diagram-container svg .node polygon,
+.diagram-container svg .node path,
+.diagram-container svg .statediagram-state rect,
+.diagram-container svg .stateGroup rect,
+.diagram-container svg .state-plain rect {
+  fill: var(--bg-tertiary) !important;
+  stroke: var(--border-color) !important;
+  stroke-width: 1.5px !important;
+}
+
+/* State Diagram Cluster / Composite Box */
+.diagram-container svg .statediagram-cluster rect,
+.diagram-container svg .cluster rect {
+  fill: var(--bg-secondary) !important;
+  stroke: var(--border-color) !important;
+  stroke-width: 1.5px !important;
+}
+
+.diagram-container svg .statediagram-cluster text,
+.diagram-container svg .cluster text {
+  fill: var(--text-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* State Start & End Nodes */
+.diagram-container svg .start-state,
+.diagram-container svg .state-start circle,
+.diagram-container svg circle.state-start,
+.diagram-container svg .node.state-start circle {
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
+}
+
+.diagram-container svg .end-state,
+.diagram-container svg .state-end circle,
+.diagram-container svg circle.state-end,
+.diagram-container svg .node.state-end circle {
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
+}
+
+/* Edge Labels / Transition Text Boxes (e.g. Backoff + Jitter, Trigger Connect) */
+.diagram-container svg .edgeLabel,
+.diagram-container svg .edgeLabel rect,
+.diagram-container svg .label-container {
+  background-color: var(--bg-primary) !important;
+  fill: var(--bg-primary) !important;
+}
+
+.diagram-container svg .edgeLabel text,
+.diagram-container svg .edgeLabel tspan,
+.diagram-container svg .edgeLabel span,
+.diagram-container svg .edgeLabel p,
+.diagram-container svg .edgeLabel div {
+  color: var(--text-primary) !important;
+  fill: var(--text-primary) !important;
+  background-color: transparent !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+}
+
+/* Transition Lines & Arrowheads */
+.diagram-container svg .transition,
+.diagram-container svg .edgePath path,
+.diagram-container svg .edgePaths path,
+.diagram-container svg path.edge,
+.diagram-container svg path.transition {
+  stroke: var(--text-secondary) !important;
+  stroke-width: 1.5px !important;
+}
+
+.diagram-container svg marker path,
+.diagram-container svg #statediagram-barbEnd path,
+.diagram-container svg #statediagram-pointEnd path {
+  fill: var(--text-secondary) !important;
+  stroke: var(--text-secondary) !important;
+}
+
+/* Divider inside State Boxes */
+.diagram-container svg .divider {
+  stroke: var(--border-color) !important;
 }
 
 /* Terminal & Verification Logs */
