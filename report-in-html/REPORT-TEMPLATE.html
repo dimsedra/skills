@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{REPORT_TITLE}}</title>
+  <link rel="stylesheet" href="report.css">
+  <!-- Mermaid.js for architecture diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#121215',
+        primaryColor: '#18181b',
+        primaryTextColor: '#fafafa',
+        primaryBorderColor: '#3f3f46',
+        lineColor: '#d4d4d8',
+        secondaryColor: '#18181b',
+        tertiaryColor: '#121215',
+        actorTextColor: '#ffffff',
+        actorBkg: '#18181b',
+        actorBorder: '#52525b',
+        actorLineColor: '#71717a',
+        signalColor: '#f4f4f5',
+        signalTextColor: '#fafafa',
+        labelBoxBkgColor: '#18181b',
+        labelBoxBorderColor: '#52525b',
+        labelTextColor: '#fafafa',
+        loopTextColor: '#fafafa',
+        noteTextColor: '#fafafa',
+        noteBkgColor: '#18181b',
+        noteBorderColor: '#3f3f46'
+      },
+      securityLevel: 'loose',
+      fontFamily: 'system-ui, -apple-system, sans-serif'
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    
+    <header>
+      <div class="header-top">
+        <div class="badge-group">
+          {{BADGES_HTML}}
+        </div>
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">Light</button>
+      </div>
+      <h1>{{REPORT_TITLE}}</h1>
+      <div class="meta-bar">
+        <span class="meta-item"><strong>Date:</strong> {{DATE}}</span>
+        <span class="meta-item"><strong>Reporter:</strong> {{REPORTER_NAME}}</span>
+        {{EXTRA_META_ITEMS}}
+      </div>
+    </header>
+
+    <main>
+      {{SECTIONS_BODY_HTML}}
+    </main>
+
+    <footer>
+      <span>{{FOOTER_LEFT_TEXT}}</span>
+      <span>{{FOOTER_RIGHT_TEXT}}</span>
+    </footer>
+
+  </div>
+
+  <script>
+    function initTheme() {
+      const savedTheme = localStorage.getItem('walkthrough-theme') || localStorage.getItem('report-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+      updateToggleText(theme);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('report-theme', newTheme);
+      localStorage.setItem('walkthrough-theme', newTheme);
+      updateToggleText(newTheme);
+    }
+
+    function updateToggleText(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.textContent = theme === 'dark' ? 'Light' : 'Dark';
+      }
+    }
+
+    initTheme();
+  </script>
+</body>
+</html>
