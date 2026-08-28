@@ -39,13 +39,14 @@ Transform any codebase module, subsystem, design pattern, or external software e
 7. **Auto-Launch Local Live Server**: Automatically start a lightweight background HTTP server and deliver an active `http://localhost:<port>/<filename>.html` link. Never provide raw `file:///` URLs.
 8. **In-Chat Socratic Dialogue (Post-Delivery Only)**: Keep the HTML file dedicated purely to documentation. After delivering the live URL, offer an optional in-chat Socratic dialogue with 2–3 thought-provoking scenario/what-if questions to test mental models.
 9. **Conversational Language Alignment**: The language used in the HTML lesson (headings, prose, annotations, analogies, and trade-offs) must automatically match the primary conversational language used by the user (e.g. Bahasa Indonesia if the user communicates in Indonesian, English if in English). Technical terms, code symbols, and syntax remain in standard technical form.
+10. **Continuous Pedagogical Preference Memory**: Before generating a lesson, inspect the workspace root for `.reporting-preferences.md`. If found, apply all learned pedagogical preferences (analogy styles, code focus areas, diagram types). Never create a blank preference file beforehand; only create or update `.reporting-preferences.md` when the user provides feedback on explanation delivery or learning style.
 
 ---
 
 ## Execution Lifecycle (Phase Gates)
 
 ```
-[/master-it Invoked] ──► [Gate 1: Scope & Mode Resolution]
+[/master-it Invoked] ──► [Gate 1: Preference Memory & Scope Resolution]
                                     │
                                     ▼
                          [Gate 2: Grounded Research & External Citations]
@@ -57,10 +58,11 @@ Transform any codebase module, subsystem, design pattern, or external software e
                          [Gate 4: Live Server Delivery & In-Chat Socratic Dialogue]
 ```
 
-### Gate 1: Scope & Mode Resolution
-Identify the learning mode:
-- **Mode A: Pure External Concept** (e.g., *Raft Consensus Algorithm*, *Database WAL*, *OAuth 2.1 PKCE Flow*).
-- **Mode B: Internal / Hybrid Codebase Deep-Dive** (e.g., *Auth Session Pipeline in `src/auth/`*, *Real-time WebSocket Handler*).
+### Gate 1: Preference Memory & Scope Resolution
+1. **Check Preference Memory:** Inspect `./.reporting-preferences.md` in workspace root. If present, load preferred analogy formats, diagram types, and focus areas. If absent, continue with default senior pedagogical rules (do NOT create speculative files).
+2. **Identify the learning mode:**
+   - **Mode A: Pure External Concept** (e.g., *Raft Consensus Algorithm*, *Database WAL*, *OAuth 2.1 PKCE Flow*).
+   - **Mode B: Internal / Hybrid Codebase Deep-Dive** (e.g., *Auth Session Pipeline in `src/auth/`*, *Real-time WebSocket Handler*).
 
 Identify the target components, interfaces, and primary mental models to teach.
 
@@ -98,6 +100,7 @@ Generate a standalone HTML file using the styling from `report-in-html` and stru
 | **Syntax-Level Superficiality** | Explaining *what* syntax does without *why* or *systems impact*. | Adopt Senior POV: analyze lifecycle, memory, concurrency, trade-offs, and failure modes. |
 | **Putting Quiz in HTML** | Hardcoding questionnaire into the HTML report. | Keep HTML as clean durable documentation; deliver Socratic inquiry interactively in chat. |
 | **Raw File Link Delivery** | Providing `file:///` URLs. | Auto-launch local HTTP server and share `http://localhost:<port>/<filename>.html`. |
+| **Ignoring User Feedback** | Repeating an explanation style the user disliked in a prior session. | Check `.reporting-preferences.md` before generating lessons, and record user feedback to this file when received. |
 
 ---
 

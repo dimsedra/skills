@@ -25,29 +25,31 @@ Generate a structured post-implementation walkthrough report that transparently 
 7. **Chat Bloat Prevention**: Write the HTML file directly to disk rather than dumping large HTML documents into the chat transcript.
 8. **Diligent Reporter Posture**: Act as a diligent engineering partner reporting to the user. Explain *why* choices were made, *what* files changed, *how* the code functions, and *how* it was verified.
 9. **Conversational Language Alignment**: Write all explanations, analysis, titles, and annotations in the active language of the conversation with the user (e.g. Indonesian if the conversation is conducted in Indonesian). Keep code identifiers and syntax in their original language.
+10. **Continuous Preference Memory Hook**: Prior to composing the walkthrough, check if `.reporting-preferences.md` exists in the workspace root. If found, strictly adhere to the recorded preferences (e.g. test evidence placement, diff granularity). If absent, use standard defaults—do not create empty files speculatively. If the user provides feedback on walkthrough delivery, record it into `.reporting-preferences.md`.
 
 ---
 
 ## Workflow
 
 ```
-[/walkthrough Invoked] ──► [Inspect Git Tree & Changes] ──► [Classify Scope (Small / Med / Large)]
-                                                                      │
-                                                                      ▼
-                                                          [Gather Real Test Evidence]
-                                                                      │
-                                                                      ▼
-                                                      [Compose Tailored HTML via report-in-html]
-                                                                      │
-                                                                      ▼
-                                                      [Auto-Launch Background Live Server]
-                                                                      │
-                                                                      ▼
-                                                      [Deliver Live Localhost Link]
+[/walkthrough Invoked] ──► [Check Preferences & Inspect Changes] ──► [Classify Scope (Small / Med / Large)]
+                                                                               │
+                                                                               ▼
+                                                                   [Gather Real Test Evidence]
+                                                                               │
+                                                                               ▼
+                                                               [Compose Tailored HTML via report-in-html]
+                                                                               │
+                                                                               ▼
+                                                               [Auto-Launch Background Live Server]
+                                                                               │
+                                                                               ▼
+                                                               [Deliver Live Localhost Link]
 ```
 
-### Step 1: Inspect Changes & Classify Scope
-Run `git status` or inspect recent file modifications to determine scope:
+### Step 1: Check Preferences & Inspect Changes
+1. **Check Preference Memory:** Inspect `./.reporting-preferences.md` in workspace root. If present, load user preferences for walkthrough formatting and evidence placement.
+2. **Inspect Changes & Classify Scope:** Run `git status` or inspect recent file modifications to determine scope:
 - **Small Scope**: 1–2 files modified, minimal logic changes.
 - **Medium Scope**: 3–8 files modified, new services/components added.
 - **Large Scope**: 8+ files modified, breaking changes, or cross-cutting subsystems.
