@@ -172,7 +172,8 @@ header {
 }
 
 /* Theme Toggle Button */
-.theme-toggle {
+.theme-toggle,
+#theme-toggle {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-secondary);
@@ -180,14 +181,18 @@ header {
   border-radius: var(--radius-md);
   font-size: 0.8rem;
   font-weight: 500;
+  font-family: inherit;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   transition: all 0.15s ease;
+  outline: none;
 }
 
-.theme-toggle:hover {
+.theme-toggle:hover,
+#theme-toggle:hover {
+  background: var(--bg-tertiary);
   color: var(--text-primary);
   border-color: var(--text-muted);
 }

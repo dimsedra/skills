@@ -53,7 +53,7 @@
           <span class="badge badge-pass">Senior Engineering Lens</span>
           <span class="badge">Domain: Sistem Terdistribusi Real-Time</span>
         </div>
-        <button id="theme-toggle" class="badge" onclick="toggleTheme()">🌓 Tema</button>
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
       </div>
       <h1>Membedah Arsitektur WebSocket pada Kitchen Display System (KDS)</h1>
       <div class="meta-bar">
@@ -512,9 +512,13 @@ stateDiagram-v2
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerHTML = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
     }
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
 
     // Interactive Hover Synchronization between Annotations and Code Pane
     document.querySelectorAll('.annotation-step').forEach(step => {

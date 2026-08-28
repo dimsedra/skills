@@ -29,7 +29,7 @@
           <span class="badge badge-pass">Tests: 18 Passed</span>
           <span class="badge badge-verified">Status: Verified</span>
         </div>
-        <button id="theme-toggle" onclick="toggleTheme()">Light</button>
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
       </div>
       <h1>Refactor: Distributed Session Management via Redis & HTTP-Only Cookies</h1>
       <div class="meta-bar">
@@ -315,12 +315,12 @@ Ran all test suites matching /auth/.
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('walkthrough-theme', newTheme);
       const btn = document.getElementById('theme-toggle');
-      if (btn) btn.textContent = newTheme === 'dark' ? 'Light' : 'Dark';
+      if (btn) btn.innerHTML = newTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
     }
     const savedTheme = localStorage.getItem('walkthrough-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
     const btn = document.getElementById('theme-toggle');
-    if (btn) btn.textContent = savedTheme === 'dark' ? 'Light' : 'Dark';
+    if (btn) btn.innerHTML = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
 
     // Interactive Hover Synchronization between Annotations and Code Pane
     document.querySelectorAll('.annotation-step').forEach(step => {
