@@ -18,6 +18,7 @@ Or install a specific skill:
 npx skills add dimsedra/skills --skill html-presentation
 npx skills add dimsedra/skills --skill issue-it
 npx skills add dimsedra/skills --skill master-it
+npx skills add dimsedra/skills --skill pr-gatekeeper
 npx skills add dimsedra/skills --skill report-in-html
 npx skills add dimsedra/skills --skill walkthrough
 ```
@@ -31,7 +32,10 @@ Builds modular, responsive HTML presentation decks with full-bleed viewport fitt
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
 
 ### `master-it`
-Transforms codebase modules, subsystems, and external CS topics into deep, durable, senior-level interactive HTML lessons backed by grounded research, annotated code mechanics, and post-delivery Socratic dialogue.
+Transforms codebase modules, subsystems, and universal CS topics into structured, durable, senior-level interactive HTML courses backed by 4-tier pedagogical progression and bite-sized code mechanics.
+
+### `pr-gatekeeper`
+Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral subagents with battle-tested fixes, CodeRabbit/Copilot reviewer stance, and explicit mergeability verdicts.
 
 ### `report-in-html`
 Generates standalone, interactive HTML reports with light/dark theme toggle, high-contrast Mermaid diagrams, color-coded diff views, and terminal execution logs.
@@ -57,6 +61,9 @@ skills/
 ├── master-it/
 │   ├── SKILL.md
 │   ├── LESSON-FORMAT.md
+│   └── README.md
+├── pr-gatekeeper/
+│   ├── SKILL.md
 │   └── README.md
 ├── report-in-html/
 │   ├── SKILL.md
