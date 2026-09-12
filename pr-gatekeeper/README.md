@@ -12,6 +12,7 @@ npx skills add dimsedra/skills --skill pr-gatekeeper
 
 Adds strict production-grade constraints to standard code reviews:
 - **Third-Party Neutrality**: Enforces review via fresh subagent to eliminate confirmation bias.
+- **Grounded Context Exploration**: Never reviews in a vacuum; inspects caller files, PR descriptions/comments, and existing repo conventions before declaring blockers.
 - **Flawless Mergeability**: Audits diffs for production readiness and regression safety.
 - **Happy-Path Hunting**: Assumes early implementations predominantly cover only happy paths, actively hunting for unhandled edge cases, boundary failures, and timeouts.
 - **Evidence-Backed Bug Claims**: Banned from making speculative "ghost bug" claims. Every reported defect must include exact code locations and concrete reproducible trigger scenarios.
