@@ -21,17 +21,25 @@ While `/code-review` handles the standard review mechanics (diff inspection, pla
 3. **Assume Happy-Path Bias (Unhappy-Path Hunting)**:
    - Inbound PRs (especially first-pass AI implementations) predominantly solve only the happy path.
    - Actively hunt for missing error handling, boundary extremes, network failures, timeouts, null/empty payloads, race conditions, and illegal state transitions.
-4. **Clean, Simple & Battle-Tested Solutions (No Mandatory LOC Expansion)**:
+4. **Evidence-Backed Bug Claims (No Speculative Ghost Bugs)**:
+   - Subagents must trace the actual code execution path before claiming a defect. Vague hand-waving (e.g. "there might be a race condition here") is strictly forbidden.
+   - Every claimed bug MUST state:
+     - Exact file and line/symbol reference (`path/to/file.ts:line` or `Class.method()`).
+     - Concrete, step-by-step reproducible trigger scenario (e.g. "When request A arrives at T=0 and request B arrives at T=5ms before the DB lock acquires, state diverges because...").
+     - Concrete operational impact (crash, data loss, deadlock, unauthorized access).
+5. **Clean, Simple & Battle-Tested Solutions (No Mandatory LOC Expansion)**:
    - A solution does not inherently mean adding lines of code (LOC). Depending on the state of the implementation, the optimal remedy is often deleting redundant logic, collapsing over-engineered abstractions, or leveraging standard language primitives.
    - Every proposed fix must be dependable, idiomatic, clean, simple, and maintainable—without convoluted spaghetti, bloated wrappers, or temporary band-aids.
    - Strictly ban speculative hacks, experimental language tricks, fragile monkey-patches, or unvetted libraries.
-5. **Multi-Pass Convergence Loop**:
+6. **Calibrated 3-Tier Merge Verdict**:
+   - Conclude every review with an unambiguous assessment calibrated strictly as follows:
+     - `BLOCKED`: Must fix before merge.
+       - Examples: Data loss/corruption, check-then-act race conditions, unhandled exceptions crashing workers, missing server-side auth checks, breaking changes to existing contracts/schemas.
+     - `NEEDS POLISH`: Non-blocking advisory. Mergeable at maintainer's discretion.
+       - Examples: Suboptimal memory filtering instead of SQL `where`, redundant helper abstractions, minor naming ambiguity, non-critical tech debt, missing documentation comments.
+     - `CLEAN & MERGEABLE`: Flawless production readiness. All error boundaries guarded, battle-tested solutions verified, zero blockers. Ready to merge immediately.
+7. **Multi-Pass Convergence Loop**:
    - Designed to be invoked iteratively across multiple passes (Pass 1, Pass 2, etc.) as the author pushes fixes, until the subagent explicitly certifies the PR as clean.
-6. **Definitive 3-Tier Merge Verdict**:
-   - Conclude every review with an explicit status:
-     - `BLOCKED`: Critical bugs, regressions, security risks, or unhandled errors. Must fix before merge.
-     - `NEEDS POLISH`: Non-blocking tech debt, minor optimizations, or style suggestions.
-     - `CLEAN & MERGEABLE`: Flawless production readiness. Ready to merge immediately.
 
 ---
 
@@ -44,15 +52,19 @@ REVIEW DIRECTIVE (PR GATEKEEPER):
 1. Role: External, neutral third-party auditor (CodeRabbit / Copilot Reviewer stance). You have zero attachment to this implementation.
 2. Target: Inbound PR/MR. Audit for flawless mergeability and production-readiness.
 3. Happy-Path Assumption: Assume the diff predominantly covers only the happy path. Actively hunt for unhandled failure modes, missing edge cases, timeouts, and boundary errors.
-4. Solutions Rule: Any proposed remedy must be clean, simple, maintainable, and battle-tested. Fixes do not have to add code; deleting over-engineering or simplifying logic is often superior. No spaghetti, bloated wrappers, or experimental hacks.
-5. Verdict: End with an unambiguous assessment: [BLOCKED | NEEDS POLISH | CLEAN & MERGEABLE].
+4. Evidence Rule: Trace the code execution path. Never claim hypothetical 'ghost bugs'. Every reported defect MUST specify the exact file/line and a concrete reproducible trigger scenario showing how the failure occurs.
+5. Solutions Rule: Any proposed remedy must be clean, simple, maintainable, and battle-tested. Fixes do not have to add code; deleting over-engineering or simplifying logic is often superior. No spaghetti, bloated wrappers, or experimental hacks.
+6. Calibrated Verdict: End with an unambiguous status strictly calibrated to impact:
+   - BLOCKED: Critical defects, race conditions, crashes, data loss, security gaps, contract regressions.
+   - NEEDS POLISH: Non-blocking performance suboptimality, minor debt, style/naming improvements.
+   - CLEAN & MERGEABLE: Flawless production readiness.
 ```
 
 ---
 
 ## Multi-Pass Workflow
 
-1. **Pass 1 (Initial Review)**: Subagent audits diff and returns findings with a verdict.
+1. **Pass 1 (Initial Review)**: Subagent traces paths, audits diff, and returns evidence-backed findings with a calibrated verdict.
 2. **Action**: If `BLOCKED`, the author implements the proposed reliable fixes.
 3. **Pass 2+ (Re-Review)**: Re-invoke the gatekeeper on the updated diff to verify that blockers are eliminated without introducing secondary regressions.
 4. **Merge**: Once the subagent returns `CLEAN & MERGEABLE`, the PR is certified ready to merge.

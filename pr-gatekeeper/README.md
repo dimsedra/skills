@@ -14,9 +14,10 @@ Adds strict production-grade constraints to standard code reviews:
 - **Third-Party Neutrality**: Enforces review via fresh subagent to eliminate confirmation bias.
 - **Flawless Mergeability**: Audits diffs for production readiness and regression safety.
 - **Happy-Path Hunting**: Assumes early implementations predominantly cover only happy paths, actively hunting for unhandled edge cases, boundary failures, and timeouts.
+- **Evidence-Backed Bug Claims**: Banned from making speculative "ghost bug" claims. Every reported defect must include exact code locations and concrete reproducible trigger scenarios.
 - **Clean & Battle-Tested Solutions**: Demands clean, simple, maintainable, and reliable fixes—recognizing that the best solution often removes over-engineering rather than adding LOC.
-- **Multi-Pass Loop**: Built for iterative review rounds until clean.
-- **Clear Verdict**: Concludes with `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
+- **Calibrated Verdicts**: Clear criteria separating `BLOCKED` (crashes, data loss, security, regressions) from `NEEDS POLISH` (non-blocking debt, minor optimizations).
+- **Multi-Pass Loop**: Built for iterative review rounds until certified clean.
 
 ## Usage
 
