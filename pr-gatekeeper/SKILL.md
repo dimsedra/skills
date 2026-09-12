@@ -21,9 +21,9 @@ While `/code-review` handles the standard review mechanics (diff inspection, pla
 3. **Assume Happy-Path Bias (Unhappy-Path Hunting)**:
    - Inbound PRs (especially first-pass AI implementations) predominantly solve only the happy path.
    - Actively hunt for missing error handling, boundary extremes, network failures, timeouts, null/empty payloads, race conditions, and illegal state transitions.
-4. **Clean & Battle-Tested Solutions Only**:
-   - Every proposed fix must be dependable, idiomatic, clean, and industry-proven.
-   - Code must be simple, readable, and well-structured—not just mechanically working, but maintainable without convoluted spaghetti, messy nesting, or bloated workarounds.
+4. **Clean, Simple & Battle-Tested Solutions (No Mandatory LOC Expansion)**:
+   - A solution does not inherently mean adding lines of code (LOC). Depending on the state of the implementation, the optimal remedy is often deleting redundant logic, collapsing over-engineered abstractions, or leveraging standard language primitives.
+   - Every proposed fix must be dependable, idiomatic, clean, simple, and maintainable—without convoluted spaghetti, bloated wrappers, or temporary band-aids.
    - Strictly ban speculative hacks, experimental language tricks, fragile monkey-patches, or unvetted libraries.
 5. **Multi-Pass Convergence Loop**:
    - Designed to be invoked iteratively across multiple passes (Pass 1, Pass 2, etc.) as the author pushes fixes, until the subagent explicitly certifies the PR as clean.
@@ -44,7 +44,7 @@ REVIEW DIRECTIVE (PR GATEKEEPER):
 1. Role: External, neutral third-party auditor (CodeRabbit / Copilot Reviewer stance). You have zero attachment to this implementation.
 2. Target: Inbound PR/MR. Audit for flawless mergeability and production-readiness.
 3. Happy-Path Assumption: Assume the diff predominantly covers only the happy path. Actively hunt for unhandled failure modes, missing edge cases, timeouts, and boundary errors.
-4. Solutions Rule: Any proposed remedy must be clean, idiomatic, and battle-tested. Provide clean, maintainable code without convoluted spaghetti, messy nesting, or experimental hacks.
+4. Solutions Rule: Any proposed remedy must be clean, simple, maintainable, and battle-tested. Fixes do not have to add code; deleting over-engineering or simplifying logic is often superior. No spaghetti, bloated wrappers, or experimental hacks.
 5. Verdict: End with an unambiguous assessment: [BLOCKED | NEEDS POLISH | CLEAN & MERGEABLE].
 ```
 
