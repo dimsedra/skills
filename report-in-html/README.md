@@ -15,8 +15,9 @@ npx skills add dimsedra/skills --skill report-in-html
 - **Pure Semantic HTML**: All styles centralized in `report.css`; no inline `style="..."` attributes or unparsed Markdown syntax.
 - **Theme Persistence**: Light and dark mode support with `localStorage` memory.
 - **High-Contrast Diagramming**: Pre-configured Mermaid.js styling that stays readable in both themes.
+- **Dedicated Local Directory (.report/)**: Standardizes output placement into `.report/<generator>/<topic>/index.html` and ensures `.report/` is excluded via `.git/info/exclude` to keep reports strictly local without modifying project `.gitignore`.
 - **Visual Evidence & Logs**: Collapsible diff blocks and dedicated terminal evidence containers.
-- **Chat Bloat Prevention**: Writes directly to disk and delivers a live `http://localhost:<port>/<filename>.html` link.
+- **Chat Bloat Prevention**: Writes directly to disk and delivers a live `http://localhost:<port>/index.html` link.
 
 ## Files Reference
 

@@ -17,8 +17,9 @@ npx skills add dimsedra/skills --skill walkthrough
   - **Medium (3–8 files)**: Contextual diagram if helpful, component breakdown, annotated key diffs, test logs.
   - **Large (8+ files)**: Macro architecture, module deep dives, annotated diff highlights, edge cases, benchmarks, rollback plan.
 - **Evidence-First Verification**: Enforces actual test execution and embeds terminal output directly into the report.
+- **Dedicated Local Isolation (.report/walkthrough/)**: Automatically stores reports in `.report/walkthrough/<feature-name>/index.html` and ensures `.report/` is excluded in `.git/info/exclude` to prevent polluting git history or remote repositories.
 - **Standalone HTML Output**: Leverages `report-in-html` for styled deliverables with dark/light themes.
-- **Local Live Server Delivery**: Automatically serves the walkthrough over `http://localhost:<port>` instead of raw `file:///` paths.
+- **Local Live Server Delivery**: Automatically serves the walkthrough over `http://localhost:<port>/index.html` instead of raw `file:///` paths.
 
 ## Files Reference
 

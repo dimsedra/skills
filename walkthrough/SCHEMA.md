@@ -3,9 +3,11 @@
 This schema defines the structural layout and semantic HTML components for generating post-implementation walkthrough reports.
 
 All walkthrough HTML files MUST:
-1. Link to `report.css` (from `report-in-html`).
-2. Use pure semantic HTML tags and predefined CSS classes.
-3. NEVER contain inline `style="..."` attributes or raw Markdown formatting syntax.
+1. Link to `report.css` (copied into the feature subfolder from `report-in-html`).
+2. Be saved specifically at `.report/walkthrough/<feature-name>/index.html`.
+3. Ensure `.report/` is added to `.git/info/exclude` (if in a git repo) so that reports stay purely local.
+4. Use pure semantic HTML tags and predefined CSS classes.
+5. NEVER contain inline `style="..."` attributes or raw Markdown formatting syntax.
 
 ---
 

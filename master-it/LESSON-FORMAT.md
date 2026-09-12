@@ -6,7 +6,7 @@ Reference specifications, HTML component taxonomy, and pedagogical blueprints fo
 
 ## 1. Lesson Structural Blueprint
 
-Every generated HTML lesson must be an exhaustive, standalone guide containing the following components:
+Every generated HTML lesson must be an exhaustive, standalone guide structured according to the universal **4-Tier Pedagogical Ladder**, featuring bite-sized code snippets and line-by-line mechanics:
 
 ```html
 <!DOCTYPE html>
@@ -56,185 +56,279 @@ Every generated HTML lesson must be an exhaustive, standalone guide containing t
     <header>
       <div class="header-top">
         <div class="badge-group">
-          <span class="badge"><span class="badge-dot"></span>Mastery Deep-Dive</span>
+          <span class="badge"><span class="badge-dot"></span>Interactive Masterclass</span>
           <span class="badge badge-pass">Senior Engineering Lens</span>
-          <span class="badge">Mode: Hybrid / Codebase-Linked</span>
+          <span class="badge">Pedagogy: 4-Tier Ladder</span>
         </div>
         <button id="theme-toggle" class="badge" onclick="toggleTheme()">🌓 Theme</button>
       </div>
-      <h1>Mastering: [Topic / Subsystem Name]</h1>
+      <h1>Mastering: [Universal Concept / Architecture Name]</h1>
       <div class="meta-bar">
-        <span class="meta-item"><strong>Domain:</strong> Concurrency / Systems Architecture</span>
-        <span class="meta-item"><strong>Target Module:</strong> <code>src/services/queue.ts</code></span>
-        <span class="meta-item"><strong>Durable Concept:</strong> Leaky Bucket Rate Limiting & Token Reservoirs</span>
+        <span class="meta-item"><strong>Domain:</strong> [e.g. Distributed Systems / Concurrency / Database Internals]</span>
+        <span class="meta-item"><strong>Core Foundation:</strong> [e.g. RFC 6455 / Actor Model / WAL Protocol]</span>
+        <span class="meta-item"><strong>Target Study Case:</strong> [e.g. Kitchen Display System / Rate Limiter Service]</span>
       </div>
     </header>
 
     <main>
-      <!-- 2. Mental Model & Core Invariants -->
+      <!-- ============================================================ -->
+      <!-- TIER 1: FUNDAMENTAL CONCEPTUAL INTUITION                     -->
+      <!-- ============================================================ -->
       <section>
-        <h2>1. The Mental Model & System Intuition</h2>
+        <h2>Tier 1: Fundamental Conceptual Intuition</h2>
         <article class="card card-summary">
-          <h3>The Governing Invariant</h3>
-          <p>Explain the fundamental problem this concept solves and the mental model a senior engineer uses to conceptualize it.</p>
+          <h3>The Universal Problem & Governing Invariant</h3>
+          <p>
+            Explain why this concept exists in computer science. What universal limitation or physical reality of computing (e.g. network latency, memory boundaries, statelessness) necessitated its creation?
+          </p>
           
-          <h3>Real-World Analogy</h3>
-          <p>A concrete, physical or systems analogy that bridges abstract complexity to simple mechanical intuition.</p>
+          <h3>Universal Real-World Analogy</h3>
+          <p>
+            A concrete, physical analogy completely independent of the target case study to anchor intuitive mechanical understanding.
+          </p>
+
+          <h3>Essential Jargon Buster</h3>
+          <ul class="list-secondary">
+            <li><strong>Term A (e.g. Full-Duplex):</strong> Definition in plain English/Indonesian without circular technical jargon.</li>
+            <li><strong>Term B (e.g. Monotonic Sequence):</strong> Clear, intuitive explanation of the concept and why normal alternatives fail.</li>
+          </ul>
         </article>
       </section>
 
-      <!-- 3. Foundational CS Theory & Verified Citations -->
+      <!-- ============================================================ -->
+      <!-- TIER 2: FUNDAMENTAL TECHNICAL IMPLEMENTATION                 -->
+      <!-- ============================================================ -->
       <section>
-        <h2>2. Theoretical Foundations & Authoritative Research</h2>
-        <p>Deep exploration of the underlying computer science principles, protocols, or algorithmic foundations.</p>
-        
-        <div class="grid-2">
-          <article class="card">
-            <h3>Underlying Computer Science Principle</h3>
-            <p>Explanation of the theoretical model (e.g. Actor Model, Raft Consensus, LSM-Tree, Token Bucket algorithm).</p>
-          </article>
-          <article class="card">
-            <h3>Verified External References</h3>
-            <ul class="list-secondary">
-              <li><a href="https://example.com/rfc" target="_blank" rel="noopener">RFC 6749: The OAuth 2.0 Authorization Framework</a></li>
-              <li><a href="https://example.com/docs" target="_blank" rel="noopener">Official Architecture Documentation & Benchmarks</a></li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <!-- 4. Architectural Topology & Flow (Mermaid.js) -->
-      <section>
-        <h2>3. Architectural Topology & State Transitions</h2>
-        <div class="diagram-container">
-          <div class="mermaid">
-sequenceDiagram
-  autonumber
-  actor Client
-  participant Ingress as Rate Limiter
-  participant Bucket as Token Reservoir
-  participant Worker as Background Worker
-
-  Client->>Ingress: Inbound Request (Cost = 1)
-  Ingress->>Bucket: Query Available Tokens
-  alt Sufficient Tokens
-    Bucket-->>Ingress: Deduct & Permit
-    Ingress->>Worker: Dispatch Job
-  else Token Depleted
-    Bucket-->>Ingress: Reject (Retry-After: 350ms)
-    Ingress-->>Client: 429 Too Many Requests
-  end
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. Code Mechanics & Line-by-Line Breakdown (Split-View Side-by-Side) -->
-      <section>
-        <h2>4. Concrete Implementation & Line-by-Line Mechanics</h2>
-        <p>Side-by-side inspection of critical code paths. Hovering over an annotation card highlights the corresponding lines in the code pane. Both panes scroll horizontally without line truncation.</p>
+        <h2>Tier 2: Fundamental Technical Implementation (Minimal Working Code)</h2>
+        <p>
+          The bare minimum code (10–20 lines) demonstrating the pure mechanics of the technology before any architecture, retry loops, or domain logic are introduced.
+        </p>
         
         <details open>
-          <summary><code>src/services/rate-limiter.ts</code> — Atomic Token Refill & Consumption</summary>
-          
+          <summary><code>minimal-prototype.ts</code> — Bare-Metal Working Foundation</summary>
           <div class="split-code-layout">
-            <!-- Left Pane: Code with Horizontal Scroll -->
             <div class="split-code-pane">
-              <pre><code><span class="code-line-highlight" data-step="step-init">export class TokenReservoir {
-  private tokens: number;
-  private lastRefillTimestamp: number;
-  private readonly capacity: number;
-  private readonly refillRatePerSecond: number;
+              <pre><code class="language-typescript"><span class="code-line-highlight" data-step="fund-setup">// 1. Initialize primitive connection
+const socket = new WebSocket("wss://stream.example.com");
 
-  constructor(capacity: number, refillRate: number) {
-    this.capacity = capacity;
-    this.refillRatePerSecond = refillRate;
-    this.tokens = capacity;
-    this.lastRefillTimestamp = Date.now();
-  }</span>
+// 2. Transmit raw frame
+socket.onopen = () => {
+  socket.send(JSON.stringify({ type: "HELLO" }));
+};
 
-<span class="code-line-highlight" data-step="step-acquire">  public tryAcquire(cost = 1): boolean {
-    this.refill();
-    if (this.tokens &gt;= cost) {
-      this.tokens -= cost;
-      return true;
-    }
-    return false;
-  }</span>
-
-<span class="code-line-highlight" data-step="step-refill">  private refill(): void {
-    const now = Date.now();
-    const elapsedSeconds = (now - this.lastRefillTimestamp) / 1000;
-    if (elapsedSeconds &gt; 0) {
-      this.tokens = Math.min(this.capacity, this.tokens + (elapsedSeconds * this.refillRatePerSecond));
-      this.lastRefillTimestamp = now;
-    }
-  }</span>
-}</code></pre>
+// 3. Receive raw payload
+socket.onmessage = (event) => {
+  console.log("Raw payload received:", event.data);
+};</span></code></pre>
             </div>
-
-            <!-- Right Pane: Sticky Annotations -->
             <div class="split-annotation-pane">
-              <article class="annotation-step" data-target="step-init">
-                <h4>① Constructor & Invariant Setup</h4>
-                <p><strong>Input:</strong> Configures max capacity and continuous refill rate.</p>
-              </article>
-
-              <article class="annotation-step" data-target="step-acquire">
-                <h4>② Atomic Token Consumption</h4>
-                <p><strong>Mechanics:</strong> Deducts cost immediately if sufficient capacity remains.</p>
-              </article>
-
-              <article class="annotation-step" data-target="step-refill">
-                <h4>③ Lazy O(1) Refill Computation</h4>
-                <p><strong>Output:</strong> Replenishes tokens on-demand without wasteful background intervals.</p>
+              <article class="annotation-step" data-target="fund-setup">
+                <h4>① Bare-Metal Lifecycle</h4>
+                <p><strong>Input:</strong> Direct connection initiation to the endpoint.</p>
+                <p><strong>Process:</strong> Listens to native lifecycle events (`onopen`, `onmessage`).</p>
+                <p><strong>Output:</strong> Unfiltered event consumption with zero abstraction layers.</p>
               </article>
             </div>
           </div>
         </details>
       </section>
 
-      <!-- 6. Trade-offs, Failure Modes & Edge Cases -->
+      <!-- ============================================================ -->
+      <!-- TIER 3: CASE-SPECIFIC ABSTRACTION UNDERSTANDING              -->
+      <!-- ============================================================ -->
       <section>
-        <h2>5. Senior Engineering Trade-offs & Failure Modes</h2>
+        <h2>Tier 3: Case-Specific Abstraction & System Topology</h2>
+        <p>
+          Applying the fundamental technology to a concrete real-world problem domain.
+        </p>
+
         <div class="grid-2">
           <article class="card card-warning">
-            <h3>Edge Cases & Hidden Failure Modes</h3>
+            <h3>The Breaking Point: Why Naive Code Fails in Production</h3>
+            <p>
+              Detail exactly what breaks when the Tier 2 naive implementation is deployed into this specific domain (e.g. silent socket drops, packet duplication, race conditions under high concurrency).
+            </p>
+          </article>
+          <article class="card">
+            <h3>Domain Architecture Constraints</h3>
+            <p>
+              Specific operational invariants of this domain (e.g. zero ticket loss, monotonic order delivery, sub-second latency, offline tolerance).
+            </p>
+          </article>
+        </div>
+
+        <div class="diagram-container" style="margin-top: 1rem;">
+          <div class="mermaid">
+sequenceDiagram
+  autonumber
+  actor Client as Station Client
+  participant Gateway as Real-time Gateway
+  participant Broker as Event Broker / DB
+
+  Client->>Gateway: Connect with Client ID & Last Known Seq
+  Gateway->>Broker: Fetch Pending Delta Since Seq
+  Broker-->>Gateway: Delta Batch
+  Gateway-->>Client: STREAM_SYNC (Deltas)
+  Note over Client: Reconcile Local State Atomically
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TIER 4: CASE-SPECIFIC TECHNICAL IMPLEMENTATION               -->
+      <!-- ============================================================ -->
+      <section>
+        <h2>Tier 4: Case-Specific Technical Implementation (Bite-Sized Evolution)</h2>
+        <p>
+          Step-by-step hardened implementation. Each snippet is bite-sized (10–25 lines) and isolates a single responsibility.
+        </p>
+
+        <!-- Snippet 4.1: Isolated Module 1 -->
+        <details open>
+          <summary><code>Snippet 4.1</code>: Heartbeat Watchdog & Zombie Socket Detection</summary>
+          <div class="split-code-layout">
+            <div class="split-code-pane">
+              <pre><code class="language-typescript"><span class="code-line-highlight" data-step="step-watchdog">export class HeartbeatWatchdog {
+  private timer?: number;
+  private pongTimeout?: number;
+
+  constructor(private ws: WebSocket, private timeoutMs = 3000) {}
+
+  public start(intervalMs = 5000): void {
+    this.timer = window.setInterval(() => {
+      if (this.ws.readyState === WebSocket.OPEN) {
+        this.ws.send(JSON.stringify({ type: "PING" }));
+        this.pongTimeout = window.setTimeout(() => {
+          console.warn("Heartbeat expired; forcing socket close.");
+          this.ws.close();
+        }, this.timeoutMs);
+      }
+    }, intervalMs);
+  }
+
+  public handlePong(): void {
+    clearTimeout(this.pongTimeout);
+  }
+}</span></code></pre>
+            </div>
+            <div class="split-annotation-pane">
+              <article class="annotation-step" data-target="step-watchdog">
+                <h4>① Active Probing</h4>
+                <p><strong>Input:</strong> Periodic 5000ms timer interval.</p>
+                <p><strong>Process:</strong> Emits lightweight PING frame; arms 3000ms deadline timer.</p>
+                <p><strong>Output:</strong> Terminates half-open zombie sockets if PONG fails to arrive.</p>
+              </article>
+            </div>
+          </div>
+        </details>
+
+        <!-- Snippet 4.2: Isolated Module 2 -->
+        <details>
+          <summary><code>Snippet 4.2</code>: Exponential Backoff with Full Jitter</summary>
+          <div class="split-code-layout">
+            <div class="split-code-pane">
+              <pre><code class="language-typescript"><span class="code-line-highlight" data-step="step-jitter">export function computeJitteredBackoff(
+  attempts: number,
+  baseMs = 1000,
+  maxMs = 15000
+): number {
+  // 1. Calculate exponential delay cap
+  const exponentialCap = Math.min(maxMs, baseMs * Math.pow(1.5, attempts));
+  
+  // 2. Apply full uniform jitter to prevent thundering herds
+  return Math.random() * exponentialCap;
+}</span></code></pre>
+            </div>
+            <div class="split-annotation-pane">
+              <article class="annotation-step" data-target="step-jitter">
+                <h4>① Uniform Spread</h4>
+                <p><strong>Input:</strong> Failed reconnection attempt counter.</p>
+                <p><strong>Process:</strong> Exponential exponentiation with random uniform distribution.</p>
+                <p><strong>Output:</strong> Disperses retry waves across a wide window, preventing thundering herds.</p>
+              </article>
+            </div>
+          </div>
+        </details>
+
+        <!-- Snippet 4.3: Isolated Module 3 -->
+        <details>
+          <summary><code>Snippet 4.3</code>: Monotonic Sequence Validation & Gap Detection</summary>
+          <div class="split-code-layout">
+            <div class="split-code-pane">
+              <pre><code class="language-typescript"><span class="code-line-highlight" data-step="step-seq">export function processOrderedEvent(
+  event: { seq: number; payload: any },
+  currentSeq: number,
+  onGapDetected: () => void
+): number {
+  // Stale or duplicate event
+  if (event.seq <= currentSeq) return currentSeq;
+
+  // Packet dropped in transmission; gap detected
+  if (event.seq > currentSeq + 1) {
+    onGapDetected();
+  }
+
+  return event.seq;
+}</span></code></pre>
+            </div>
+            <div class="split-annotation-pane">
+              <article class="annotation-step" data-target="step-seq">
+                <h4>① Strict Monotonic Guard</h4>
+                <p><strong>Input:</strong> Inbound event carrying sequence integer.</p>
+                <p><strong>Process:</strong> Compares against `currentSeq` to detect duplicates or missed packets.</p>
+                <p><strong>Output:</strong> Updates local sequence pointer or triggers delta synchronization.</p>
+              </article>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TIER 5: SENIOR TRADE-OFFS & PRODUCTION FAILURE MODES         -->
+      <!-- ============================================================ -->
+      <section>
+        <h2>Tier 5: Senior Engineering Trade-offs & Production Failure Modes</h2>
+        <div class="grid-2">
+          <article class="card card-warning">
+            <h3>Operational Edge Cases & Boundaries</h3>
             <ul class="list-secondary">
-              <li><strong>Clock Drift / Leap Seconds:</strong> Relying on system wall-clock <code>Date.now()</code> can cause erratic bursts if NTP synchronizes backward. Use monotonic timers (<code>process.hrtime()</code>) in production.</li>
-              <li><strong>Multi-Instance Race Conditions:</strong> In-memory state diverges when scaled across multiple container replicas. Requires distributed Redis Lua scripts for global rate limiting.</li>
+              <li><strong>Failure Mode A:</strong> Exact trigger mechanism, symptoms, and mitigation.</li>
+              <li><strong>Failure Mode B:</strong> Edge case under partition or high concurrency.</li>
             </ul>
           </article>
           <article class="card card-success">
-            <h3>Architectural Trade-offs</h3>
+            <h3>Architectural Trade-offs Matrix</h3>
             <ul class="list-secondary">
-              <li><strong>Lazy Calculation vs Background Polling:</strong> Zero background CPU overhead, but first request after prolonged idle bears minor millisecond computation.</li>
-              <li><strong>Memory Footprint:</strong> O(N) memory where N is active client IPs; requires LRU eviction policy to prevent memory exhaustion under DDoS attacks.</li>
+              <li><strong>Option A vs Option B:</strong> Latency vs consistency, CPU vs memory footprint.</li>
+              <li><strong>Operational Complexity:</strong> Maintenance overhead and failure blast radius.</li>
             </ul>
           </article>
         </div>
       </section>
 
-      <!-- 7. Verified Reference Citations -->
+      <!-- ============================================================ -->
+      <!-- AUTHORITATIVE REFERENCE CITATIONS                            -->
+      <!-- ============================================================ -->
       <section>
-        <h2>6. Authoritative Reference Citations</h2>
+        <h2>Authoritative Reference Citations</h2>
         <table>
           <thead>
             <tr>
               <th>Source / Organization</th>
-              <th>Topic / Title</th>
+              <th>Topic / Document</th>
               <th>Direct Reference Link</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>IETF RFC</td>
-              <td>RFC 6598: Rate Limiting Architectures</td>
-              <td><a href="https://datatracker.ietf.org" target="_blank" rel="noopener">IETF DataTracker</a></td>
+              <td>IETF / W3C / IEEE</td>
+              <td>Authoritative Specification Title</td>
+              <td><a href="https://example.com" target="_blank" rel="noopener">Official Specification</a></td>
             </tr>
             <tr>
-              <td>Stripe Engineering</td>
-              <td>Scaling API Rate Limiters with Redis and Token Buckets</td>
-              <td><a href="https://stripe.com/blog/rate-limiters" target="_blank" rel="noopener">Stripe Tech Blog</a></td>
+              <td>Tech Engineering Blog</td>
+              <td>Real-world Production Architecture Case Study</td>
+              <td><a href="https://example.com" target="_blank" rel="noopener">Architecture Article</a></td>
             </tr>
           </tbody>
         </table>
@@ -242,8 +336,8 @@ sequenceDiagram
     </main>
 
     <footer>
-      <span>Generated by Master-It Skill</span>
-      <span>Designed for Durable Engineering Mastery</span>
+      <span>Master-It Pedagogical Engine</span>
+      <span>4-Tier Software Engineering Mastery</span>
     </footer>
   </div>
 
@@ -270,10 +364,10 @@ After generating and serving the HTML lesson link, offer the user an optional in
 ### Sample Prompt:
 > *"The lesson for **[Topic]** is live at `http://localhost:<port>/<filename>.html`.*
 > 
-> *To lock in these mental models, would you like to do a quick 2-question Socratic challenge right here in chat? (e.g. testing how you would handle an NTP clock drift regression or distributed Redis replica divergence)*"
+> *To lock in these mental models, would you like to do a quick 2-question Socratic challenge right here in chat? (e.g. testing how you would handle an edge-case network partition or data skew)*"
 
 ### If the user accepts:
 Present 2–3 scenario-driven architectural questions one at a time:
-1. **Scenario 1 (Edge Case / Failure Mode)**: "Imagine the server clock skews backwards by 500ms due to an NTP sync update. What happens to the `elapsedSeconds` calculation, and how would you harden the algorithm to prevent zero-token lockups?"
-2. **Scenario 2 (Scale / Trade-off Pivot)**: "Suppose our application scales from 1 server to 10 load-balanced worker nodes. Why does our current in-memory implementation fail to enforce the global rate limit, and what is the trade-off of moving to a Redis-backed Lua script?"
-3. Evaluate the user's answers constructively like a senior mentor, pointing out subtle edge cases, operational realities, and reinforcing core systems thinking.
+1. **Scenario 1 (Edge Case / Failure Mode)**: "Imagine the network drops a packet between seq 104 and 106. In our Tier 4 sequence validator, what triggers, and why can't we simply request individual missing packets instead of a snapshot in high-frequency streams?"
+2. **Scenario 2 (Scale / Trade-off Pivot)**: "Suppose our application scales from 1 server to 10 worker nodes behind a round-robin load balancer. What happens to our in-memory state, and what is the trade-off of introducing Redis pub/sub vs distributed database streaming?"
+3. Evaluate the user's answers constructively like a senior mentor, reinforcing core systems thinking.

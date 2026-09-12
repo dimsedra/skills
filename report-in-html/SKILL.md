@@ -36,26 +36,29 @@ This skill is a modular design system and component toolkit for any orchestrator
 9. **High-Contrast Diagramming**: Any embedded Mermaid diagram must use the container classes and theme initialization defined in `REPORT-TEMPLATE.html` to guarantee legibility across both dark and light modes.
 10. **Conversational Language Alignment**: Generate all document prose, section titles, summaries, diagrams, and annotations in the primary conversational language used by the user (e.g. Indonesian if the user speaks Indonesian, English if in English). Technical code symbols, identifiers, and syntax remain in their native format.
 11. **Continuous Preference Memory & Override Authority**: Prior to generating any report, check if `.reporting-preferences.md` exists in the workspace root. When present, **its rules strictly override default `report.css` styles and `REPORT-TEMPLATE.html` structures** (e.g. custom CSS variables, custom stylesheets, modified section ordering, or custom branding). If absent, proceed with standard defaults—do not create placeholder files speculatively. If the user provides feedback during the session, capture and record it into `.reporting-preferences.md` (see [PREFERENCES-SCHEMA.md](PREFERENCES-SCHEMA.md)).
+12. **Dedicated Local Directory Layout & Git Exclusion**: All generated HTML reports must be placed inside the project's `.report/` root directory, structured by generator skill and topic (e.g. `.report/walkthrough/<feature-name>/index.html` or `.report/master-it/<topic-name>/index.html`) alongside `report.css`. Before writing to `.report/`, ensure `.report/` is appended to `.git/info/exclude` (if inside a git repository) so that generated deliverables remain strictly local, never touch project `.gitignore`, and are never tracked or committed to git remote.
 
 ---
 
 ## Workflow
 
 ```
-[Report Requested / Invoked] ──► [Copy or Link report.css] ──► [Select & Compose Tailored Layout]
-                                                                        │
-                                                                        ▼
-                                                             [Audit HTML & Annotations]
-                                                                        │
-                                                                        ▼
-                                                             [Auto-Launch Live Server]
-                                                                        │
-                                                                        ▼
-                                                             [Deliver Live Localhost Link]
+[Report Requested / Invoked] ──► [Ensure .git/info/exclude & Scaffold .report/] ──► [Compose Tailored Layout]
+                                                                                               │
+                                                                                               ▼
+                                                                                    [Audit HTML & Annotations]
+                                                                                               │
+                                                                                               ▼
+                                                                                    [Auto-Launch Live Server]
+                                                                                               │
+                                                                                               ▼
+                                                                                    [Deliver Live Localhost Link]
 ```
 
-### Step 1: Scaffold Assets
-Ensure `report.css` is present in the output directory or referenced via a valid relative path.
+### Step 1: Local Exclusion & Asset Scaffolding
+1. **Local Git Exclusion**: Check `.git/info/exclude` in git workspaces; append `.report/` if not present to ensure reports remain strictly local without modifying project `.gitignore`.
+2. **Scaffold Target Subdirectory**: Create `.report/<skill-name>/<subfolder>/` (e.g. `.report/master-it/<topic>/` or `.report/walkthrough/<feature>/`).
+3. **Copy Stylesheet**: Copy `report.css` directly into the target subdirectory so the HTML file can link locally via `<link rel="stylesheet" href="report.css">`.
 
 ### Step 2: Dynamically Compose Layout
 1. Use [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html) for document boilerplate, `<head>` styles, theme toggle script, and Mermaid initializer.
@@ -74,8 +77,8 @@ Ensure `report.css` is present in the output directory or referenced via a valid
 - Ensure all `<pre><code>` blocks have escaped HTML entities (`&lt;`, `&gt;`, `&amp;`).
 
 ### Step 4: Auto-Launch Live Server & Deliver Link
-1. Launch background HTTP server (e.g. `python -m http.server 3456` or next available port) if not already running.
-2. Deliver the live clickable browser link in chat: `Open Report: http://localhost:<port>/<filename>.html`.
+1. Launch background HTTP server in the target subdirectory (e.g. `python -m http.server 8000` or next available port).
+2. Deliver the live clickable browser link in chat: `Open Report: http://localhost:<port>/index.html`.
 3. Provide a concise 2–3 bullet summary of findings/changes.
 
 ---

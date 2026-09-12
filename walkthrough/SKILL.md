@@ -20,12 +20,13 @@ Generate a structured post-implementation walkthrough report that transparently 
    - **Medium**: 3–8 files (standard features, isolated refactors). Focused diagram if helpful, component breakdown, annotated key diffs, automated test evidence.
    - **Large**: 8+ files (major subsystems, architecture overhauls). Macro architecture, deep dive per module, annotated diff highlights, edge cases, benchmarks, rollback plan.
 4. **Evidence-First Verification**: Every claim of success must be backed by real test execution logs in the terminal section. Never assert that something works without running the verification command.
-5. **Auto-Launch Live Server & Localhost Delivery**: Always auto-launch a local HTTP server in the background and deliver a live `http://localhost:<port>/<filename>.html` link. Never force the user to navigate raw `file:///` paths.
-6. **Delegated HTML Generation**: Use the stylesheets (`report.css`) and modular components from `report-in-html` to generate the HTML report.
-7. **Chat Bloat Prevention**: Write the HTML file directly to disk rather than dumping large HTML documents into the chat transcript.
-8. **Diligent Reporter Posture**: Act as a diligent engineering partner reporting to the user. Explain *why* choices were made, *what* files changed, *how* the code functions, and *how* it was verified.
-9. **Conversational Language Alignment**: Write all explanations, analysis, titles, and annotations in the active language of the conversation with the user (e.g. Indonesian if the conversation is conducted in Indonesian). Keep code identifiers and syntax in their original language.
-10. **Continuous Preference Memory & Override Authority**: Prior to composing the walkthrough, check if `.reporting-preferences.md` exists in the workspace root. When present, **its rules strictly override default `report.css` styles, CSS variables, and HTML section structures** (e.g. custom test output placement, custom container widths). If absent, use standard defaults—do not create empty files speculatively. If the user provides feedback on walkthrough delivery, record it into `.reporting-preferences.md`.
+5. **Dedicated Local Directory & Git Exclusion**: Save every generated walkthrough report specifically into `.report/walkthrough/<feature-name>/index.html` alongside `report.css`. Before creating the directory, ensure `.report/` is added to `.git/info/exclude` (if working in a git repository) so that local walkthrough reports remain strictly local, never touch project `.gitignore`, and are never committed or pushed to remote.
+6. **Auto-Launch Live Server & Localhost Delivery**: Always auto-launch a local HTTP server in `.report/walkthrough/<feature-name>/` in the background and deliver an active `http://localhost:<port>/index.html` link. Never force the user to navigate raw `file:///` paths.
+7. **Delegated HTML Generation**: Use the stylesheets (`report.css`) and modular components from `report-in-html` to generate the HTML report.
+8. **Chat Bloat Prevention**: Write the HTML file directly to disk rather than dumping large HTML documents into the chat transcript.
+9. **Diligent Reporter Posture**: Act as a diligent engineering partner reporting to the user. Explain *why* choices were made, *what* files changed, *how* the code functions, and *how* it was verified.
+10. **Conversational Language Alignment**: Write all explanations, analysis, titles, and annotations in the active language of the conversation with the user (e.g. Indonesian if the conversation is conducted in Indonesian). Keep code identifiers and syntax in their original language.
+11. **Continuous Preference Memory & Override Authority**: Prior to composing the walkthrough, check if `.reporting-preferences.md` exists in the workspace root. When present, **its rules strictly override default `report.css` styles, CSS variables, and HTML section structures** (e.g. custom test output placement, custom container widths). If absent, use standard defaults—do not create empty files speculatively. If the user provides feedback on walkthrough delivery, record it into `.reporting-preferences.md`.
 
 ---
 
@@ -41,10 +42,7 @@ Generate a structured post-implementation walkthrough report that transparently 
                                                                [Compose Tailored HTML via report-in-html]
                                                                                │
                                                                                ▼
-                                                               [Auto-Launch Background Live Server]
-                                                                               │
-                                                                               ▼
-                                                               [Deliver Live Localhost Link]
+                                                               [Local Isolation & Live Server Delivery]
 ```
 
 ### Step 1: Check Preferences & Inspect Changes
@@ -63,11 +61,13 @@ Execute automated tests or build verification commands. Capture the real termina
 - Add `.code-annotation` to all code highlights detailing Input, Key Lines / Mechanics, and Output.
 - Ensure pure HTML hygiene (zero inline styles, no leaked markdown).
 
-### Step 4: Auto-Launch Live Server & Deliver Link
-1. Save the file to the target location (e.g. `walkthrough.html` or `docs/walkthroughs/walkthrough-<feature>.html`).
-2. Auto-launch background HTTP server if not already running.
-3. Output the clickable live localhost URL: `Open Walkthrough: http://localhost:<port>/<filename>.html`.
-4. Provide a brief 2–3 bullet conversational overview in the chat.
+### Step 4: Local Isolation, Live Server Delivery & Reporting
+1. **Ensure Local Git Exclusion**: If inside a git repository, inspect `.git/info/exclude`. If `.report/` is not present, append `.report/` to ensure the report directory remains strictly local and never pollutes project `.gitignore` or git tracking.
+2. **Scaffold Directory**: Create directory `.report/walkthrough/<feature-name>/` and copy `report.css` from `report-in-html` into it.
+3. **Save File**: Write the generated walkthrough to `.report/walkthrough/<feature-name>/index.html`.
+4. **Auto-Launch Local Live Server**: Launch a background HTTP server in `.report/walkthrough/<feature-name>/` (e.g. `python -m http.server 8000` or next available port).
+5. **Share Link**: Deliver the clickable live localhost URL: `Open Walkthrough: http://localhost:<port>/index.html`.
+6. Provide a brief 2–3 bullet conversational overview in the chat.
 
 ---
 
