@@ -14,7 +14,7 @@ Every section is engineered for the reader reviewing the issue six weeks later w
 - **Big-Picture Context (Re-Orientation)**: 1–2 concise sentences framing where this component fits in the overall system architecture before detailing the defect.
 - **Problem Description & Impact**: Clear explanation of what breaks, under what conditions it manifests, and the operational impact.
 - **Affected Locations (Durable Symbol Pointers)**: Stable symbol names (functions, classes, methods, endpoints) and file paths (`path/to/file.ext` -> `SymbolName()`). Strictly no fenced code blocks or brittle line numbers; code snippets rot into stale snapshots.
-- **Proposed Direction (Optional)**: High-level architectural strategy, boundary adjustments, and testing expectations (e.g., unit test coverage, regression test suite). Do NOT include pseudo-code or implementation snippets.
+- **Proposed Direction (Optional / Open for Discussion)**: High-level architectural strategy, boundary adjustments, and testing expectations (e.g., unit test coverage, regression test suite). When the remedy is unresolved or open-ended, do NOT invent premature solutions or omit the section—explicitly mark it as open for team discussion and outline the key trade-offs or decision points. Strictly no pseudo-code or implementation snippets.
 
 ---
 
@@ -32,7 +32,7 @@ Every section is engineered for the reader reviewing the issue six weeks later w
 - `path/to/another_file.ext` -> `ClassName.methodName()`
 
 ## Proposed Direction (Optional)
-[High-level architectural approach, boundary adjustments, and testing expectations (e.g., regression test suite, unit tests)]
+[High-level architectural approach and testing expectations, OR explicit note that the direction is open for team discussion with key questions/trade-offs to evaluate]
 ```
 
 ---
@@ -97,7 +97,9 @@ When two browser tabs submit conflicting tree node moves within the same debounc
 - `src/features/workspace/hooks/useWorkspaceSync.ts` -> `useWorkspaceSync()`
 
 ## Proposed Direction
-Introduce a monotonic client-side version vector to optimistic mutations and reject stale deltas during reconciliation.
+Open for discussion. Requires architectural alignment on the state reconciliation strategy:
+- Option A: Introduce a monotonic client-side version vector to optimistic mutations and reject stale deltas during reconciliation.
+- Option B: Adopt an operational transformation / CRDT model for node movements to guarantee eventual consistency across tabs.
 ```
 
 ### Archetype C: Security / Auth Boundary

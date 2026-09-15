@@ -83,7 +83,7 @@ Construct the issue body strictly following the schema in [ISSUE-FORMAT.md](ISSU
 2. **Big-Picture Context**: 1–2 high-level framing sentences for cold re-orientation.
 3. **Localized Problem**: Specific failure mechanics, triggers, and operational impact.
 4. **Affected Locations**: File paths and durable symbol pointers (`path/to/file.ext` -> `SymbolName()`). Strictly no code blocks or line numbers.
-5. **Fix Direction (Optional)**: High-level architectural approach and boundaries. When the issue addresses a bug, regression, or concurrency gap, explicitly outline testing expectations (e.g., unit tests, regression test suite, or integration tests) to ensure verifiable resolution. Strictly no code snippets or pseudo-code.
+5. **Fix Direction (Optional / Open for Discussion)**: High-level architectural approach and boundaries. When addressing a bug, regression, or concurrency gap, explicitly outline testing expectations (e.g., unit tests, regression test suite, or integration tests). If the solution is complex, uncertain, or requires consensus, **treat "Optional" as freedom from premature solutions, NOT permission to omit the section**: explicitly state that the direction is open for team discussion and outline the key trade-offs, options, or architectural questions to resolve. Strictly no code snippets or pseudo-code.
 
 ### Gate 3: User Confirmation & Tracker Publishing
 1. Present the drafted issue (or sliced sub-issues) clearly in the chat for user review.
@@ -100,6 +100,8 @@ Construct the issue body strictly following the schema in [ISSUE-FORMAT.md](ISSU
 | *"A solution-first title tells what to do."* | Solution-first titles hide the underlying failure condition and bias future developers toward premature fixes. |
 | *"It's easier to put everything in one issue."* | Monolithic issues create cognitive overload and stall execution. Slicing creates focused, deliverable units. |
 | *"The user asked to issue it, so I can publish directly."* | Drafting and publishing are distinct. Always confirm before creating remote tracker artifacts. |
+| *"If I don't know the exact fix, I should omit Proposed Direction."* | Omission creates ambiguity for readers 6 weeks later. Explicitly mark it as open for discussion and state the key trade-offs or design questions. |
+| *"I should invent a fix so Proposed Direction looks complete."* | Premature speculative solutions bias future implementers toward unvetted fixes. Transparently state that the direction requires team alignment. |
 
 ## Red Flags - STOP and Reset
 
@@ -110,6 +112,8 @@ Construct the issue body strictly following the schema in [ISSUE-FORMAT.md](ISSU
 - 🚩 Monolithic issue combining unrelated system layers or multiple distinct bugs
 - 🚩 Publishing to GitHub CLI (`gh issue create`) or issue tracker without explicit user confirmation
 - 🚩 Omitting the high-level context section and jumping straight into micro-details
+- 🚩 Hallucinating a speculative solution instead of explicitly marking the direction as open for discussion when consensus is absent
+- 🚩 Silently omitting Proposed Direction on complex architectural issues rather than documenting open questions or trade-offs
 
 **If any red flag occurs: STOP. Reset the draft to follow [ISSUE-FORMAT.md](ISSUE-FORMAT.md) with durable symbol pointers and problem-first framing.**
 
