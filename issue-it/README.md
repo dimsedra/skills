@@ -34,7 +34,7 @@ When Redis cache misses occur under high concurrency, parallel requests with exp
 - `src/auth/token_store.py` -> `TokenStore.get_fallback_lock()`
 
 ## Proposed Direction
-Implement a distributed mutex around database fallback verification and return an explicit unauthorized state on lock contention timeout.
+Implement a distributed mutex around database fallback verification and return an explicit unauthorized state on lock contention timeout. Add a concurrency test suite simulating simultaneous token expirations to verify lock acquisition failure.
 ```
 
 ## Files Reference

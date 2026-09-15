@@ -14,7 +14,7 @@ Every section is engineered for the reader reviewing the issue six weeks later w
 - **Big-Picture Context (Re-Orientation)**: 1–2 concise sentences framing where this component fits in the overall system architecture before detailing the defect.
 - **Problem Description & Impact**: Clear explanation of what breaks, under what conditions it manifests, and the operational impact.
 - **Affected Locations (Durable Symbol Pointers)**: Stable symbol names (functions, classes, methods, endpoints) and file paths (`path/to/file.ext` -> `SymbolName()`). Strictly no fenced code blocks or brittle line numbers; code snippets rot into stale snapshots.
-- **Proposed Direction (Optional)**: High-level architectural strategy and boundaries. Do NOT include pseudo-code or implementation snippets.
+- **Proposed Direction (Optional)**: High-level architectural strategy, boundary adjustments, and testing expectations (e.g., unit test coverage, regression test suite). Do NOT include pseudo-code or implementation snippets.
 
 ---
 
@@ -32,7 +32,7 @@ Every section is engineered for the reader reviewing the issue six weeks later w
 - `path/to/another_file.ext` -> `ClassName.methodName()`
 
 ## Proposed Direction (Optional)
-[High-level architectural approach or boundary adjustments]
+[High-level architectural approach, boundary adjustments, and testing expectations (e.g., regression test suite, unit tests)]
 ```
 
 ---
@@ -55,7 +55,7 @@ gh issue create \
 - `path/to/file.ext` -> `SymbolName()`
 
 ## Proposed Direction
-<High-level strategy>
+<High-level strategy and testing expectations>
 EOF
 )"
 ```
@@ -79,7 +79,7 @@ When the primary dead-letter queue broker experiences a network partition, the w
 - `src/workers/dlq_client.py` -> `DeadLetterQueueClient.publish_dead_letter()`
 
 ## Proposed Direction
-Add local disk buffer fallback when the dead-letter queue is unreachable and emit a critical alert metric on failure.
+Add local disk buffer fallback when the dead-letter queue is unreachable and emit a critical alert metric on failure. Introduce a regression test simulating broker network partition to verify buffer fallback persistence.
 ```
 
 ### Archetype B: Architectural / State Gap

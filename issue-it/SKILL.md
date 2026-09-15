@@ -59,7 +59,7 @@ When Redis cache misses occur under high concurrency, parallel requests with exp
 - `src/auth/token_store.py` -> `TokenStore.get_fallback_lock()`
 
 ## Proposed Direction
-Implement a distributed mutex around database fallback verification and return an explicit unauthorized state on lock contention timeout.
+Implement a distributed mutex around database fallback verification and return an explicit unauthorized state on lock contention timeout. Add a concurrency test suite simulating simultaneous token expirations to verify lock acquisition failure.
 ```
 *Why it works: Problem-first title, 1-2 sentence high-level re-orientation, localized defect, durable symbol pointers, high-level fix strategy without decaying code snippets.*
 
@@ -83,7 +83,7 @@ Construct the issue body strictly following the schema in [ISSUE-FORMAT.md](ISSU
 2. **Big-Picture Context**: 1–2 high-level framing sentences for cold re-orientation.
 3. **Localized Problem**: Specific failure mechanics, triggers, and operational impact.
 4. **Affected Locations**: File paths and durable symbol pointers (`path/to/file.ext` -> `SymbolName()`). Strictly no code blocks or line numbers.
-5. **Fix Direction (Optional)**: High-level architectural approach and boundaries only. No code snippets or pseudo-code.
+5. **Fix Direction (Optional)**: High-level architectural approach and boundaries. When the issue addresses a bug, regression, or concurrency gap, explicitly outline testing expectations (e.g., unit tests, regression test suite, or integration tests) to ensure verifiable resolution. Strictly no code snippets or pseudo-code.
 
 ### Gate 3: User Confirmation & Tracker Publishing
 1. Present the drafted issue (or sliced sub-issues) clearly in the chat for user review.
