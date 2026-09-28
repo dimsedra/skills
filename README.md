@@ -15,6 +15,7 @@ npx skills add dimsedra/skills
 Or install a specific skill:
 
 ```bash
+npx skills add dimsedra/skills --skill align
 npx skills add dimsedra/skills --skill explain
 npx skills add dimsedra/skills --skill html-presentation
 npx skills add dimsedra/skills --skill issue-it
@@ -23,6 +24,9 @@ npx skills add dimsedra/skills --skill report-in-html
 ```
 
 ## Available Skills
+
+### `align`
+Ensures the AI agent genuinely understands user intent, architecture, and requirements before executing, eliminating guesswork through explicit verification.
 
 ### `explain`
 Facilitates deep, peer-to-peer technical comprehension of concepts, modules, or codebases through collaborative whiteboard-style discussion with optional HTML report hand-off.
@@ -43,6 +47,9 @@ Generates standalone, markdown-like HTML reports with console typography, deep b
 
 ```text
 skills/
+├── align/
+│   ├── SKILL.md
+│   └── README.md
 ├── explain/
 │   ├── SKILL.md
 │   └── README.md
