@@ -1,6 +1,6 @@
 # Report in HTML Skill
 
-Generate standalone, interactive, monochromatic HTML reports with integrated dark/light theme switching, high-contrast Mermaid diagrams, annotated code diffs with logic breakdowns, and terminal execution containers.
+Generate clean, standalone, markdown-like HTML reports with dark/light theme switching, responsive typography, Mermaid diagrams, Chart.js visualizations, and modular layout components.
 
 ## Install
 
@@ -10,18 +10,15 @@ npx skills add dimsedra/skills --skill report-in-html
 
 ## Features
 
-- **Adaptive Design System**: Modular component toolkit that adapts dynamically to the reporting domain without rigid 1:1 template copying.
-- **Annotated Code Highlights**: Every code diff is paired with an explicit Input-Process-Output and line-by-line mechanics breakdown.
-- **Pure Semantic HTML**: All styles centralized in `report.css`; no inline `style="..."` attributes or unparsed Markdown syntax.
+- **Markdown-Like Clarity**: Clean, readable typography and spacious layout that feels like rendered Markdown.
+- **Creative Freedom**: No rigid component restrictions—use flexible cards, grids, tables, callouts, or collapsibles suited to the task.
+- **Rich Visuals**: Built-in support for Mermaid.js diagrams and Chart.js graphics/charts.
 - **Theme Persistence**: Light and dark mode support with `localStorage` memory.
-- **High-Contrast Diagramming**: Pre-configured Mermaid.js styling that stays readable in both themes.
-- **Dedicated Local Directory (.report/)**: Standardizes output placement into `.report/<generator>/<topic>/index.html` and ensures `.report/` is excluded via `.git/info/exclude` to keep reports strictly local without modifying project `.gitignore`.
-- **Visual Evidence & Logs**: Collapsible diff blocks and dedicated terminal evidence containers.
-- **Chat Bloat Prevention**: Writes directly to disk and delivers a live `http://localhost:<port>/index.html` link.
+- **Dedicated Local Output (.report/)**: Standardizes output placement into `.report/<category>/<topic>/` and excludes it via `.git/info/exclude` to keep deliverables strictly local.
+- **Chat Bloat Prevention**: Writes deliverables directly to disk and provides a local HTTP server link.
 
-## Files Reference
+## Files
 
-- `SKILL.md`: Core invariants, report generation workflow, and error guardrails.
-- `report.css`: Monochromatic responsive CSS design system with annotation containers.
-- `REPORT-TEMPLATE.html`: Master HTML shell with theme toggle script and Mermaid initializer.
-- `COMPONENTS.md`: Catalog of ready-to-use HTML component snippets (metric bars, annotated diffs, terminal blocks, callouts).
+- `SKILL.md`: Core principles, workflow, and instructions.
+- `report.css`: Lightweight, responsive stylesheet with dark/light themes and container utilities.
+- `REPORT-TEMPLATE.html`: Starter HTML shell with theme toggle, Mermaid.js, and Chart.js.

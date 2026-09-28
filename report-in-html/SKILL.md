@@ -1,104 +1,77 @@
 ---
 name: report-in-html
-description: "Use when creating standalone, interactive HTML reports for code audits, walkthroughs, test summaries, architectural analyses, or project compendiums."
+description: "Use when creating standalone, interactive HTML reports for code audits, walkthroughs, test summaries, architectural analyses, performance metrics, or project compendiums."
 ---
 
 # Report In HTML
 
-Generate clean, standalone, minimalist, monochromatic HTML reports with integrated dark/light theme switching, high-contrast Mermaid diagrams, annotated code diff blocks, and terminal evidence containers.
-
-This skill is a modular design system and component toolkit for any orchestrator skill or ad-hoc reporting task.
+Create clean, standalone, markdown-like HTML reports with dark/light mode switching, responsive typography, and dynamic visual components (diagrams, charts, metrics, and code).
 
 ---
 
 ## When to Use
 
-- When delivering comprehensive test results, audit findings, or architecture overhauls to the user.
-- When presenting complex multi-file code diffs that would cause massive bloat in the chat transcript.
-- When an orchestrator skill needs to compile and render a persistent, styled HTML deliverable.
+- Delivering comprehensive test results, audits, benchmarks, or architectural overhauls.
+- Presenting multi-file diffs, data metrics, or execution logs that would bloat the chat transcript.
+- Needing a persistent, clean, readable HTML deliverable served locally.
 
 ### When NOT to Use
-- For simple one-line answers, conversational queries, or trivial command outputs (respond directly in chat instead).
-- When a raw Markdown artifact or summary is sufficient and no rich visual layout is requested.
+- Quick one-line answers, simple explanations, or direct terminal outputs (answer in chat).
+- When a raw Markdown artifact or plain text summary is sufficient.
 
 ---
 
-## Core Invariants
+## Core Principles
 
-1. **Context-Adaptive Composition (No Rigid Template Copying)**: `REPORT-TEMPLATE.html` and `COMPONENTS.md` serve as a reference foundation and UI toolkit. Do NOT clone the template 1:1 blindly. Tailor the sections, visual hierarchy, diagrams, grids, and tables dynamically to fit the specific feature, architecture, or audit context.
-2. **Annotated Code Highlights (No Naked Diffs)**: Every code diff or snippet must be paired with an explicit **Logic & Mechanics Breakdown** using `.code-annotation` (Input -> Process / Cause & Effect -> Output) with line-by-line rationale for critical logic.
-3. **Pure Semantic HTML & Zero Inline Styles**: All styling belongs strictly in `report.css`. HTML tags MUST NOT contain `style="..."` attributes or `<style>` blocks.
-4. **Monochromatic Visual Identity**: Preserve the high-contrast monochromatic design language (dark mode default with light mode toggle) across all custom layouts.
-5. **Auto-Launch Live HTTP Server**: Never rely on raw `file:///` URLs. Automatically launch a lightweight local HTTP server as a background daemon process (e.g. `python -m http.server <port>` or `npx serve`) and serve the report over `http://localhost:<port>/<filename>.html`.
-6. **Theme Switcher & LocalStorage Memory**: Every generated HTML file must include the lightweight theme toggle script from `REPORT-TEMPLATE.html` to support seamless Dark/Light switching with user preference persistence.
-7. **No Leaked Markdown**: Convert all text, bullets, bolding, and code snippets into proper HTML tags (`<p>`, `<ul>`, `<li>`, `<strong>`, `<code>`, `<pre>`). Never leave raw `**bold**` or ` `backticks` ` unparsed.
-8. **Chat Bloat Prevention**: Write the complete HTML report directly to disk and deliver the live HTTP URL alongside a concise 2–3 bullet summary.
-9. **High-Contrast Diagramming**: Any embedded Mermaid diagram must use the container classes and theme initialization defined in `REPORT-TEMPLATE.html` to guarantee legibility across both dark and light modes.
-10. **Conversational Language Alignment**: Generate all document prose, section titles, summaries, diagrams, and annotations in the primary conversational language used by the user (e.g. Indonesian if the user speaks Indonesian, English if in English). Technical code symbols, identifiers, and syntax remain in their native format.
-11. **Continuous Preference Memory & Override Authority**: Prior to generating any report, check if `.reporting-preferences.md` exists in the workspace root. When present, **its rules strictly override default `report.css` styles and `REPORT-TEMPLATE.html` structures** (e.g. custom CSS variables, custom stylesheets, modified section ordering, or custom branding). If absent, proceed with standard defaults—do not create placeholder files speculatively. If the user provides feedback during the session, capture and record it into `.reporting-preferences.md` (see [PREFERENCES-SCHEMA.md](PREFERENCES-SCHEMA.md)).
-12. **Dedicated Local Directory Layout & Git Exclusion**: All generated HTML reports must be placed inside the project's `.report/` root directory, structured by generator skill and topic (e.g. `.report/walkthrough/<feature-name>/index.html` or `.report/master-it/<topic-name>/index.html`) alongside `report.css`. Before writing to `.report/`, ensure `.report/` is appended to `.git/info/exclude` (if inside a git repository) so that generated deliverables remain strictly local, never touch project `.gitignore`, and are never tracked or committed to git remote.
+1. **Markdown-Like Clarity (`.md-like`)**:
+   Keep typography clean, spacious, and legible like a beautifully rendered Markdown document. Focus on readability first.
+2. **Creative Freedom (No Component Lock-in)**:
+   You are not bound to rigid templates. Select and compose whichever HTML structures best suit the report:
+   - Metric cards & flexible grids (`.grid`, `.grid-2`, `.grid-3`, `.card`)
+   - Interactive accordions (`<details><summary>...`)
+   - Structured comparison tables (`<table>`)
+   - Callouts and status badges (`.callout`, `.badge`)
+   - Clean preformatted code blocks (`<pre><code>`)
+3. **Rich Visuals: Charts & Diagrams**:
+   - **Diagrams**: Use Mermaid.js (`<div class="mermaid">...`) for workflows, sequence flows, and architecture maps.
+   - **Charts & Graphs**: Use Chart.js (`<canvas id="myChart">` + `<script>new Chart(...)</script>`) or inline SVGs for benchmarks, code metrics, test distributions, and quantitative data.
+4. **Theme Persistence**:
+   Use `report.css` variables and include the lightweight Dark/Light toggle script with `localStorage` memory.
+5. **Chat Bloat Prevention**:
+   Write the full report directly to disk in `.report/` and share a concise 2–3 bullet summary with the local HTTP link. Never dump hundreds of lines of HTML into chat.
 
 ---
 
 ## Workflow
 
-```
-[Report Requested / Invoked] ──► [Ensure .git/info/exclude & Scaffold .report/] ──► [Compose Tailored Layout]
-                                                                                               │
-                                                                                               ▼
-                                                                                    [Audit HTML & Annotations]
-                                                                                               │
-                                                                                               ▼
-                                                                                    [Auto-Launch Live Server]
-                                                                                               │
-                                                                                               ▼
-                                                                                    [Deliver Live Localhost Link]
+### 1. Scaffold Local Directory & Exclude from Git
+Keep generated reports local without polluting repository status:
+```bash
+# Ensure .report/ is ignored locally without modifying shared .gitignore
+Add-Content -Path ".git/info/exclude" -Value ".report/" -ErrorAction SilentlyContinue
+
+# Create target directory and copy stylesheet
+New-Item -ItemType Directory -Force -Path ".report/<category>/<topic>"
+Copy-Item -Path "<path-to-skill>/report.css" -Destination ".report/<category>/<topic>/report.css"
 ```
 
-### Step 1: Local Exclusion & Asset Scaffolding
-1. **Local Git Exclusion**: Check `.git/info/exclude` in git workspaces; append `.report/` if not present to ensure reports remain strictly local without modifying project `.gitignore`.
-2. **Scaffold Target Subdirectory**: Create `.report/<skill-name>/<subfolder>/` (e.g. `.report/master-it/<topic>/` or `.report/walkthrough/<feature>/`).
-3. **Copy Stylesheet**: Copy `report.css` directly into the target subdirectory so the HTML file can link locally via `<link rel="stylesheet" href="report.css">`.
+### 2. Compose the Report HTML
+Use `REPORT-TEMPLATE.html` as the base shell. Compose content creatively:
+- **Header**: Title, timestamp, badges, and context tags.
+- **Body**: Combine prose, tables, diffs, diagrams, and charts as needed.
+- **Charts / Visuals**: If charts are needed, instantiate Chart.js inside a `<script>` tag or render SVG inline.
 
-### Step 2: Dynamically Compose Layout
-1. Use [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html) for document boilerplate, `<head>` styles, theme toggle script, and Mermaid initializer.
-2. Populate the header with `<span class="badge">` status pills and metadata items.
-3. Compose the main body dynamically using components from [COMPONENTS.md](COMPONENTS.md) tailored to the task:
-   - **Executive Summaries**: `<article class="card card-summary">` for problem & solution framing.
-   - **Annotated Diffs**: `<details><summary>...</summary><pre><code>...</code></pre><div class="code-annotation">...</div></details>` breaking down Input, Key Logic, and Output.
-   - **Architecture / Data Flow**: `<div class="diagram-container"><div class="mermaid">...` when visual flows clarify subsystem interactions.
-   - **Verification Evidence**: `<div class="test-summary-bar">` and `<div class="terminal-output">` with real test execution logs.
-   - **Edge Cases & Guardrails**: `<div class="grid-2">` or custom grids for boundary notes and tradeoffs.
-
-### Step 3: Validate HTML Hygiene & Annotations
-- Confirm all code snippets include a `.code-annotation` block detailing Input-Process-Output.
-- Confirm zero instances of `style=` in the generated HTML.
-- Confirm zero unparsed Markdown symbols (`**`, `##`, `*`, ```` ``` ````).
-- Ensure all `<pre><code>` blocks have escaped HTML entities (`&lt;`, `&gt;`, `&amp;`).
-
-### Step 4: Auto-Launch Live Server & Deliver Link
-1. Launch background HTTP server in the target subdirectory (e.g. `python -m http.server 8000` or next available port).
-2. Deliver the live clickable browser link in chat: `Open Report: http://localhost:<port>/index.html`.
-3. Provide a concise 2–3 bullet summary of findings/changes.
+### 3. Launch Local Server & Deliver
+Launch a background HTTP server and deliver the clickable link in chat:
+```bash
+# Launch lightweight server in background
+python -m http.server 8000 --directory .report/<category>/<topic>
+```
+Deliver the link: `http://localhost:8000/index.html` along with key takeaway bullets.
 
 ---
 
-## Failure Modes & Guardrails
+## Reference Files
 
-| Failure Mode | Root Cause | Guardrail / Fix |
-|---|---|---|
-| **Cookie-Cutter Cloning** | Copying `REPORT-TEMPLATE.html` 1:1 regardless of the task context. | Treat templates as a toolkit; select and adapt components strictly based on what is being reported. |
-| **Naked Code Diffs** | Dumping code diffs without logic explanations. | Always attach `.code-annotation` with Input-Process-Output and line-by-line mechanics. |
-| **Raw File URL Delivery** | Giving the user a `file:///` link which has CORS/browser restrictions. | Auto-launch a background HTTP server and deliver `http://localhost:<port>/<filename>.html`. |
-| **Inline Style Pollution** | Adding `style="..."` directly on tags. | Use semantic classes from `report.css` (`.badge-pass`, `.diff-line-add`, `.card-summary`). |
-| **Markdown Leakage** | Pasting raw markdown text inside HTML elements. | Convert all text to semantic HTML (`<strong>`, `<code>`, `<ol>`, `<li>`). |
-| **Low Diagram Contrast** | Relying on default Mermaid dark styles. | Use the high-contrast `themeVariables` configured in `REPORT-TEMPLATE.html`. |
-| **Chat Output Flooding** | Printing 500 lines of raw HTML into the chat. | Write HTML to disk immediately, serve via HTTP, and share the link. |
-
----
-
-## Disclosed References
-
-- [report.css](report.css): Core monochromatic CSS engine with dark/light themes, annotated diffs, and responsive layout.
-- [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html): Master HTML boilerplate with theme toggle and Mermaid integration.
-- [COMPONENTS.md](COMPONENTS.md): Reusable component snippet catalog for rapid report assembly.
+- [report.css](report.css): Lightweight, responsive, markdown-like stylesheet with dark/light themes, tables, callouts, and chart containers.
+- [REPORT-TEMPLATE.html](REPORT-TEMPLATE.html): Clean boilerplate with theme switcher, Mermaid.js, and Chart.js integration.
