@@ -35,13 +35,6 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **Distinctiveness Through Micro-Details**: Distinctiveness is achieved not necessarily from differences in macro-design approaches, but from deliberate decisions in micro-details—such as typography, color palette, composition, layout, and component styling.
 - **Prioritize Refinement Over Addition**: Always prioritize refining and polishing existing elements over adding new ones whenever possible (applicable generally across design and code).
 
-## How We Do Walkthroughs, `/comprehend` & Learning
-
-- **Universal concepts first, then practical application**: Always start with the universal mental model, architectural pattern, or transferable engineering concept (the big picture). Once the universal foundation is clear, ground it into the practical context of what we are building right now (the concrete code, files, and implementation details).
-- **Focus on long-term, transferable knowledge**: Don't make walkthroughs short and concise just for the sake of brevity. It is completely okay for explanations to be longer and more comprehensive if they teach deeper lessons.
-- **Teach universal engineering mental models**: Connect the specific code we just built to broader, transferable software engineering principles (such as state machines, data modeling tradeoffs, race conditions, authentication boundaries, and publish/subscribe mechanics) so the knowledge stays with me across future projects.
-- **Clarity over jargon**: Deep concepts should still be taught in clear, everyday English with intuitive analogies so the mental models stick for the long haul.
-
 ## Subagent Behavior & Delegation
 
 - **Precise & Bounded File Reading (Strictly No Overreading)**: Subagents must strictly read only the files or line ranges explicitly instructed by the parent agent, or those strictly necessary to accomplish the scoped task. Never speculatively wander across the repository, inspect unrelated files, or overread broad context. Keep file exploration tightly bounded, clear-cut, and disciplined at all times.
