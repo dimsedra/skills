@@ -1,6 +1,6 @@
 ---
 name: report
-description: Use when creating standalone, interactive HTML reports for code audits, walkthroughs, test summaries, architectural analyses, performance metrics, or project compendiums.
+description: Use when creating standalone, interactive HTML reports for code audits, deep dives, test summaries, architectural analyses, performance metrics, or project compendiums.
 ---
 
 # Report
