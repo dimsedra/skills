@@ -11,8 +11,9 @@ npx skills add dimsedra/skills --skill audit
 ## Purpose
 
 Enforces strict production-grade constraints when auditing code:
+- **Big-Picture Mental Model First**: Never audits diffs in a vacuum; maps PR intent, linked problem context, and surrounding system architecture before evaluating code changes.
 - **Third-Party Neutrality**: Enforces review via fresh subagent to eliminate confirmation bias.
-- **Grounded Context Exploration**: Never reviews in a vacuum; inspects caller files, PR descriptions/comments, and existing repo conventions before declaring blockers.
+- **Grounded Context Exploration**: Inspects caller files, PR discussions, and existing repo conventions before declaring blockers.
 - **Flawless Mergeability**: Audits diffs for production readiness and regression safety.
 - **Happy-Path Hunting**: Assumes early implementations predominantly cover only happy paths, actively hunting for unhandled edge cases, boundary failures, and timeouts.
 - **Evidence-Backed Bug Claims**: Banned from making speculative "ghost bug" claims. Every reported defect must include exact code locations and concrete reproducible trigger scenarios.

@@ -9,16 +9,16 @@ When reviewing or auditing a Pull Request, Merge Request (PR/MR), or code diff (
 
 ## How I Want Code Audited
 
-1. **Third-Party Neutrality (Adversarial Lens)**:
+1. **Build the Big-Picture Mental Model First (Context Before Diff)**:
+   - Never audit diffs in an architectural vacuum. A standalone diff without the larger system context produces shallow, false-positive-prone reviews.
+   - Before evaluating individual code changes:
+     - **Understand the Intent**: Read the PR description, linked issue, or problem discussion to grasp what problem this PR/MR is solving and why.
+     - **Map the Architectural Context**: Understand where the modified modules sit in the overall architecture, how data flows through them, and what upstream callers or downstream consumers depend on them.
+     - **Check Surrounding Conventions**: Inspect existing repository patterns, middleware, and boundaries so you evaluate the code within its real environment, not against generic assumptions.
+
+2. **Third-Party Neutrality (Adversarial Lens)**:
    - Act as an external, unattached third-party auditor (like CodeRabbit or GitHub Copilot Reviewer) with zero project bias.
    - Never assume the implementation is sound. Treat every diff as unverified until proven safe and production-ready.
-
-2. **Inspect Context (Never Review in a Vacuum)**:
-   - Neutrality means objectivity toward the author, NOT blindness to the repository.
-   - Before raising a blocker or declaring a defect, inspect surrounding context:
-     - Check callers and middleware to see if an edge case is already handled upstream.
-     - Read the PR description, linked issue, or discussions for intentional architectural trade-offs.
-     - Respect existing repository patterns rather than imposing foreign conventions.
 
 3. **Hunt for the Unhappy Path**:
    - Inbound PRs (especially first-pass AI code) predominantly solve only the happy path.
@@ -43,7 +43,7 @@ When reviewing or auditing a Pull Request, Merge Request (PR/MR), or code diff (
 
 ## Multi-Pass Review Workflow
 
-1. **Pass 1 (Initial Review)**: Trace execution paths, audit the diff, and provide evidence-backed findings with a calibrated verdict.
+1. **Pass 1 (Context & Initial Audit)**: Build the big-picture mental model, trace execution paths against surrounding architecture, audit the diff, and provide evidence-backed findings with a calibrated verdict.
 2. **Author Iteration**: If `BLOCKED`, the author addresses the blockers.
 3. **Pass 2+ (Verification)**: Re-audit the updated diff to verify that blockers are resolved without introducing regressions.
 4. **Certification**: Certify as ready to merge once the verdict reaches `CLEAN & MERGEABLE`.
