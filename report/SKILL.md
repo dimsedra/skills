@@ -1,11 +1,11 @@
 ---
-name: report-in-html
+name: report
 description: Use when creating standalone, interactive HTML reports for code audits, walkthroughs, test summaries, architectural analyses, performance metrics, or project compendiums.
 ---
 
-# Report In HTML
+# Report
 
-When I ask you to create an HTML report (e.g. via `/report-in-html`, or when presenting test results, code audits, benchmarks, or architectural summaries), handle it using these instructions:
+When I ask you to create an HTML report (e.g. via `/report`, or when presenting test results, code audits, benchmarks, or architectural summaries), handle it using these instructions:
 
 ## What I Expect from the Report
 

@@ -1,11 +1,11 @@
-# PR Gatekeeper Skill
+# Audit Skill
 
 Add-on directive for `/code-review` that enforces an uncompromising, external reviewer stance (CodeRabbit / Copilot Reviewer posture) for inbound Pull Requests and Merge Requests.
 
 ## Install
 
 ```bash
-npx skills add dimsedra/skills --skill pr-gatekeeper
+npx skills add dimsedra/skills --skill audit
 ```
 
 ## Purpose
@@ -22,8 +22,8 @@ Adds strict production-grade constraints to standard code reviews:
 
 ## Usage
 
-Invoke alongside `/code-review`:
+Invoke alongside `/code-review` or directly via `/audit`:
 
 ```text
-Tolong lakukan code-review dengan skill /code-review, arahanku ada di /pr-gatekeeper
+Tolong lakukan code-review dengan skill /code-review, arahanku ada di /audit
 ```

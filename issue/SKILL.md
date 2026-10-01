@@ -1,11 +1,11 @@
 ---
-name: issue-it
+name: issue
 description: Use when converting a debugging session, bug report, architectural gap, or problem discussion into a clean, user-centered tracking issue.
 ---
 
-# Issue It
+# Issue
 
-When I ask you to track or turn a problem, bug, architectural gap, or debugging findings into an issue (e.g. via `/issue-it`), handle it using these instructions:
+When I ask you to track or turn a problem, bug, architectural gap, or debugging findings into an issue (e.g. via `/issue` or natural requests), handle it using these instructions:
 
 ## How I Want Issues Drafted
 
@@ -33,7 +33,7 @@ When I ask you to track or turn a problem, bug, architectural gap, or debugging 
 ## Execution Steps
 
 1. **Target Identification**:
-   - If I provide arguments (e.g. `/issue-it memory leak in worker`), target that problem.
+   - If I provide arguments (e.g. `/issue memory leak in worker`), target that problem.
    - If invoked without arguments after a debugging or review discussion, synthesize the core failure condition directly from our active conversation context. If scope is ambiguous, ask me one clarifying question.
    - If you need to explore 3+ unfamiliar files across the codebase, dispatch a `research` subagent to keep our main chat clean.
 

@@ -1,11 +1,11 @@
-# Report in HTML Skill
+# Report Skill
 
 Generate clean, standalone, markdown-like HTML reports with dark/light theme switching, responsive typography, Mermaid diagrams, Chart.js visualizations, and modular layout components.
 
 ## Install
 
 ```bash
-npx skills add dimsedra/skills --skill report-in-html
+npx skills add dimsedra/skills --skill report
 ```
 
 ## Features

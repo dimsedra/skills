@@ -1,11 +1,11 @@
 ---
-name: pr-gatekeeper
+name: audit
 description: Use when reviewing inbound Pull Requests or Merge Requests with the code-review skill to enforce production readiness, third-party neutrality, and battle-tested fixes.
 ---
 
-# PR Gatekeeper
+# Audit
 
-When reviewing an inbound Pull Request or Merge Request (PR/MR), follow these non-negotiable review directives:
+When reviewing an inbound Pull Request or Merge Request (PR/MR) (e.g. via `/audit` or natural review requests), follow these non-negotiable review directives:
 
 ## How I Want Inbound PRs Reviewed
 

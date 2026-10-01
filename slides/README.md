@@ -1,11 +1,11 @@
-# HTML Presentation Skill
+# Slides Skill
 
 Build modular, responsive HTML presentation slide decks with full-bleed viewport fitting (16:9), live preview server, and high-fidelity PDF print export.
 
 ## Install
 
 ```bash
-npx skills add dimsedra/skills --skill html-presentation
+npx skills add dimsedra/skills --skill slides
 ```
 
 ## Features

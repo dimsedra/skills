@@ -1,11 +1,11 @@
 ---
-name: html-presentation
+name: slides
 description: "Use when the user asks to create HTML slides, build a presentation deck, convert slides to HTML, generate slide presentations, or export HTML slides to PDF."
 ---
 
-# HTML Presentation
+# Slides
 
-When I ask you to build an HTML presentation deck or convert slides to HTML, handle it using these instructions:
+When I ask you to build an HTML presentation deck or convert slides to HTML (e.g. via `/slides` or natural requests), handle it using these instructions:
 
 ## How I Want Slide Decks Built
 

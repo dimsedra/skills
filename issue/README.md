@@ -1,11 +1,11 @@
-# Issue It Skill
+# Issue Skill
 
 Convert debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues designed for cold re-orientation with zero active context.
 
 ## Install
 
 ```bash
-npx skills add dimsedra/skills --skill issue-it
+npx skills add dimsedra/skills --skill issue
 ```
 
 ## Features
