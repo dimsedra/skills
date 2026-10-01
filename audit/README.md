@@ -1,6 +1,6 @@
 # Audit Skill
 
-Add-on directive for `/code-review` that enforces an uncompromising, external reviewer stance (CodeRabbit / Copilot Reviewer posture) for inbound Pull Requests and Merge Requests.
+Production-grade code review and PR auditing engine that enforces an uncompromising, external reviewer stance (CodeRabbit / Copilot Reviewer posture) with evidence-backed findings and calibrated mergeability verdicts.
 
 ## Install
 
@@ -10,7 +10,7 @@ npx skills add dimsedra/skills --skill audit
 
 ## Purpose
 
-Adds strict production-grade constraints to standard code reviews:
+Enforces strict production-grade constraints when auditing code:
 - **Third-Party Neutrality**: Enforces review via fresh subagent to eliminate confirmation bias.
 - **Grounded Context Exploration**: Never reviews in a vacuum; inspects caller files, PR descriptions/comments, and existing repo conventions before declaring blockers.
 - **Flawless Mergeability**: Audits diffs for production readiness and regression safety.
@@ -22,8 +22,10 @@ Adds strict production-grade constraints to standard code reviews:
 
 ## Usage
 
-Invoke alongside `/code-review` or directly via `/audit`:
+Invoke directly whenever reviewing a branch, PR, or diff:
 
 ```text
-Tolong lakukan code-review dengan skill /code-review, arahanku ada di /audit
+Tolong audit PR ini: #123
 ```
+
+Or simply trigger via `/audit` during code review discussions.

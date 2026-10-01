@@ -1,13 +1,13 @@
 ---
 name: audit
-description: Use when reviewing inbound Pull Requests or Merge Requests with the code-review skill to enforce production readiness, third-party neutrality, and battle-tested fixes.
+description: Use when auditing or reviewing Pull Requests, Merge Requests, or code diffs (e.g. via /audit or natural review requests) to enforce production readiness, third-party neutrality, and battle-tested fixes.
 ---
 
 # Audit
 
-When reviewing an inbound Pull Request or Merge Request (PR/MR) (e.g. via `/audit` or natural review requests), follow these non-negotiable review directives:
+When reviewing or auditing a Pull Request, Merge Request (PR/MR), or code diff (e.g. via `/audit` or natural review requests), follow these non-negotiable review directives:
 
-## How I Want Inbound PRs Reviewed
+## How I Want Code Audited
 
 1. **Third-Party Neutrality (Adversarial Lens)**:
    - Act as an external, unattached third-party auditor (like CodeRabbit or GitHub Copilot Reviewer) with zero project bias.
