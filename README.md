@@ -21,6 +21,7 @@ npx skills add dimsedra/skills --skill html-presentation
 npx skills add dimsedra/skills --skill issue-it
 npx skills add dimsedra/skills --skill pr-gatekeeper
 npx skills add dimsedra/skills --skill report-in-html
+npx skills add dimsedra/skills --skill research
 ```
 
 ## Available Skills
@@ -42,6 +43,9 @@ Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral
 
 ### `report-in-html`
 Generates standalone, markdown-like HTML reports with console typography, deep black theme, Mermaid diagrams, Chart.js visualizations, and modular layout components.
+
+### `research`
+Conducts outward-facing technical research grounded in authoritative documentation, installed dependencies, and proven real-world codebases rather than static training data.
 
 ## Structure
 
@@ -67,10 +71,13 @@ skills/
 ├── pr-gatekeeper/
 │   ├── SKILL.md
 │   └── README.md
-└── report-in-html/
+├── report-in-html/
+│   ├── SKILL.md
+│   ├── REPORT-TEMPLATE.html
+│   ├── report.css
+│   └── README.md
+└── research/
     ├── SKILL.md
-    ├── REPORT-TEMPLATE.html
-    ├── report.css
     └── README.md
 ```
 
