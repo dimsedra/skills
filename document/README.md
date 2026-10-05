@@ -11,7 +11,7 @@ npx skills add dimsedra/skills --skill document
 ## Features
 
 - **Decision Tree Classification**: Automatically infers the correct documentation category (`architecture/`, `decisions/`, `guides/`, `concepts/`, `reference/`).
-- **Specialized Sub-Skills**: Integrates seamlessly with `/prd` (Product Requirements) and `/srs` (Software Requirements) for structured requirement authoring.
+- **Specialized Sub-Skills**: Integrates seamlessly with `/prd` (Product Requirements), `/srs` (Software Requirements), and `/plan` (Implementation Roadmaps) for structured lifecycle documentation.
 - **Placement Announcement**: Transparently announces inferred category and destination path before or upon file creation (zero stealth writing).
 - **Modular Single Responsibility**: Enforces focused, decoupled documentation instead of monolithic, hard-to-maintain encyclopedias.
 - **Durable Code Traceability**: Binds documents to codebase files and durable symbols via YAML frontmatter (`related_code`).

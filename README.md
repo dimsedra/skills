@@ -20,6 +20,7 @@ npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill design
 npx skills add dimsedra/skills --skill document
 npx skills add dimsedra/skills --skill issue
+npx skills add dimsedra/skills --skill plan
 npx skills add dimsedra/skills --skill prd
 npx skills add dimsedra/skills --skill report
 npx skills add dimsedra/skills --skill research
@@ -43,6 +44,9 @@ Transforms design discussions, architectural models, decisions, and technical wo
 
 ### `issue`
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
+
+### `plan`
+Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps with stateful, real-time progress tracking.
 
 ### `prd`
 Defines the problem space, target outcomes, scope boundaries, and user requirements before building, leaving technical implementation details flexible for engineering.
@@ -78,6 +82,9 @@ skills/
 ├── issue/
 │   ├── SKILL.md
 │   ├── ISSUE-FORMAT.md
+│   └── README.md
+├── plan/
+│   ├── SKILL.md
 │   └── README.md
 ├── prd/
 │   ├── SKILL.md
