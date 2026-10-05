@@ -42,10 +42,12 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
   - For commit-driven implementation roadmaps and progress tracking, strictly invoke and follow the `plans` skill (`/plans`).
   - Never make unilateral assumptions on unguided high-level decisions; invoke `/align` to calibrate before drafting.
   - All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
-  - **Respect Ignored or Nested `docs/` Repositories (Strict Boundary Isolation)**:
-    - If `docs/` is listed in `.gitignore` (or excluded from VCS), treat this as an intentional, deliberate boundary. **NEVER** remove `docs/` from `.gitignore`, modify ignore rules to include it, or bypass it using `git add -f` / `--force`.
-    - If `docs/` contains its own `.git` directory (nested repository), it is completely decoupled from the parent project. All documentation commits and pushes must be executed strictly inside `docs/` (e.g. `git -C docs ...`) to its own designated remote.
-    - Never bundle, stage, or leak `docs/` files into parent project commits or team remotes.
+- **`docs/` boundary rules**:
+  - If `docs/` is in `.gitignore` (or otherwise excluded from VCS), treat that as intentional. Do not remove it from `.gitignore`, change ignore rules to track it, or use `git add -f`.
+  - If `docs/` has its own `.git` (nested repo or submodule), treat it as a separate repository. Run all git commands for it from inside it (e.g. `git -C docs ...`) and push only to its own remote.
+  - In both cases, never stage or commit `docs/` files as part of the parent project's commits.
+  - If `docs/` is a normal tracked folder in the project repo (not ignored, no `.git` of its own), handle it like any other directory.
+  - If it's unclear whether `docs/` should be tracked, or where it should be committed, ask before changing anything.
 
 ## Subagent Behavior & Delegation
 
