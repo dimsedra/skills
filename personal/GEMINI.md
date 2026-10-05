@@ -42,6 +42,10 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
   - For commit-driven implementation roadmaps and progress tracking, strictly invoke and follow the `plans` skill (`/plans`).
   - Never make unilateral assumptions on unguided high-level decisions; invoke `/align` to calibrate before drafting.
   - All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
+  - **Respect Ignored or Nested `docs/` Repositories (Strict Boundary Isolation)**:
+    - If `docs/` is listed in `.gitignore` (or excluded from VCS), treat this as an intentional, deliberate boundary. **NEVER** remove `docs/` from `.gitignore`, modify ignore rules to include it, or bypass it using `git add -f` / `--force`.
+    - If `docs/` contains its own `.git` directory (nested repository), it is completely decoupled from the parent project. All documentation commits and pushes must be executed strictly inside `docs/` (e.g. `git -C docs ...`) to its own designated remote.
+    - Never bundle, stage, or leak `docs/` files into parent project commits or team remotes.
 
 ## Subagent Behavior & Delegation
 
