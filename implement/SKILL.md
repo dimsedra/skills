@@ -29,7 +29,7 @@ flowchart TD
     I --> J["Phase 4: Real-Time Plan Update: Tick [x] & Record Hash"]
     J --> K{"Are there remaining tasks in this Phase?"}
     K -- YES --> F
-    K -- NO --> L["Phase 5: Phase Milestone Checkpoint Review with Eds"]
+    K -- NO --> L["Phase 5: Phase Milestone Checkpoint Review with the User"]
 ```
 
 ---
@@ -61,7 +61,7 @@ Within the active phase, execute tasks strictly **one by one**:
    - If tests fail, diagnose and fix within the task scope. If an unexpected architectural roadblock occurs:
      > [!IMPORTANT]
      > **Blocker Gate (Invoke `/align`)**:
-     > Never invent unapproved workarounds. If a test failure reveals a specification mismatch, missing dependency, or architectural conflict, **immediately invoke `/align`** to calibrate with Eds.
+     > Never invent unapproved workarounds. If a test failure reveals a specification mismatch, missing dependency, or architectural conflict, **immediately invoke `/align`** to calibrate with the user.
 3. **Atomic Git Commit**:
    - Stage strictly the files modified for this task (`git add <files>`).
    - Commit using the exact proposed conventional commit message from the plan card (e.g. `git commit -m "feat(order): define order schema and initial migration"`).
@@ -97,9 +97,9 @@ Immediately after the commit succeeds, update `docs/plan/<name>.md` in real-time
 
 ### Phase 5: Phase Milestone Checkpoint Review
 Once all tasks within the active phase are completed:
-1. **Pause for Review**: Stop execution to give Eds space to digest progress step by step.
+1. **Pause for Review**: Stop execution to give the user space to digest progress step by step.
 2. **Deliver Milestone Summary**:
    - Report the completed phase name.
    - List the created commits with their hashes and verified test commands.
    - Display the updated overall plan progress (e.g. `3 / 8 Tasks Completed (38%)`).
-3. **Awaiting Next Green Light**: Ask Eds whether to proceed to the next phase (e.g., *"Phase 1 selesai dan semua tes lolos. Siap lanjut ke Phase 2?"*).
+3. **Awaiting Next Green Light**: Ask the user whether to proceed to the next phase (e.g., *"Phase 1 completed and all tests passed. Ready to proceed to Phase 2?"*).

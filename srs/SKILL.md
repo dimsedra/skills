@@ -17,7 +17,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 flowchart TD
     A["Invoke /srs"] --> B["Phase 1: Ingest PRD & Map System Context"]
     B --> C{"Are there unguided architectural decisions?"}
-    C -- YES --> D["Phase 2: Invoke /align with Eds"]
+    C -- YES --> D["Phase 2: Invoke /align with the User"]
     D --> E["Calibrate technical trade-offs & reach consensus"]
     E --> F["Phase 3: Interface & Boundary Contract Definition"]
     C -- NO --> F
@@ -33,7 +33,7 @@ flowchart TD
    - Identify actors (human users, background workers, external APIs).
    - Sort technical requirements into:
      - **Settled Technical Baseline**: Stack choices, existing repo patterns, and directed infrastructure.
-     - **Unguided Architectural Decisions (Gaps)**: Data consistency models, auth mechanisms, external vendors, or state-storage trade-offs that Eds has not directed.
+     - **Unguided Architectural Decisions (Gaps)**: Data consistency models, auth mechanisms, external vendors, or state-storage trade-offs that the user has not directed.
 
 ---
 
@@ -43,7 +43,7 @@ flowchart TD
 > Never assume or unilaterally lock in high-level architecture, database paradigms, security models, or third-party dependencies. If technical gaps exist in Phase 1:
 > 1. **Immediately trigger the `/align` skill**.
 > 2. Present the architectural trade-offs (e.g., stateless vs. session-based, polling vs. webhooks, SQL vs. NoSQL) with concrete pros and cons.
-> 3. Calibrate with Eds to reach a firm technical decision.
+> 3. Calibrate with the user to reach a firm technical decision.
 > 4. Only proceed to Phase 3 once shared intuition is established.
 
 ---

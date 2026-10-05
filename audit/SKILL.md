@@ -22,8 +22,8 @@ flowchart TD
     C --> D["Subagent reads AUDITOR-INSTRUCTIONS.md & audits diff"]
     D --> E["Phase 3: Receive Subagent Structured Report"]
     E --> F{"Is Verdict BLOCKED?"}
-    F -- YES --> G["Phase 4: Deliver Blockers & Remediation Checklist to Eds"]
-    F -- NO --> H["Phase 4: Deliver Certification & Merge Verdict to Eds"]
+    F -- YES --> G["Phase 4: Deliver Blockers & Remediation Checklist to the User"]
+    F -- NO --> H["Phase 4: Deliver Certification & Merge Verdict to the User"]
 ```
 
 ---
@@ -59,6 +59,6 @@ Spawn a dedicated subagent (e.g. via `invoke_subagent`) to perform the audit in 
 ---
 
 ### Phase 4: Delivery to User
-- Present the subagent's audit report directly and transparently to Eds.
+- Present the subagent's audit report directly and transparently to the user.
 - Highlight any `BLOCKED` items (especially specification drift or contract violations) and provide a concise summary of required fixes.
 - If the verdict is `CLEAN & MERGEABLE`, certify the code as ready for merge.

@@ -17,7 +17,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 flowchart TD
     A["Invoke /prd"] --> B["Phase 1: Ingest Context & Synthesize Gaps"]
     B --> C{"Are there unguided high-level decisions?"}
-    C -- YES --> D["Phase 2: Invoke /align with Eds"]
+    C -- YES --> D["Phase 2: Invoke /align with the User"]
     D --> E["Calibrate, resolve trade-offs & reach consensus"]
     E --> F["Phase 3: Scope & Prioritization Gate"]
     C -- NO --> F
@@ -30,7 +30,7 @@ flowchart TD
 ### Phase 1: Ingest Context & Gap Synthesis
 1. **Ingest the Raw Context**: Read the user prompt, issue thread, background discussion, and codebase state.
 2. **Sort into Two Mental Buckets**:
-   - **Directed & Settled**: Items where Eds has provided clear direction (problem statement, target user, core MVP need).
+   - **Directed & Settled**: Items where the user has provided clear direction (problem statement, target user, core MVP need).
    - **Unguided High-Level Decisions (Gaps)**: Strategic trade-offs, scope boundaries, policy edge-cases, or monetization/business rules that have not yet been addressed.
 
 ---
@@ -41,7 +41,7 @@ flowchart TD
 > Never invent or silently assume high-level business or scope decisions. If gaps exist in Phase 1:
 > 1. **Immediately trigger the `/align` skill**.
 > 2. Present the identified gaps, compare viable options/trade-offs, and suggest recommendations.
-> 3. Discuss and calibrate with Eds until we are on the same page.
+> 3. Discuss and calibrate with the user until we are on the same page.
 > 4. Only proceed to Phase 3 once alignment is reached. (Any intentionally deferred items must be flagged as `[PENDING USER ALIGNMENT]`).
 
 ---

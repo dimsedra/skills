@@ -19,7 +19,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 flowchart TD
     A["Invoke /plans"] --> B["Phase 1: Ingest PRD, SRS & Codebase Baseline"]
     B --> C{"Are there unguided implementation trade-offs or order ambiguities?"}
-    C -- YES --> D["Phase 2: Invoke /align with Eds"]
+    C -- YES --> D["Phase 2: Invoke /align with the User"]
     D --> E["Calibrate sequencing, architecture trade-offs & milestones"]
     E --> F["Phase 3: Scale-Aware Phasing & Decomposition"]
     C -- NO --> F
@@ -44,7 +44,7 @@ flowchart TD
 > **Strictly No Unilateral Assumptions on Implementation Strategy**:
 > If there are ambiguities regarding implementation order, library choices, breaking migration steps, or technical trade-offs:
 > 1. **Immediately trigger the `/align` skill**.
-> 2. Present the sequencing options or architectural trade-offs to Eds.
+> 2. Present the sequencing options or architectural trade-offs to the user.
 > 3. Calibrate and reach consensus on milestone boundaries before finalizing the plan.
 
 ---
