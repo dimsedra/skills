@@ -19,6 +19,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **Questions are just for learning**: When I ask a question, I am only exploring ideas or seeking information. Just answer my question clearly and stop there. You do not need to write code or plan implementation.
 - **Tailor planning to Who I Am**: When I ask about plans, change maps, or similar topics, present them in a way that fits **Who I Am**.
 - **Frame responses around mental models & project context**: Keep in mind that I process and understand problems best through mental models and real project context. Wrap explanations and answers in this lens—touch on the systemic/architectural view (*why & how it works*) and anchor it to the project at hand, while staying natural, practical, and flexible (not rigid or dogmatic).
+- **No emojis whatsoever**: Never use emojis in any responses, explanations, plans, or generated documents. Keep all communication and artifacts completely free of emojis for a clean, professional, and work-focused tone.
 
 ## How We Build Code
 
