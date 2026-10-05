@@ -17,6 +17,7 @@ Or install a specific skill:
 ```bash
 npx skills add dimsedra/skills --skill align
 npx skills add dimsedra/skills --skill audit
+npx skills add dimsedra/skills --skill design
 npx skills add dimsedra/skills --skill issue
 npx skills add dimsedra/skills --skill report
 npx skills add dimsedra/skills --skill research
@@ -30,6 +31,9 @@ Ensures the AI agent genuinely understands user intent, architecture, and requir
 
 ### `audit`
 Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral subagents with battle-tested fixes, CodeRabbit/Copilot reviewer stance, and explicit mergeability verdicts.
+
+### `design`
+Enforces restrained aesthetics, brand-centered identity, visual comfort, and zero component clutter when designing or building front-end user interfaces.
 
 ### `issue`
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
@@ -51,6 +55,9 @@ skills/
 │   ├── SKILL.md
 │   └── README.md
 ├── audit/
+│   ├── SKILL.md
+│   └── README.md
+├── design/
 │   ├── SKILL.md
 │   └── README.md
 ├── issue/
