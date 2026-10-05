@@ -17,15 +17,15 @@ Execute this activity strictly following the decision flow from top to bottom:
 
 ```mermaid
 flowchart TD
-    A[Invoke /plans] --> B[Phase 1: Ingest PRD, SRS & Codebase Baseline]
-    B --> C{Are there unguided implementation trade-offs or order ambiguities?}
-    C -- YES --> D[Phase 2: Invoke /align with Eds]
-    D --> E[Calibrate sequencing, architecture trade-offs & milestones]
-    E --> F[Phase 3: Scale-Aware Phasing & Decomposition]
+    A["Invoke /plans"] --> B["Phase 1: Ingest PRD, SRS & Codebase Baseline"]
+    B --> C{"Are there unguided implementation trade-offs or order ambiguities?"}
+    C -- YES --> D["Phase 2: Invoke /align with Eds"]
+    D --> E["Calibrate sequencing, architecture trade-offs & milestones"]
+    E --> F["Phase 3: Scale-Aware Phasing & Decomposition"]
     C -- NO --> F
-    F --> G[Phase 4: Commit-Driven Task Breakdown with Stateful Checkboxes]
-    G --> H[Phase 5: Placement Announcement & Document Authoring]
-    H --> I[Phase 6: Index in docs/README.md & Deliver]
+    F --> G["Phase 4: Commit-Driven Task Breakdown with Stateful Checkboxes"]
+    G --> H["Phase 5: Placement Announcement & Document Authoring"]
+    H --> I["Phase 6: Index in docs/README.md & Deliver"]
 ```
 
 ---

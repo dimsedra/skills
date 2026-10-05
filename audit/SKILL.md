@@ -17,13 +17,13 @@ Execute this activity strictly following the decision flow from top to bottom:
 
 ```mermaid
 flowchart TD
-    A[Invoke /audit] --> B[Phase 1: Ingest Context, Diff & Relevant Docs]
-    B --> C[Phase 2: Spawn Isolated Subagent Auditor]
-    C --> D[Subagent reads AUDITOR-INSTRUCTIONS.md & audits diff]
-    D --> E[Phase 3: Receive Subagent Structured Report]
-    E --> F{Is Verdict BLOCKED?}
-    F -- YES --> G[Phase 4: Deliver Blockers & Remediation Checklist to Eds]
-    F -- NO --> H[Phase 4: Deliver Certification & Merge Verdict to Eds]
+    A["Invoke /audit"] --> B["Phase 1: Ingest Context, Diff & Relevant Docs"]
+    B --> C["Phase 2: Spawn Isolated Subagent Auditor"]
+    C --> D["Subagent reads AUDITOR-INSTRUCTIONS.md & audits diff"]
+    D --> E["Phase 3: Receive Subagent Structured Report"]
+    E --> F{"Is Verdict BLOCKED?"}
+    F -- YES --> G["Phase 4: Deliver Blockers & Remediation Checklist to Eds"]
+    F -- NO --> H["Phase 4: Deliver Certification & Merge Verdict to Eds"]
 ```
 
 ---

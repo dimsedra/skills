@@ -7,7 +7,7 @@ description: Use when executing implementation tasks phase-by-phase from an appr
 
 When I ask you to implement code (e.g. via `/implement` or natural execution requests), your goal is to **faithfully execute the approved roadmap in `docs/plan/`, working phase-by-phase with atomic commits, verifying tests before every commit, and recording real-time progress and Git commit hashes directly in the plan document**.
 
-Never write code without an existing, approved plan in `docs/plan/`. If no plan exists, instruct me to run `/plan` first.
+Never write code without an existing, approved plan in `docs/plan/`. If no plan exists, instruct me to run `/plans` first.
 
 Execute this activity strictly following the decision flow from top to bottom:
 
@@ -17,19 +17,19 @@ Execute this activity strictly following the decision flow from top to bottom:
 
 ```mermaid
 flowchart TD
-    A[Invoke /implement] --> B[Phase 1: Ingest Plan & Identify Active Target Phase]
-    B --> C{Are all tasks in plan already completed?}
-    C -- YES --> D[Notify: Plan fully completed, suggest /audit]
-    C -- NO --> E[Phase 2: Announce Phase Scope & Commit Sequence]
-    E --> F[Phase 3: Atomic Task Loop: Code -> Test -> Commit]
-    F --> G{Did test pass?}
-    G -- NO --> H[Fix defect or Invoke /align if blocked]
+    A["Invoke /implement"] --> B["Phase 1: Ingest Plan & Identify Active Target Phase"]
+    B --> C{"Are all tasks in plan already completed?"}
+    C -- YES --> D["Notify: Plan fully completed, suggest /audit"]
+    C -- NO --> E["Phase 2: Announce Phase Scope & Commit Sequence"]
+    E --> F["Phase 3: Atomic Task Loop: Code -> Test -> Commit"]
+    F --> G{"Did test pass?"}
+    G -- NO --> H["Fix defect or Invoke /align if blocked"]
     H --> F
-    G -- YES --> I[Create Git Commit & Extract Hash]
-    I --> J[Phase 4: Real-Time Plan Update: Tick [x] & Record Hash]
-    J --> K{Are there remaining tasks in this Phase?}
+    G -- YES --> I["Create Git Commit & Extract Hash"]
+    I --> J["Phase 4: Real-Time Plan Update: Tick [x] & Record Hash"]
+    J --> K{"Are there remaining tasks in this Phase?"}
     K -- YES --> F
-    K -- NO --> L[Phase 5: Phase Milestone Checkpoint Review with Eds]
+    K -- NO --> L["Phase 5: Phase Milestone Checkpoint Review with Eds"]
 ```
 
 ---

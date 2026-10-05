@@ -15,14 +15,14 @@ Execute this activity strictly following the decision flow from top to bottom:
 
 ```mermaid
 flowchart TD
-    A[Invoke /prd] --> B[Phase 1: Ingest Context & Synthesize Gaps]
-    B --> C{Are there unguided high-level decisions?}
-    C -- YES --> D[Phase 2: Invoke /align with Eds]
-    D --> E[Calibrate, resolve trade-offs & reach consensus]
-    E --> F[Phase 3: Scope & Prioritization Gate]
+    A["Invoke /prd"] --> B["Phase 1: Ingest Context & Synthesize Gaps"]
+    B --> C{"Are there unguided high-level decisions?"}
+    C -- YES --> D["Phase 2: Invoke /align with Eds"]
+    D --> E["Calibrate, resolve trade-offs & reach consensus"]
+    E --> F["Phase 3: Scope & Prioritization Gate"]
     C -- NO --> F
-    F --> G[Phase 4: Announce Placement & Draft PRD]
-    G --> H[Phase 5: Index in docs/README.md & Deliver]
+    F --> G["Phase 4: Announce Placement & Draft PRD"]
+    G --> H["Phase 5: Index in docs/README.md & Deliver"]
 ```
 
 ---
