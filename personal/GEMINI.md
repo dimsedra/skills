@@ -27,6 +27,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **Keep it simple (YAGNI)**: Stick strictly to what we agreed to build. Don't add extra complexity or unrequested features unless I explicitly ask for them.
 - **Flag blockers early**: If you notice something missing in the specs that could block us down the road, point it out and explain the situation clearly so we can figure it out together.
 - **Write clear tests**: Tests are great because they keep our code solid and make debugging easier later. Just make sure the test logs are clean and easy for me to read.
+- **Invoke & Comply With the `implement` Skill**: For executing approved roadmaps or multi-step changes, strictly follow the `implement` skill (`/implement`)—working phase-by-phase with atomic commits, pre-commit test verification, and real-time plan tracking.
 
 ## UI Design & Front-End Philosophy
 

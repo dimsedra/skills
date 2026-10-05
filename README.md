@@ -19,6 +19,7 @@ npx skills add dimsedra/skills --skill align
 npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill design
 npx skills add dimsedra/skills --skill document
+npx skills add dimsedra/skills --skill implement
 npx skills add dimsedra/skills --skill issue
 npx skills add dimsedra/skills --skill plan
 npx skills add dimsedra/skills --skill prd
@@ -41,6 +42,9 @@ Enforces restrained aesthetics, brand-centered identity, visual comfort, and zer
 
 ### `document`
 Transforms design discussions, architectural models, decisions, and technical workflows into clean, modular, and traceable markdown documents inside `docs/`.
+
+### `implement`
+Executes implementation plans phase-by-phase from `docs/plan/` with atomic Git commits, mandatory automated test verification, and real-time audit trail tracking (recording commit hashes).
 
 ### `issue`
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
@@ -77,6 +81,9 @@ skills/
 │   ├── SKILL.md
 │   └── README.md
 ├── document/
+│   ├── SKILL.md
+│   └── README.md
+├── implement/
 │   ├── SKILL.md
 │   └── README.md
 ├── issue/
