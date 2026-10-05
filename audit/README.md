@@ -1,6 +1,6 @@
 # Audit Skill
 
-Production-grade code review and PR auditing engine that enforces an uncompromising, external reviewer stance (CodeRabbit / Copilot Reviewer posture) with specification conformance (PRD/SRS), evidence-backed findings, and calibrated mergeability verdicts.
+Production-grade code review and PR auditing engine that enforces zero-bias review via an isolated subagent auditor, specification conformance (PRD/SRS), evidence-backed findings, and calibrated mergeability verdicts.
 
 ## Install
 
@@ -8,19 +8,25 @@ Production-grade code review and PR auditing engine that enforces an uncompromis
 npx skills add dimsedra/skills --skill audit
 ```
 
+## Structure
+
+```text
+audit/
+├── SKILL.md                 # Primary agent review orchestration & subagent dispatching
+├── AUDITOR-INSTRUCTIONS.md  # Dedicated review protocol & directives for subagent auditor
+└── README.md
+```
+
 ## Purpose
 
 Enforces strict production-grade constraints when auditing code:
-- **Big-Picture Mental Model First**: Never audits diffs in a vacuum; inspects specification artifacts (`docs/prd/`, `docs/srs/`), PR intent, and surrounding architecture before evaluating code changes.
+- **Zero-Bias Subagent Isolation**: Primary agent dispatches a clean, isolated subagent auditor to eliminate confirmation bias.
+- **Dedicated Subagent Protocol**: Subagent operates under `AUDITOR-INSTRUCTIONS.md` with strictly bounded reading directives.
 - **Specification & Contract Conformance**: Audits against parent PRDs and SRS requirements to eliminate specification drift, missing requirements, or unrequested scope creep.
-- **Third-Party Neutrality**: Enforces review via fresh subagent to eliminate confirmation bias.
-- **Grounded Context Exploration**: Inspects caller files, PR discussions, and existing repo conventions before declaring blockers.
-- **Flawless Mergeability**: Audits diffs for production readiness and regression safety.
-- **Happy-Path Hunting**: Assumes early implementations predominantly cover only happy paths, actively hunting for unhandled edge cases, boundary failures, and timeouts.
+- **Happy-Path Hunting**: Actively hunts for unhandled edge cases, boundary failures, and timeouts.
 - **Evidence-Backed Bug Claims**: Banned from making speculative "ghost bug" claims. Every reported defect must include exact code locations and concrete reproducible trigger scenarios.
-- **Clean & Battle-Tested Solutions**: Demands clean, simple, maintainable, and reliable fixes—recognizing that the best solution often removes over-engineering rather than adding LOC.
+- **Clean & Battle-Tested Solutions**: Demands clean, simple, maintainable fixes—recognizing that the best solution often removes over-engineering rather than adding LOC.
 - **Calibrated Verdicts**: Clear criteria separating `BLOCKED` (crashes, data loss, security, specification drift, broken contracts) from `NEEDS POLISH` (non-blocking debt, minor optimizations).
-- **Multi-Pass Loop**: Built for iterative review rounds until certified clean.
 
 ## Usage
 
