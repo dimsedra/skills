@@ -43,6 +43,8 @@ Evaluate the content against this decision tree to determine file placement:
 
 | Category | Target Directory | Content Type & Scope |
 | :--- | :--- | :--- |
+| **PRD (Product)** | `docs/prd/` | **Why & What to build**: Problem framing, user personas, business goals, scope boundaries, and CUJs. Handled via specialized sub-skill `/prd`. |
+| **SRS (Software)** | `docs/srs/` | **How the software behaves**: Technical system capabilities, REQ identifiers, interface schemas, and NFRs. Handled via specialized sub-skill `/srs`. |
 | **Architecture** | `docs/architecture/` | **How the system works**: Component hierarchy, data lifecycle, runtime state transitions, subsystem boundaries, and inter-service communication. |
 | **Decisions (ADR)** | `docs/decisions/` | **Why a technical choice was made**: Architectural Decision Records detailing context, considered alternatives, evaluated trade-offs, and consequences. |
 | **Guides** | `docs/guides/` | **How to accomplish a task**: Step-by-step developer recipes, environment setup, runbooks, migration guides, and operational procedures. |

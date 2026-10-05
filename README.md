@@ -20,9 +20,11 @@ npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill design
 npx skills add dimsedra/skills --skill document
 npx skills add dimsedra/skills --skill issue
+npx skills add dimsedra/skills --skill prd
 npx skills add dimsedra/skills --skill report
 npx skills add dimsedra/skills --skill research
 npx skills add dimsedra/skills --skill slides
+npx skills add dimsedra/skills --skill srs
 ```
 
 ## Available Skills
@@ -42,6 +44,9 @@ Transforms design discussions, architectural models, decisions, and technical wo
 ### `issue`
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
 
+### `prd`
+Defines the problem space, target outcomes, scope boundaries, and user requirements before building, leaving technical implementation details flexible for engineering.
+
 ### `report`
 Generates standalone, markdown-like HTML reports with console typography, deep black theme, Mermaid diagrams, Chart.js visualizations, and modular layout components.
 
@@ -50,6 +55,9 @@ Conducts outward-facing technical research grounded in authoritative documentati
 
 ### `slides`
 Builds modular, responsive HTML presentation decks with full-bleed viewport fitting (16:9), keyboard navigation, background live preview server, and high-fidelity PDF print export.
+
+### `srs`
+Translates high-level PRD needs into unambiguous, testable, and traceable Software Requirements Specifications (SRS/SRD) with unique requirement identifiers (`REQ-[MODULE]-[INDEX]`).
 
 ## Structure
 
@@ -71,6 +79,9 @@ skills/
 │   ├── SKILL.md
 │   ├── ISSUE-FORMAT.md
 │   └── README.md
+├── prd/
+│   ├── SKILL.md
+│   └── README.md
 ├── report/
 │   ├── SKILL.md
 │   ├── REPORT-TEMPLATE.html
@@ -79,13 +90,16 @@ skills/
 ├── research/
 │   ├── SKILL.md
 │   └── README.md
-└── slides/
+├── slides/
+│   ├── SKILL.md
+│   ├── ALIGNMENT.md
+│   ├── ARCHITECTURE.md
+│   ├── EXTENSIONS.md
+│   ├── SCRIPTS.md
+│   └── SLIDE-FORMAT.md
+└── srs/
     ├── SKILL.md
-    ├── ALIGNMENT.md
-    ├── ARCHITECTURE.md
-    ├── EXTENSIONS.md
-    ├── SCRIPTS.md
-    └── SLIDE-FORMAT.md
+    └── README.md
 ```
 
 ## License

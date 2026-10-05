@@ -32,6 +32,15 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
  
 - **Invoke & Comply With the `design` Skill**: For any front-end UI, styling, layout, or component work, strictly follow the directives in the `design` skill (minimalist, brand-centered, easy on the eyes, zero component clutter, and no feature bloat).
 
+## Technical Documentation, PRD & SRS Specifications
+
+- **Invoke & Comply With `document`, `prd`, and `srs` Skills**:
+  - For general architecture, ADRs, concepts, guides, or references, strictly follow the `document` skill.
+  - For Product Requirements Documents, strictly invoke and follow the `prd` skill (`/prd`).
+  - For Software Requirements Specifications, strictly invoke and follow the `srs` skill (`/srs`).
+  - Never make unilateral assumptions on unguided high-level decisions; invoke `/align` to calibrate before drafting.
+  - All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
+
 ## Subagent Behavior & Delegation
 
 - **Precise & Bounded File Reading (Strictly No Overreading)**: Subagents must strictly read only the files or line ranges explicitly instructed by the parent agent, or those strictly necessary to accomplish the scoped task. Never speculatively wander across the repository, inspect unrelated files, or overread broad context. Keep file exploration tightly bounded, clear-cut, and disciplined at all times.
