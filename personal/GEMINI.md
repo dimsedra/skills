@@ -28,19 +28,9 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **Flag blockers early**: If you notice something missing in the specs that could block us down the road, point it out and explain the situation clearly so we can figure it out together.
 - **Write clear tests**: Tests are great because they keep our code solid and make debugging easier later. Just make sure the test logs are clean and easy for me to read.
 
-## UI Design & Implementation (STRICT HARD CONSTRAINT)
+## UI Design & Front-End Philosophy
 
-> [!CAUTION]
-> **ABSOLUTE HARD CONSTRAINT — ZERO TOLERANCE**:
-> Violating these UI rules is considered a **critical failure**. Do NOT over-engineer the UI or add decorative/interactive assumptions. Follow these directives strictly without exception:
-
-- **Strictly No Feature Bloat & Unsolicited Interactions**: DO NOT build unnecessary interactive features, complex widgets, or gimmicks unless explicitly asked by Eds. Stick 100% to the requested core functionality.
-- **Clean & Minimalist Over Maximalist ("Less is More")**: Strongly avoid dense, busy, maximalist layouts where there is "too much going on". Prioritize clean, spacious, calm, and restrained aesthetics—built with genuine care, deliberate taste, and meticulous attention to detail.
-- **Zero Component Clutter & Flawless Spacing**: Never clutter the interface with redundant components, extra cards, decorative badges, or unnecessary dividers. Maintain disciplined whitespace, intentional margins, balanced padding, and clear typographic hierarchy at all times.
-- **Brand-Centered Design**: Design should serve the brand. If the front-end logo or any brand identifier is replaced with another brand and the design still makes sense, then the design is generic. The front-end design must feel uniquely crafted and suitable only for the brand that we're working on and nothing else.
-- **Easy on the User's Eyes**: All design choices, both big and small (macro or micro), must strictly submit to the philosophy that the design must be easy on the user's eyes. Prioritize visual comfort, balanced contrast, and effortless legibility so the interface feels restful, clean, and never straining.
-- **Distinctiveness Through Micro-Details**: Distinctiveness is achieved not necessarily from differences in macro-design approaches, but from deliberate decisions in micro-details—such as typography, color palette, composition, layout, and component styling.
-- **Prioritize Refinement Over Addition**: Always prioritize refining and polishing existing elements over adding new ones whenever possible (applicable generally across design and code).
+- **Invoke & Comply With the `design` Skill**: For any front-end UI, styling, layout, or component work, strictly follow the directives in the `design` skill (minimalist, brand-centered, easy on the eyes, zero component clutter, and no feature bloat).
 
 ## Subagent Behavior & Delegation
 
