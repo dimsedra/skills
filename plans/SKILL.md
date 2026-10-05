@@ -1,11 +1,11 @@
 ---
-name: plan
+name: plans
 description: Use when creating a structured, commit-driven implementation plan with real-time progress tracking based on PRD and SRS specifications into docs/plan/.
 ---
 
-# Plan (Implementation Planning)
+# Plans (Implementation Planning)
 
-When I ask you to plan an implementation (e.g. via `/plan` or natural planning requests), your goal is to **translate approved PRD user outcomes and SRS technical specifications into a structured, step-by-step implementation plan where every discrete task maps directly to an atomic Git commit, complete with real-time stateful progress tracking**.
+When I ask you to plan an implementation (e.g. via `/plans` or natural planning requests), your goal is to **translate approved PRD user outcomes and SRS technical specifications into a structured, step-by-step implementation plan where every discrete task maps directly to an atomic Git commit, complete with real-time stateful progress tracking**.
 
 Do not generate ephemeral scratch plans in temporary directories. Always produce a durable, living document in `docs/plan/`.
 
@@ -17,7 +17,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 
 ```mermaid
 flowchart TD
-    A[Invoke /plan] --> B[Phase 1: Ingest PRD, SRS & Codebase Baseline]
+    A[Invoke /plans] --> B[Phase 1: Ingest PRD, SRS & Codebase Baseline]
     B --> C{Are there unguided implementation trade-offs or order ambiguities?}
     C -- YES --> D[Phase 2: Invoke /align with Eds]
     D --> E[Calibrate sequencing, architecture trade-offs & milestones]

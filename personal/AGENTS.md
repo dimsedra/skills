@@ -35,11 +35,11 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 
 ## Technical Documentation, Specifications & Planning
 
-- **Invoke & Comply With `document`, `prd`, `srs`, and `plan` Skills**:
+- **Invoke & Comply With `document`, `prd`, `srs`, and `plans` Skills**:
   - For general architecture, ADRs, concepts, guides, or references, strictly follow the `document` skill.
   - For Product Requirements Documents, strictly invoke and follow the `prd` skill (`/prd`).
   - For Software Requirements Specifications, strictly invoke and follow the `srs` skill (`/srs`).
-  - For commit-driven implementation roadmaps and progress tracking, strictly invoke and follow the `plan` skill (`/plan`).
+  - For commit-driven implementation roadmaps and progress tracking, strictly invoke and follow the `plans` skill (`/plans`).
   - Never make unilateral assumptions on unguided high-level decisions; invoke `/align` to calibrate before drafting.
   - All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
 

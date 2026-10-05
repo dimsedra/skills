@@ -21,7 +21,7 @@ npx skills add dimsedra/skills --skill design
 npx skills add dimsedra/skills --skill document
 npx skills add dimsedra/skills --skill implement
 npx skills add dimsedra/skills --skill issue
-npx skills add dimsedra/skills --skill plan
+npx skills add dimsedra/skills --skill plans
 npx skills add dimsedra/skills --skill prd
 npx skills add dimsedra/skills --skill report
 npx skills add dimsedra/skills --skill research
@@ -49,7 +49,7 @@ Executes implementation plans phase-by-phase from `docs/plan/` with atomic Git c
 ### `issue`
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
 
-### `plan`
+### `plans`
 Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps with stateful, real-time progress tracking.
 
 ### `prd`
@@ -76,6 +76,7 @@ skills/
 │   └── README.md
 ├── audit/
 │   ├── SKILL.md
+│   ├── AUDITOR-INSTRUCTIONS.md
 │   └── README.md
 ├── design/
 │   ├── SKILL.md
@@ -90,7 +91,7 @@ skills/
 │   ├── SKILL.md
 │   ├── ISSUE-FORMAT.md
 │   └── README.md
-├── plan/
+├── plans/
 │   ├── SKILL.md
 │   └── README.md
 ├── prd/

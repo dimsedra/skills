@@ -1,11 +1,11 @@
-# Plan Skill
+# Plans Skill
 
 Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps with stateful, real-time progress tracking.
 
 ## Install
 
 ```bash
-npx skills add dimsedra/skills --skill plan
+npx skills add dimsedra/skills --skill plans
 ```
 
 ## Features
@@ -19,10 +19,10 @@ npx skills add dimsedra/skills --skill plan
 
 ## Usage
 
-Trigger via `/plan` referencing a feature or specification:
+Trigger via `/plans` referencing a feature or specification:
 
 ```text
-/plan Checkout Pipeline
+/plans Checkout Pipeline
 ```
 
 Or ask the agent naturally:
