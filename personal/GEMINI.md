@@ -46,6 +46,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **`docs/` boundary rules**:
   - If `docs/` is in `.gitignore` (or otherwise excluded from VCS), treat that as intentional. Do not remove it from `.gitignore`, change ignore rules to track it, or use `git add -f`.
   - If `docs/` has its own `.git` (nested repo or submodule), treat it as a separate repository. Run all git commands for it from inside it (e.g. `git -C docs ...`) and push only to its own remote.
+  - If `docs/` is in a nested separate repository, never reference, mention, or write links to it inside the parent codebase (e.g. in source files, docstrings, code comments, or codebase READMEs).
   - In both cases, never stage or commit `docs/` files as part of the parent project's commits.
   - If `docs/` is a normal tracked folder in the project repo (not ignored, no `.git` of its own), handle it like any other directory.
   - If it's unclear whether `docs/` should be tracked, or where it should be committed, ask before changing anything.
