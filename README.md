@@ -15,6 +15,7 @@ npx skills add dimsedra/skills
 Or install a specific skill:
 
 ```bash
+npx skills add dimsedra/skills --skill adr
 npx skills add dimsedra/skills --skill align
 npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill design
@@ -30,6 +31,9 @@ npx skills add dimsedra/skills --skill srs
 ```
 
 ## Available Skills
+
+### `adr`
+Captures and maintains Architecture Decision Records (ADRs) with context, evaluated trade-offs, consequences, and immutable lifecycle status in `docs/decisions/`.
 
 ### `align`
 Ensures the AI agent genuinely understands user intent, architecture, and requirements before executing, eliminating guesswork through explicit verification.

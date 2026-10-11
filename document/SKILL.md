@@ -47,7 +47,7 @@ Evaluate the content against this decision tree to determine file placement:
 | **SRS (Software)** | `docs/srs/YYYYMMDD_<slug>.md` | **How the software behaves**: Technical system capabilities, REQ identifiers, interface schemas, and NFRs. Handled via specialized sub-skill `/srs`. |
 | **Plan (Implementation)** | `docs/plan/YYYYMMDD_<slug>.md` | **Step-by-step roadmap**: Commit-driven task breakdown, stateful progress checkboxes, and execution phases based on PRD/SRS. Handled via specialized sub-skill `/plans`. |
 | **Architecture** | `docs/architecture/` | **How the system works**: Component hierarchy, data lifecycle, runtime state transitions, subsystem boundaries, and inter-service communication. |
-| **Decisions (ADR)** | `docs/decisions/` | **Why a technical choice was made**: Architectural Decision Records detailing context, considered alternatives, evaluated trade-offs, and consequences. |
+| **Decisions (ADR)** | `docs/decisions/adr_NNN_<slug>.md` | **Why a technical choice was made**: Architectural Decision Records detailing context, considered alternatives, evaluated trade-offs, and consequences. Handled via specialized sub-skill `/adr`. |
 | **Guides** | `docs/guides/` | **How to accomplish a task**: Step-by-step developer recipes, environment setup, runbooks, migration guides, and operational procedures. |
 | **Concepts** | `docs/concepts/` | **Domain mental models**: Business domain rules, terminology glossaries, core entities, and conceptual paradigms. |
 | **Reference** | `docs/reference/` | **Formal specifications**: API contracts, configuration schemas, command-line arguments, database models, and interface definitions. |
