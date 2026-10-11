@@ -40,7 +40,7 @@ Captures and maintains Architecture Decision Records (ADRs) with context, evalua
 Ensures the AI agent genuinely understands user intent, architecture, and requirements before executing, eliminating guesswork through explicit verification.
 
 ### `audit`
-Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral subagents with specification and plan conformance, TDD rigor, unhappy path hunting, and explicit mergeability verdicts.
+Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral subagents with specification and plan conformance, performance scalability analysis, TDD rigor, unhappy path hunting, and explicit mergeability verdicts.
 
 ### `design`
 Enforces restrained aesthetics, brand-centered identity, visual comfort, and zero component clutter when designing or building front-end user interfaces.

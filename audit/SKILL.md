@@ -1,11 +1,11 @@
 ---
 name: audit
-description: Use when auditing or reviewing Pull Requests, Merge Requests, or code diffs (e.g. via /audit or natural review requests) to enforce production readiness, specification conformance (PRD/SRS/Plan), TDD rigor, and battle-tested fixes.
+description: Use when auditing or reviewing Pull Requests, Merge Requests, or code diffs (e.g. via /audit or natural review requests) to enforce production readiness, specification conformance (PRD/SRS/Plan), performance scalability, TDD rigor, and battle-tested fixes.
 ---
 
 # Audit (Review Orchestration)
 
-When reviewing or auditing a Pull Request, Merge Request (PR/MR), or code diff (e.g. via `/audit` or natural review requests), your goal is to **orchestrate a rigorous, zero-bias code audit by spawning an isolated subagent auditor equipped with an adversarial posture, specification contracts, and strict TDD verification directives**.
+When reviewing or auditing a Pull Request, Merge Request (PR/MR), or code diff (e.g. via `/audit` or natural review requests), your goal is to **orchestrate a rigorous, zero-bias code audit by spawning an isolated subagent auditor equipped with an adversarial posture, specification contracts, performance & scalability checks, and strict TDD verification directives**.
 
 Never audit diffs directly inside the primary conversation thread. Always delegate to an isolated subagent.
 
@@ -19,7 +19,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 flowchart TD
     A["Invoke /audit"] --> B["Phase 1: Ingest Context, Diff & Spec Artifacts"]
     B --> C["Phase 2: Spawn Isolated Subagent Auditor"]
-    C --> D["Subagent reads AUDITOR-INSTRUCTIONS.md, checks specs, plan & cases"]
+    C --> D["Subagent reads AUDITOR-INSTRUCTIONS.md, audits specs, performance & cases"]
     D --> E["Phase 3: Receive Subagent Structured Report"]
     E --> F{"Is Verdict BLOCKED?"}
     F -- YES --> G["Phase 4: Deliver Blockers & Remediation Checklist to the User"]
@@ -49,6 +49,7 @@ Spawn a dedicated subagent (e.g. via `invoke_subagent`) to perform the audit in 
   5. Audit the code against:
      - Unhappy paths, concurrency, and edge cases.
      - Specification & plan conformance (PRD/SRS/Plan contracts).
+     - Performance & scalability hazards (N+1 queries, unbounded memory loads, event loop blocking, sequential I/O).
      - TDD rigor (public API behavior testing, no over-mocking, separate test commits).
      - Test integrity (zero deleted, skipped, or weakened assertions).
   6. Return your review strictly following the Output Report Structure in AUDITOR-INSTRUCTIONS.md.
@@ -64,5 +65,5 @@ Spawn a dedicated subagent (e.g. via `invoke_subagent`) to perform the audit in 
 
 ### Phase 4: Delivery to User
 - Present the subagent's audit report directly and transparently to the user.
-- Highlight any `BLOCKED` items (especially specification drift, edge-case crashes, or test tampering) and provide a concise summary of required fixes.
+- Highlight any `BLOCKED` items (especially specification drift, catastrophic performance bottlenecks, or test tampering) and provide a concise summary of required fixes.
 - If the verdict is `CLEAN & MERGEABLE`, certify the code as ready for merge.

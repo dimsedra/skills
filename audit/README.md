@@ -1,6 +1,6 @@
 # Audit Skill
 
-Production-grade code review and PR auditing engine that enforces zero-bias review via an isolated subagent auditor, specification conformance (PRD/SRS), evidence-backed findings, and calibrated mergeability verdicts.
+Production-grade code review and PR auditing engine that enforces zero-bias review via an isolated subagent auditor, specification conformance (PRD/SRS/Plan), performance scalability analysis, TDD rigor, evidence-backed findings, and calibrated mergeability verdicts.
 
 ## Install
 
@@ -23,18 +23,19 @@ Enforces strict production-grade constraints when auditing code:
 - **Zero-Bias Subagent Isolation**: Primary agent dispatches a clean, isolated subagent auditor to eliminate confirmation bias.
 - **Dedicated Subagent Protocol**: Subagent operates under `AUDITOR-INSTRUCTIONS.md` with strictly bounded reading directives.
 - **Specification & Contract Conformance**: Audits against parent PRDs, SRS, and Plans to eliminate specification drift, missing requirements, or unrequested scope creep.
+- **Performance & Scalability Hazards**: Identifies N+1 queries, unindexed lookups, unbounded memory allocations, event loop blocking, and sequential I/O bottlenecks when relevant to the diff.
 - **TDD Rigor & Anti-Tampering**: Enforces behavior testing via public APIs, separate test/feat commits, clean readable test outputs, and bans skipping or weakening assertions to force a pass.
 - **Happy-Path Hunting**: Actively hunts for unhandled edge cases, boundary failures, and timeouts.
-- **Evidence-Backed Bug Claims**: Banned from making speculative "ghost bug" claims. Every reported defect must include exact code locations and concrete reproducible trigger scenarios.
+- **Evidence-Backed Bug Claims**: Banned from making speculative "ghost bug" claims. Every reported defect must include exact code locations, concrete reproducible trigger scenarios, and scaling impact.
 - **Clean & Battle-Tested Solutions**: Demands clean, simple, maintainable fixes—recognizing that the best solution often removes over-engineering rather than adding LOC.
-- **Calibrated Verdicts**: Clear criteria separating `BLOCKED` (crashes, data loss, security, specification drift, test tampering, broken contracts) from `NEEDS POLISH` (non-blocking debt, minor optimizations).
+- **Calibrated Verdicts**: Clear criteria separating `BLOCKED` (crashes, data loss, security, specification drift, test tampering, fatal performance bottlenecks) from `NEEDS POLISH` (non-blocking debt, minor optimizations).
 
 ## Usage
 
 Invoke directly whenever reviewing a branch, PR, or diff:
 
 ```text
-Tolong audit PR ini: #123
+Please audit this PR: #123
 ```
 
 Or simply trigger via `/audit` during code review discussions.
