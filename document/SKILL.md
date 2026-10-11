@@ -46,6 +46,7 @@ Evaluate the content against this decision tree to determine file placement:
 | **PRD (Product)** | `docs/prd/YYYYMMDD_<slug>.md` | **Why & What to build**: Problem framing, user personas, business goals, scope boundaries, and CUJs. Handled via specialized sub-skill `/prd`. |
 | **SRS (Software)** | `docs/srs/YYYYMMDD_<slug>.md` | **How the software behaves**: Technical system capabilities, REQ identifiers, interface schemas, and NFRs. Handled via specialized sub-skill `/srs`. |
 | **Plan (Implementation)** | `docs/plan/YYYYMMDD_<slug>.md` | **Step-by-step roadmap**: Commit-driven task breakdown, stateful progress checkboxes, and execution phases based on PRD/SRS. Handled via specialized sub-skill `/plans`. |
+| **RFC (Proposal)** | `docs/rfc/rfc_NNN_<slug>.md` | **Technical proposal & consensus**: Major architectural shifts, cross-team interfaces, and migration strategies before commitment. Handled via specialized sub-skill `/rfc`. |
 | **Architecture** | `docs/architecture/` | **How the system works**: Component hierarchy, data lifecycle, runtime state transitions, subsystem boundaries, and inter-service communication. |
 | **Decisions (ADR)** | `docs/decisions/adr_NNN_<slug>.md` | **Why a technical choice was made**: Architectural Decision Records detailing context, considered alternatives, evaluated trade-offs, and consequences. Handled via specialized sub-skill `/adr`. |
 | **Guides** | `docs/guides/` | **How to accomplish a task**: Step-by-step developer recipes, environment setup, runbooks, migration guides, and operational procedures. |

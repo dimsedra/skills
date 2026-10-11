@@ -26,6 +26,7 @@ npx skills add dimsedra/skills --skill plans
 npx skills add dimsedra/skills --skill prd
 npx skills add dimsedra/skills --skill report
 npx skills add dimsedra/skills --skill research
+npx skills add dimsedra/skills --skill rfc
 npx skills add dimsedra/skills --skill slides
 npx skills add dimsedra/skills --skill srs
 ```
@@ -64,6 +65,9 @@ Generates standalone, markdown-like HTML reports with console typography, deep b
 
 ### `research`
 Conducts outward-facing technical research grounded in authoritative documentation, installed dependencies, and proven real-world codebases rather than static training data.
+
+### `rfc`
+Proposes significant engineering initiatives, drives technical consensus, and aligns cross-functional stakeholders through structured, review-driven Request for Comments (RFC) documents in `docs/rfc/`.
 
 ### `slides`
 Builds modular, responsive HTML presentation decks with full-bleed viewport fitting (16:9), keyboard navigation, background live preview server, and high-fidelity PDF print export.
