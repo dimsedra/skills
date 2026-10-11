@@ -3,72 +3,79 @@ name: plans
 description: Use when creating a structured, commit-driven implementation plan with real-time progress tracking based on PRD and SRS specifications into docs/plan/.
 ---
 
-# Plans (Implementation Planning)
+# Plans (TDD Implementation Planning)
 
-When I ask you to plan an implementation (e.g. via `/plans` or natural planning requests), your goal is to **translate approved PRD user outcomes and SRS technical specifications into a structured, step-by-step implementation plan where every discrete task maps directly to an atomic Git commit, complete with real-time stateful progress tracking**.
-
-Do not generate ephemeral scratch plans in temporary directories. Always produce a durable, living document in `docs/plan/`.
+When I ask you to create, draft, or refine an implementation plan (e.g. via `/plans` or natural planning requests), your goal is to **translate high-level PRD user outcomes and SRS technical specifications into an executable, commit-driven roadmap organized by behavioral TDD scenarios**.
 
 Execute this activity strictly following the decision flow from top to bottom:
 
 ---
 
-## The Planning Decision & Execution Flow
+## The TDD Plans Decision & Execution Flow
 
 ```mermaid
 flowchart TD
-    A["Invoke /plans"] --> B["Phase 1: Ingest PRD, SRS & Codebase Baseline"]
-    B --> C{"Are there unguided implementation trade-offs or order ambiguities?"}
-    C -- YES --> D["Phase 2: Invoke /align with the User"]
-    D --> E["Calibrate sequencing, architecture trade-offs & milestones"]
-    E --> F["Phase 3: Scale-Aware Phasing & Decomposition"]
-    C -- NO --> F
-    F --> G["Phase 4: Commit-Driven Task Breakdown with Stateful Checkboxes"]
-    G --> H["Phase 5: Placement Announcement & Document Authoring"]
-    H --> I["Phase 6: Index in docs/README.md & Deliver"]
+    A["Invoke /plans"] --> B["Phase 1: Ingest Specs & Map Codebase Baseline"]
+    B --> C["Phase 2: Extract & Order 4-Dimension Behavior Scenarios"]
+    C --> D{"Are there sequencing ambiguities or unguided trade-offs?"}
+    D -- YES --> E["Phase 3: Invoke /align with the User"]
+    E --> F["Calibrate sequence, order & reach consensus"]
+    F --> G["Phase 4: Dual-Task TDD Breakdown (Task a: TEST / Task b: FEAT)"]
+    D -- NO --> G
+    G --> H["Phase 5: Announce Placement & Draft Plan (YYYYMMDD_<slug>.md)"]
+    H --> I["Phase 6: Index in docs/README.md & Delivery"]
 ```
 
 ---
 
-### Phase 1: Ingest PRD, SRS & Baseline Discovery
-1. **Locate Specification Artifacts**: Check `docs/prd/` and `docs/srs/` for the approved feature requirements and technical contracts.
-2. **Extract Key Constraints**:
-   - Extract user journeys and scope boundaries from the PRD.
-   - Extract functional requirements (`REQ-XXX`), schema models, API endpoints, and NFR thresholds from the SRS.
-3. **Inspect Codebase Baseline**: Verify existing repository patterns, shared helpers, and dependencies so the plan builds upon what already exists.
+### Phase 1: Ingest PRD & SRS Contracts & Baseline Mapping
+1. **Locate Specifications**: Read the parent documents:
+   - `docs/prd/YYYYMMDD_<feature_slug>.md` (Problem framing, user journeys, MVP scope).
+   - `docs/srs/YYYYMMDD_<module_slug>.md` (Interface schemas, REQ identifiers, NFR targets).
+2. **Anchor Requirements**: Every planned task must trace back to a specific `REQ-XXX` identifier or PRD User Story.
+3. **Map Codebase Baseline in Target Area**:
+   - Inspect existing source code, signatures, types, and invariants in the subsystems that will be modified or integrated.
+   - Grounding test scenarios in the existing codebase reality upfront eliminates guesswork and mitigates test tampering down the line.
 
 ---
 
-### Phase 2: Technical Alignment Gate (Invoke `/align`)
+### Phase 2: Extract & Order Behavior Scenarios (4 Dimensions)
+1. **Derive Scenarios from Public API Boundaries**:
+   - Frame tests around behavioral interactions through the public interface/API.
+   - Strictly avoid over-mocking and avoid assertions that merely verify "method X was called". Focus on inputs, observable states, returned payloads, and side-effects.
+2. **Systematically Cover 4 Testing Dimensions**:
+   Organize scenarios across four essential dimensions:
+   - **Normal Path**: Core workflows and happy-path journeys.
+   - **Boundaries (Edge Cases)**: Empty inputs, boundary limits, maximum payloads, off-by-one conditions.
+   - **Error Paths**: Validation rejections, network failures, unauthorized requests, timeouts.
+   - **Core Invariants**: Fundamental business integrity rules and system guarantees that must never be violated.
+3. **Order by Design-Revealing Impact**:
+   - Order scenarios from the most design-revealing (foundational schema, core interface contract, central domain rule) to peripheral edge cases and error handling.
+   - Formulate scenario titles as clear behavioral statements (e.g. *"should reject order when inventory is insufficient"*) so the resulting test logs are instantly readable and understandable by the user.
+
+---
+
+### Phase 3: Technical Alignment Gate (Invoke `/align`)
 > [!IMPORTANT]
-> **Strictly No Unilateral Assumptions on Implementation Strategy**:
-> If there are ambiguities regarding implementation order, library choices, breaking migration steps, or technical trade-offs:
-> 1. **Immediately trigger the `/align` skill**.
-> 2. Present the sequencing options or architectural trade-offs to the user.
-> 3. Calibrate and reach consensus on milestone boundaries before finalizing the plan.
+> **No Unilateral Sequencing Assumptions**:
+> If phase ordering, migration sequencing, or technical trade-offs are ambiguous:
+> 1. Immediately invoke `/align`.
+> 2. Present 2–3 sequencing strategies with pros and cons.
+> 3. Align with the user before committing to the plan.
 
 ---
 
-### Phase 3: Scale-Aware Phasing & Decomposition
-If the SRS is large or touches multiple layers, decompose the work into logical, sequential phases:
-- **Phase 1: Data Model & Storage Foundation** (Schemas, migrations, repository layer).
-- **Phase 2: Domain Logic & Core Services** (Business rules, validations, state machines).
-- **Phase 3: Interfaces & External Integration** (HTTP/gRPC endpoints, background workers, event handlers).
-- **Phase 4: Client & UI Integration** (Components, state hooks, visual styling).
-- **Phase 5: Verification & End-to-End Hardening** (Integration tests, telemetry, documentation sync).
+### Phase 4: Dual-Task TDD Breakdown (1 Scenario = 2 Atomic Commits)
+In alignment with the core principles **"Take small steps"** and **"Commit test and implementation separately"**, every behavior scenario is broken down into an explicit pair of tasks:
 
----
-
-### Phase 4: Commit-Driven Task Breakdown (1 Task = 1 Commit)
-In alignment with the core principle **"Take small steps"**, every task must represent a single, digestible, atomic Git commit:
-- **Discrete & Self-Contained**: Each task must accomplish one focused change that can be reviewed, tested, and audited independently.
-- **Stateful Task Checkbox**: Every task MUST begin with a GitHub-flavored markdown checkbox (`- [ ]`) to enable real-time tracking by downstream execution skills (e.g. `/implement`).
-- **Explicit Commit Contract**: Every task in the plan must define:
-  - **Checkbox & Title**: `- [ ] **Task X.Y: [Action Statement]**`
-  - **Target Requirements**: Linked `REQ-XXX` from SRS or user stories from PRD.
-  - **Affected Files**: Explicit list of files using `[NEW]`, `[MODIFY]`, or `[DELETE]`.
-  - **Proposed Commit Message**: Conventional commit format (e.g. `feat(auth): implement argon2 password hashing`).
-  - **Verification Step**: Concrete test command to run and verify before committing.
+- **Task X.Ya: [TEST] (The Red Phase)**:
+  - Writes the targeted failing test asserting the scenario via the public API with concise "what and why" comments.
+  - Expected verification result: **FAIL / RED** (proves the test is valid and detects the missing capability).
+  - Proposed commit message: `test(<scope>): add failing test for <scenario>`
+- **Task X.Yb: [FEAT] (The Green Phase)**:
+  - Writes the minimal implementation code needed to satisfy the test.
+  - Expected verification result: **PASS / GREEN** with clean, human-readable test logs.
+  - Proposed commit message: `feat(<scope>): implement minimal logic for <scenario>`
 
 ---
 
@@ -78,7 +85,7 @@ In alignment with the core principle **"Take small steps"**, every task must rep
    - **Chronological Revision Rule**: If this plan's tasks, scope, or structure are revised on a subsequent calendar date (via `/plans`), rename the file using `git mv` to match the new date (`YYYYMMDD_<plan_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize references in `docs/README.md`.
    - **Preservation During Implementation**: Routine task completion ticking, commit hash recording, and progress bar updates during execution (`/implement`) preserve the plan filename without renaming.
 2. **Required Implementation Plan Structure**:
-   Structure the document with frontmatter (`title`, `type: plan`, `parent_prd`, `parent_srs`, `status: planned`, `total_tasks`, `completed_tasks`, `last_updated`):
+   Structure the document with frontmatter:
 
    ```markdown
    ---
@@ -87,7 +94,7 @@ In alignment with the core principle **"Take small steps"**, every task must rep
    parent_prd: docs/prd/YYYYMMDD_[feature].md
    parent_srs: docs/srs/YYYYMMDD_[feature].md
    status: planned          # planned | in_progress | completed
-   total_tasks: [Total Number]
+   total_tasks: [Total Number of Sub-Tasks]
    completed_tasks: 0
    last_updated: YYYY-MM-DD
    ---
@@ -96,47 +103,26 @@ In alignment with the core principle **"Take small steps"**, every task must rep
 
    > **Progress Tracker:** `[░░░░░░░░░░░░░░░░]` **0 / [Total] Tasks Completed (0%)**
 
-   ## 1. Context & Traceability
-   - **Parent PRD**: [Link to docs/prd/...]
-   - **Parent SRS**: [Link to docs/srs/...]
-   - **Implementation Summary**: Brief summary of the deliverables and targeted milestones.
+   ---
 
-   ## 2. Component & Architecture Scope
-   - High-level component diagram or list of impacted architectural modules.
+   ## Phase 1: [Milestone Name]
 
-   ## 3. Phased Execution Plan
+   ### Scenario 1.1: [Behavior Description] (Normal Path / Boundary / Error / Invariant)
+   - [ ] **Task 1.1a: [TEST] Write failing test for [Behavior]**
+     - **Fulfills**: `REQ-XXX`
+     - **Files**: `[NEW] tests/unit/...test.ts`
+     - **Commit**: `test(scope): add failing test for [behavior]`
+     - **Verification**: `npm test path/to/test.ts` (EXPECTED: FAIL / RED)
 
-   ### Phase 1: [Phase Name]
-
-   - [ ] **Task 1.1: [Task Description]**
-     - **Fulfills**: `REQ-[MODULE]-[INDEX]`
-     - **Files**:
-       - `[NEW]` `path/to/new-file.ts`
-       - `[MODIFY]` `path/to/existing-file.ts`
-     - **Commit**: `feat(module): clear conventional commit message`
-     - **Verification**: `command to run tests (e.g. npm test path/to/test.ts)`
-
-   - [ ] **Task 1.2: [Task Description]**
-     ...
-
-   ## 4. Verification & Test Strategy
-   - Automated test suite commands across all phases.
-   - Manual verification checkpoints.
-
-   ## 5. Risk & Rollback Strategy
-   - Database migration rollback plans and feature flag toggles.
+   - [ ] **Task 1.1b: [FEAT] Implement minimal logic for [Behavior]**
+     - **Fulfills**: `REQ-XXX`
+     - **Files**: `[NEW/MODIFY] src/...`
+     - **Commit**: `feat(scope): implement minimal logic for [behavior]`
+     - **Verification**: `npm test path/to/test.ts` (EXPECTED: PASS / GREEN)
    ```
-
-3. **Downstream Execution Contract (For `/implement`)**:
-   - The plan document serves as an executable state machine.
-   - When a task is picked up by an execution workflow:
-     1. Code changes are implemented strictly for that scoped task.
-     2. Verification command is run and must pass.
-     3. Atomic commit is executed.
-     4. The checkbox in `docs/plan/<name>.md` is immediately checked (`- [x]`), `completed_tasks` count is incremented, and the progress bar is updated in real-time.
 
 ---
 
 ### Phase 6: Anti-Rot Indexing & Delivery
 1. **Single Source of Map**: Open `docs/README.md` and catalog the new plan in the **Implementation Plans (Plan)** table with its title, linked SRS, status (`Planned`), progress (`0%`), and relative markdown link.
-2. **Delivery**: Present an executive overview of the phases, total commit count, and initial execution roadmap in chat.
+2. **Delivery**: Present an executive overview of the phases, test coverage across the 4 dimensions, total commit pairs, and execution roadmap in chat.

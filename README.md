@@ -40,7 +40,7 @@ Captures and maintains Architecture Decision Records (ADRs) with context, evalua
 Ensures the AI agent genuinely understands user intent, architecture, and requirements before executing, eliminating guesswork through explicit verification.
 
 ### `audit`
-Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral subagents with battle-tested fixes, CodeRabbit/Copilot reviewer stance, and explicit mergeability verdicts.
+Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral subagents with specification and plan conformance, TDD rigor, unhappy path hunting, and explicit mergeability verdicts.
 
 ### `design`
 Enforces restrained aesthetics, brand-centered identity, visual comfort, and zero component clutter when designing or building front-end user interfaces.
@@ -49,13 +49,13 @@ Enforces restrained aesthetics, brand-centered identity, visual comfort, and zer
 Transforms design discussions, architectural models, decisions, and technical workflows into clean, modular, and traceable markdown documents inside `docs/`.
 
 ### `implement`
-Executes implementation plans phase-by-phase from `docs/plan/` with atomic Git commits, mandatory automated test verification, and real-time audit trail tracking (recording commit hashes).
+Executes implementation plans phase-by-phase from `docs/plan/` with strict TDD cycles (Red-Green-Refactor), separate test and feature commits, automated verification, and real-time audit trail tracking.
 
 ### `issue`
 Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
 
 ### `plans`
-Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps with stateful, real-time progress tracking.
+Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps organized by behavioral TDD scenarios with real-time progress tracking.
 
 ### `prd`
 Defines the problem space, target outcomes, scope boundaries, and user requirements before building, leaving technical implementation details flexible for engineering.

@@ -1,6 +1,6 @@
 # Plans Skill
 
-Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps with stateful, real-time progress tracking.
+Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps organized by behavioral TDD scenarios with real-time progress tracking.
 
 ## Install
 
@@ -10,11 +10,11 @@ npx skills add dimsedra/skills --skill plans
 
 ## Features
 
-- **Specification-Anchored**: Derives scope and technical contracts directly from approved `docs/prd/` and `docs/srs/` artifacts.
-- **Commit-Driven Task Decomposition**: Enforces small, digestible steps where each individual task specifies its own conventional commit message, target files, and verification test.
-- **Stateful Progress Tracker**: Uses interactive markdown checkboxes (`- [ ]` / `- [x]`) and progress indicators designed to be updated in real-time by downstream implementation skills (e.g. `/implement`).
-- **Scale-Aware Phasing**: Breaks large, complex specifications into logical sequential milestones (storage, domain logic, interfaces, UI, end-to-end testing).
-- **Alignment Gate (`/align`)**: Proactively surfaces sequencing ambiguities and architecture trade-offs before locking in implementation order.
+- **Specification & Baseline Grounded**: Derives scope from approved `docs/prd/` and `docs/srs/` artifacts, while mapping existing codebase baselines upfront to prevent friction and test tampering.
+- **4-Dimension Scenario Coverage**: Systematically plans test scenarios across normal path, boundaries (edge cases), error paths, and core system invariants.
+- **TDD Dual-Task Decomposition**: Structures every behavior scenario into an atomic pair of tasks: `Task X.Ya [TEST]` (failing test commit) and `Task X.Yb [FEAT]` (minimal implementation commit).
+- **Public API Behavior Focus**: Enforces black-box behavioral verification via public interfaces, avoiding over-mocking and brittle interaction assertions.
+- **Human-Readable Test Logs**: Structures scenario descriptions into clear behavioral statements that generate clean, easily readable test output.
 - **Durable Chronological Artifacts**: Generates persistent documentation in `docs/plan/YYYYMMDD_<plan_slug>.md` and catalogs every plan in `docs/README.md`.
 
 ## Usage
@@ -25,8 +25,8 @@ Trigger via `/plans` referencing a feature or specification:
 /plans Checkout Pipeline
 ```
 
-Or ask the agent naturally:
+Or ask naturally:
 
 ```text
-Berdasarkan SRS auth-service, tolong buatkan implementation plan berbasis commit dan checklist progress ya
+Based on the auth service SRS, please create a commit-driven TDD implementation plan with task checklists
 ```

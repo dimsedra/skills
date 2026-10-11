@@ -1,6 +1,6 @@
 # Implement Skill
 
-Executes implementation plans phase-by-phase from `docs/plan/` with atomic Git commits, mandatory automated test verification, and real-time audit trail tracking (recording commit hashes directly into the plan document).
+Executes implementation plans phase-by-phase from `docs/plan/` with strict TDD cycles (Red-Green-Refactor), separate test and feature commits, automated verification, and real-time audit trail tracking (recording commit hashes directly into the plan document).
 
 ## Install
 
@@ -10,12 +10,13 @@ npx skills add dimsedra/skills --skill implement
 
 ## Features
 
-- **Plan-Driven Execution**: Strictly executes against approved roadmaps in `docs/plan/` rather than improvising code changes.
-- **Phase Milestone Cadence**: Executes work phase-by-phase, pausing at milestone checkpoints for user review and validation.
-- **Strictly Atomic Commits (1 Task = 1 Commit)**: Prevents massive code dumps by keeping every change discrete, self-contained, and easily auditable.
-- **Mandatory Pre-Commit Verification**: Runs automated test suites for every task; commits are only created when tests pass cleanly.
+- **Strict TDD Execution (Red-Green-Refactor)**: Executes behavior scenarios strictly test-first—demonstrating failure, delivering minimal implementation, and refactoring cleanly.
+- **Separate Commits (Test vs Feat)**: Commits tests and implementation code separately, enabling clean, independent diff reviews.
+- **Baseline & Impact Mapping**: Inspects the target codebase area before writing tests to ground tests in existing signatures, types, and invariants, mitigating test tampering friction.
+- **Readable Behavior Test Logs**: Formats test runs to output clean, human-readable scenario descriptions and proof of delivery in chat.
+- **Strict Anti-Tampering Rules**: Prohibits deleting, skipping, or weakening assertions to force a pass; requires immediate stopping and `/align` calibration if a test is flawed.
+- **Minimal Implementation Discipline**: Delivers only the minimal code necessary to satisfy passing tests without unrequested complexity or features.
 - **Living Plan Synchronization**: Automatically ticks task checkboxes (`- [x]`), appends Git commit hashes (e.g. `a1b2c3d`), and recalculates progress metrics in real-time.
-- **Blocker Gate (`/align`)**: Flags unexpected architectural issues or contract mismatches and triggers `/align` instead of writing silent hacks.
 
 ## Usage
 
@@ -25,8 +26,8 @@ Trigger via `/implement` referencing an active plan or feature:
 /implement Checkout Pipeline
 ```
 
-Or ask the agent naturally:
+Or ask naturally:
 
 ```text
-Tolong implementasikan Phase 1 dari plan checkout ya
+Please implement Phase 1 of the checkout pipeline plan
 ```
