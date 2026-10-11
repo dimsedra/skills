@@ -17,7 +17,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 flowchart TD
     A["Invoke /prd"] --> B["Phase 1: Ingest Context & Synthesize Gaps"]
     B --> C{"Are there unguided high-level decisions?"}
-    C -- YES --> D["Phase 2: Invoke /align with the User"]
+    C -- YES --> D["Phase 2: Invoke /align with Me"]
     D --> E["Calibrate, resolve trade-offs & reach consensus"]
     E --> F["Phase 3: Scope & Prioritization Gate"]
     C -- NO --> F
@@ -28,9 +28,9 @@ flowchart TD
 ---
 
 ### Phase 1: Ingest Context & Gap Synthesis
-1. **Ingest the Raw Context**: Read the user prompt, issue thread, background discussion, and codebase state.
+1. **Ingest the Raw Context**: Read my prompt, issue thread, background discussion, and codebase state.
 2. **Sort into Two Mental Buckets**:
-   - **Directed & Settled**: Items where the user has provided clear direction (problem statement, target user, core MVP need).
+   - **Directed & Settled**: Items where I have provided clear direction (problem statement, target end users/personas, core MVP need).
    - **Unguided High-Level Decisions (Gaps)**: Strategic trade-offs, scope boundaries, policy edge-cases, or monetization/business rules that have not yet been addressed.
 
 ---
@@ -40,16 +40,16 @@ flowchart TD
 > **Strictly No Unilateral Assumptions on Unguided Decisions**:
 > Never invent or silently assume high-level business or scope decisions. If gaps exist in Phase 1:
 > 1. **Immediately trigger the `/align` skill**.
-> 2. Present the identified gaps, compare viable options/trade-offs, and suggest recommendations.
-> 3. Discuss and calibrate with the user until we are on the same page.
-> 4. Only proceed to Phase 3 once alignment is reached. (Any intentionally deferred items must be flagged as `[PENDING USER ALIGNMENT]`).
+> 2. Present the identified gaps, compare viable options/trade-offs, and suggest recommendations to me.
+> 3. Discuss and calibrate with me until we are on the same page.
+> 4. Only proceed to Phase 3 once we reach alignment. (Any intentionally deferred items must be flagged as `[PENDING ALIGNMENT WITH ME]`).
 
 ---
 
 ### Phase 3: Scope & Prioritization Gate
 Before writing requirements, pass every capability through these filters:
 1. **Problem-Oriented**: Does every feature directly solve the root problem identified? Eliminate surface-level bells and whistles.
-2. **Outcome-Focused ("What", not "How")**: Focus on user capabilities and measurable impact. Leave technical architecture to engineering and the SRS.
+2. **Outcome-Focused ("What", not "How")**: Focus on end-user capabilities and measurable impact. Leave technical architecture to engineering and the SRS.
 3. **Rigorous Prioritization**:
    - **In-Scope (MVP)**: Strictly `Must-Have` (MoSCoW) or `P0` items required for launch.
    - **Out-of-Scope**: Explicitly list deferred items (`Won't-Have` / `P2`) to prevent scope creep.
@@ -57,7 +57,7 @@ Before writing requirements, pass every capability through these filters:
 ---
 
 ### Phase 4: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing & Chronological Naming**: Declare destination file path before writing:
+1. **Zero Stealth Writing & Chronological Naming**: Declare your destination file path to me before writing:
    - Target format: `docs/prd/YYYYMMDD_<feature_slug>.md` in full snake_case (e.g., `docs/prd/20261011_user_onboarding.md`).
    - **Chronological Revision Rule**: If this PRD is modified or revised on a subsequent calendar date, rename the file using `git mv` to match the new date (`YYYYMMDD_<feature_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize all references in `docs/README.md` and downstream documents (`parent_prd` in SRS/Plans).
 2. **Required 7-Section Document Structure**:
@@ -66,7 +66,7 @@ Before writing requirements, pass every capability through these filters:
    - **Section 1: Metadata & Status**
      - Owner / Lead PM, cross-functional team (Design, Eng, QA, GTM), status (`Draft`/`In Review`/`Approved`), target release timeline.
    - **Section 2: Overview & Context**
-     - Root problem statement, strategic alignment (OKRs/pillars), target audience & user personas.
+     - Root problem statement, strategic alignment (OKRs/pillars), target audience & personas.
    - **Section 3: Goals & Success Metrics**
      - Qualitative business goals and quantitative Key Results with baseline/target metrics (e.g., *"Reduce drop-off by 15%"*).
    - **Section 4: Scope & Constraints**
@@ -84,4 +84,4 @@ Before writing requirements, pass every capability through these filters:
 
 ### Phase 5: Anti-Rot Indexing & Delivery
 1. **Single Source of Map**: Open `docs/README.md` and catalog the new document in the **Product Requirements (PRD)** table with its title, status, and relative markdown link.
-2. **Executive Delivery**: Provide a concise summary in the chat, listing the key outcomes and any remaining open questions.
+2. **Executive Delivery**: Provide a concise summary to me in chat, listing the key outcomes and any remaining open questions.

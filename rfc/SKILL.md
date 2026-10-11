@@ -18,7 +18,7 @@ flowchart TD
     A["Invoke /rfc"] --> B["Phase 1: Ingest Context & Scope Proposal"]
     B --> C["Phase 2: Audience Calibration & Tone Framing"]
     C --> D{"Are there unguided strategic or architectural choices?"}
-    D -- YES --> E["Phase 3: Invoke /align with the User"]
+    D -- YES --> E["Phase 3: Invoke /align with Me"]
     E --> F["Calibrate options, evaluate trade-offs & reach consensus"]
     F --> G["Phase 4: Goals, Non-Goals & Rigor Gate"]
     D -- NO --> G
@@ -31,7 +31,7 @@ flowchart TD
 ### Phase 1: Ingest Context & Scope Proposal
 1. **Determine Proposal Boundary**:
    - Assess whether the initiative warrants a formal RFC (significant architectural shifts, cross-team API contracts, database migrations, new subsystems, or high-risk operational changes).
-   - If the request is a single narrow architectural choice, suggest an **ADR** instead. If it defines user outcomes without technical designs, suggest a **PRD**.
+   - Distill my request into the core problem statement. If my request is a single narrow architectural choice, suggest an **ADR** to me instead. If it defines user outcomes without technical designs, suggest a **PRD** to me.
 2. **Collect Problem Reality**:
    - Gather concrete data: performance bottlenecks, error rates, maintenance costs, latency percentiles, or business growth projections.
    - Anchor the motivation in real evidence rather than subjective dissatisfaction.
@@ -55,7 +55,7 @@ Tailor the explanation depth across three primary audiences within a single laye
 > Never lock in fundamental technologies, vendor platforms, or breaking interface changes unilaterally.
 > 1. If major competing architectures exist, **immediately trigger the `/align` skill**.
 > 2. Present viable approaches with concrete trade-offs, operational consequences, and recommended paths.
-> 3. Align with the user before authoring the full proposal.
+> 3. Align with me before writing to resolve high-impact architectural forks.
 
 ---
 
@@ -69,11 +69,11 @@ Before authoring, enforce these structural quality gates:
 ---
 
 ### Phase 5: Placement Announcement & RFC Authoring
-1. **Zero Stealth Writing & Sequential Naming**: Declare destination file path before writing:
+1. **Zero Stealth Writing & Sequential Naming**: Declare your destination file path to me before writing:
    - Target format: `docs/rfc/rfc_NNN_<proposal_slug>.md` in full snake_case with 3-digit zero-padding (e.g., `docs/rfc/rfc_001_migrating_to_event_driven_orders.md`).
    - Determine sequential number `NNN` by inspecting existing files in `docs/rfc/` and incrementing the highest existing index (starting at `001`).
 2. **RFC Lifecycle State Management**:
-   - `Draft`: Initial proposal under author development.
+   - `Draft`: Initial proposal under our active proposal/development.
    - `In-Review`: Published for team feedback with an active review deadline.
    - `Accepted`: Consensus reached; approved to derive formal SRS, ADRs, or Implementation Plans.
    - `Rejected`: Proposal evaluated but discarded (retained for historic context).
@@ -140,4 +140,4 @@ Before authoring, enforce these structural quality gates:
 
 ### Phase 6: Anti-Rot Indexing & Delivery
 1. **Single Source of Map**: Open `docs/README.md` and catalog the new RFC in the **Technical Proposals (RFC)** table with its identifier, title, status, review deadline, and relative markdown link.
-2. **Delivery**: Present an executive overview in chat, highlighting key trade-offs and calling out open questions that need feedback.
+2. **Delivery**: Present the RFC to me in chat with an executive overview, highlighting key trade-offs and calling out open questions that need feedback.

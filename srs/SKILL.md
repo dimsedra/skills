@@ -17,7 +17,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 flowchart TD
     A["Invoke /srs"] --> B["Phase 1: Ingest PRD & Map System Context"]
     B --> C{"Are there unguided architectural decisions?"}
-    C -- YES --> D["Phase 2: Invoke /align with the User"]
+    C -- YES --> D["Phase 2: Invoke /align with Me"]
     D --> E["Calibrate technical trade-offs & reach consensus"]
     E --> F["Phase 3: Interface & Boundary Contract Definition"]
     C -- NO --> F
@@ -28,12 +28,12 @@ flowchart TD
 ---
 
 ### Phase 1: Ingest PRD & Architectural Discovery
-1. **Locate & Read the Parent PRD**: Inspect `docs/prd/` to anchor software requirements in approved user journeys and scope boundaries.
+1. **Locate & Read the Parent PRD**: Inspect `docs/prd/` to anchor software requirements in approved end-user journeys and scope boundaries.
 2. **Map System Boundaries & Gaps**:
-   - Identify actors (human users, background workers, external APIs).
+   - Identify actors (human end-users, background workers, external APIs).
    - Sort technical requirements into:
      - **Settled Technical Baseline**: Stack choices, existing repo patterns, and directed infrastructure.
-     - **Unguided Architectural Decisions (Gaps)**: Data consistency models, auth mechanisms, external vendors, or state-storage trade-offs that the user has not directed.
+     - **Unguided Architectural Decisions (Gaps)**: Data consistency models, auth mechanisms, external vendors, state-storage trade-offs, or any technical decision where I have not directed a specific solution.
 
 ---
 
@@ -42,9 +42,9 @@ flowchart TD
 > **Strictly No Unilateral Assumptions on Technical Decisions**:
 > Never assume or unilaterally lock in high-level architecture, database paradigms, security models, or third-party dependencies. If technical gaps exist in Phase 1:
 > 1. **Immediately trigger the `/align` skill**.
-> 2. Present the architectural trade-offs (e.g., stateless vs. session-based, polling vs. webhooks, SQL vs. NoSQL) with concrete pros and cons.
-> 3. Calibrate with the user to reach a firm technical decision.
-> 4. Only proceed to Phase 3 once shared intuition is established.
+> 2. Present the architectural trade-offs (e.g., stateless vs. session-based, polling vs. webhooks, SQL vs. NoSQL) with concrete pros and cons to me.
+> 3. Calibrate with me on ambiguous behaviors, non-functional targets, and architectural trade-offs to reach a firm technical decision.
+> 4. Only proceed to Phase 3 once we establish shared intuition. (Any intentionally deferred items must be flagged as `[PENDING ALIGNMENT WITH ME]`).
 
 ---
 
@@ -57,7 +57,7 @@ Before writing numbered requirements, enforce these technical filters:
 ---
 
 ### Phase 4: Placement Announcement & Specification Authoring
-1. **Zero Stealth Writing & Chronological Naming**: Declare destination file path before writing:
+1. **Zero Stealth Writing & Chronological Naming**: Declare your destination file path to me before writing:
    - Target format: `docs/srs/YYYYMMDD_<module_slug>.md` in full snake_case (e.g., `docs/srs/20261011_auth_service.md`).
    - **Chronological Revision Rule**: If this SRS is modified or revised on a subsequent calendar date, rename the file using `git mv` to match the new date (`YYYYMMDD_<module_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize all references in `docs/README.md` and downstream documents (`parent_srs` in Plans).
 2. **Required 7-Section Document Structure**:
@@ -88,4 +88,7 @@ Before writing numbered requirements, enforce these technical filters:
 ### Phase 5: Verification Matrix, Anti-Rot Indexing & Delivery
 1. **Verification Matrix**: Include an unambiguous table mapping every `REQ-XXX` identifier to its automated verification strategy (`Unit Test`, `Integration Test`, `Load Test`, `Contract Test`).
 2. **Single Source of Map**: Open `docs/README.md` and catalog the new SRS in the **Software Requirements (SRS)** table with its title, linked parent PRD, status, and relative markdown link.
-3. **Delivery**: Report the generated specification path, linked PRD, and key interface contracts in chat.
+3. **Delivery**: Present a summary of the specification to me in chat with:
+   - Generated specification path (`docs/srs/YYYYMMDD_<module_slug>.md`).
+   - Linked parent PRD (`docs/prd/YYYYMMDD_xxx.md`).
+   - Key interface contracts and verification strategy highlights.

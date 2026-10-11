@@ -5,9 +5,9 @@ description: Use when auditing or reviewing Pull Requests, Merge Requests, or co
 
 # Audit (Review Orchestration)
 
-When reviewing or auditing a Pull Request, Merge Request (PR/MR), or code diff (e.g. via `/audit` or natural review requests), your goal is to **orchestrate a rigorous, zero-bias code audit by spawning an isolated subagent auditor equipped with an adversarial posture, specification contracts, performance & scalability checks, and strict TDD verification directives**.
+When I ask you to review or audit a Pull Request, Merge Request (PR/MR), or code diff (e.g. via `/audit` or when I ask for a code review), your goal is to **orchestrate a rigorous, zero-bias code audit by spawning an isolated subagent auditor equipped with an adversarial posture, specification contracts, performance & scalability checks, and strict TDD verification directives**.
 
-Never audit diffs directly inside the primary conversation thread. Always delegate to an isolated subagent.
+Never audit diffs directly inside our primary conversation thread. Always delegate to an isolated subagent.
 
 Execute this activity strictly following the decision flow from top to bottom:
 
@@ -22,14 +22,14 @@ flowchart TD
     C --> D["Subagent reads AUDITOR-INSTRUCTIONS.md, audits specs, performance & cases"]
     D --> E["Phase 3: Receive Subagent Structured Report"]
     E --> F{"Is Verdict BLOCKED?"}
-    F -- YES --> G["Phase 4: Deliver Blockers & Remediation Checklist to the User"]
-    F -- NO --> H["Phase 4: Deliver Certification & Merge Verdict to the User"]
+    F -- YES --> G["Phase 4: Deliver Blockers & Remediation Checklist to Me"]
+    F -- NO --> H["Phase 4: Deliver Certification & Merge Verdict to Me"]
 ```
 
 ---
 
 ### Phase 1: Context Ingestion & Scope Boundary
-1. **Identify the Target Diff**: Determine the branch, commit range, or specific PR to review.
+1. **Identify the Target Diff**: Confirm with me the scope of the diff if ambiguous, or determine the branch, commit range, or specific PR to review.
 2. **Collect Specification & Plan Artifacts**: Check `docs/prd/`, `docs/srs/`, `docs/decisions/`, and `docs/plan/` for documents relevant to the modified code.
 3. **Bound the Review Boundary**: Identify the exact list of modified files in the diff.
 
@@ -63,7 +63,7 @@ Spawn a dedicated subagent (e.g. via `invoke_subagent`) to perform the audit in 
 
 ---
 
-### Phase 4: Delivery to User
-- Present the subagent's audit report directly and transparently to the user.
-- Highlight any `BLOCKED` items (especially specification drift, catastrophic performance bottlenecks, or test tampering) and provide a concise summary of required fixes.
+### Phase 4: Delivery to Me
+- Present the subagent's audit report directly and transparently to me.
+- Highlight any `BLOCKED` items (especially specification drift, catastrophic performance bottlenecks, or test tampering) and provide me with a concise summary of required fixes.
 - If the verdict is `CLEAN & MERGEABLE`, certify the code as ready for merge.

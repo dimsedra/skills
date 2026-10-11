@@ -18,7 +18,7 @@ flowchart TD
     A["Invoke /plans"] --> B["Phase 1: Ingest Specs & Map Codebase Baseline"]
     B --> C["Phase 2: Extract & Order 4-Dimension Behavior Scenarios"]
     C --> D{"Are there sequencing ambiguities or unguided trade-offs?"}
-    D -- YES --> E["Phase 3: Invoke /align with the User"]
+    D -- YES --> E["Phase 3: Invoke /align with Me"]
     E --> F["Calibrate sequence, order & reach consensus"]
     F --> G["Phase 4: Dual-Task TDD Breakdown (Task a: TEST / Task b: FEAT)"]
     D -- NO --> G
@@ -51,7 +51,7 @@ flowchart TD
    - **Core Invariants**: Fundamental business integrity rules and system guarantees that must never be violated.
 3. **Order by Design-Revealing Impact**:
    - Order scenarios from the most design-revealing (foundational schema, core interface contract, central domain rule) to peripheral edge cases and error handling.
-   - Formulate scenario titles as clear behavioral statements (e.g. *"should reject order when inventory is insufficient"*) so the resulting test logs are instantly readable and understandable by the user.
+   - Formulate scenario titles as clear behavioral statements (e.g. *"should reject order when inventory is insufficient"*) with human-readable test logs that I can easily understand from a behavior perspective.
 
 ---
 
@@ -61,7 +61,7 @@ flowchart TD
 > If phase ordering, migration sequencing, or technical trade-offs are ambiguous:
 > 1. Immediately invoke `/align`.
 > 2. Present 2–3 sequencing strategies with pros and cons.
-> 3. Align with the user before committing to the plan.
+> 3. Align with me on phase boundaries, TDD verification criteria, and commit granularity before writing the plan.
 
 ---
 
@@ -69,18 +69,18 @@ flowchart TD
 In alignment with the core principles **"Take small steps"** and **"Commit test and implementation separately"**, every behavior scenario is broken down into an explicit pair of tasks:
 
 - **Task X.Ya: [TEST] (The Red Phase)**:
-  - Writes the targeted failing test asserting the scenario via the public API with concise "what and why" comments.
+  - Write a single targeted failing test asserting the scenario via the public API with concise "what and why" comments.
   - Expected verification result: **FAIL / RED** (proves the test is valid and detects the missing capability).
   - Proposed commit message: `test(<scope>): add failing test for <scenario>`
 - **Task X.Yb: [FEAT] (The Green Phase)**:
-  - Writes the minimal implementation code needed to satisfy the test.
+  - Write the minimal implementation code needed to satisfy the test.
   - Expected verification result: **PASS / GREEN** with clean, human-readable test logs.
   - Proposed commit message: `feat(<scope>): implement minimal logic for <scenario>`
 
 ---
 
 ### Phase 5: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing & Chronological Naming**: Declare destination file path before writing:
+1. **Zero Stealth Writing & Chronological Naming**: Declare your destination file path to me before writing:
    - Target format: `docs/plan/YYYYMMDD_<plan_slug>.md` in full snake_case (e.g., `docs/plan/20261011_checkout_pipeline.md`).
    - **Chronological Revision Rule**: If this plan's tasks, scope, or structure are revised on a subsequent calendar date (via `/plans`), rename the file using `git mv` to match the new date (`YYYYMMDD_<plan_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize references in `docs/README.md`.
    - **Preservation During Implementation**: Routine task completion ticking, commit hash recording, and progress bar updates during execution (`/implement`) preserve the plan filename without renaming.
@@ -125,4 +125,4 @@ In alignment with the core principles **"Take small steps"** and **"Commit test 
 
 ### Phase 6: Anti-Rot Indexing & Delivery
 1. **Single Source of Map**: Open `docs/README.md` and catalog the new plan in the **Implementation Plans (Plan)** table with its title, linked SRS, status (`Planned`), progress (`0%`), and relative markdown link.
-2. **Delivery**: Present an executive overview of the phases, test coverage across the 4 dimensions, total commit pairs, and execution roadmap in chat.
+2. **Delivery**: Present the implementation plan to me in chat with an executive overview of the phases, test coverage across the 4 dimensions, total commit pairs, and execution roadmap.

@@ -28,7 +28,7 @@ flowchart TD
     I --> J["Phase 4: Real-Time Plan Update: Tick [x] & Record Hash"]
     J --> K{"Are there remaining tasks in this Phase?"}
     K -- YES --> F
-    K -- NO --> L["Phase 5: Phase Milestone Checkpoint Review with the User"]
+    K -- NO --> L["Phase 5: Phase Milestone Checkpoint Review with Me"]
 ```
 
 ---
@@ -60,7 +60,7 @@ Execute each scenario strictly through the **Red -> Green -> Refactor** sequence
    - **Concise "What & Why" Comments**: Include brief header comments in the test file explaining what behavior is being verified and why this invariant matters.
 2. **Run Test Runner (Demonstrate Failure)**:
    - Run the specified test command.
-   - **Show Output as Behavior Proof**: Display the failing test output in chat. Ensure logs are clean and clearly communicate the scenario description and failure reason from a behavior perspective so the user can easily read and verify it.
+   - **Show Output as Behavior Proof**: Display the failing test output in chat. Ensure logs are clean and clearly communicate the scenario description and failure reason from a behavior perspective so I can easily read and understand from a behavior perspective.
 3. **Atomic Test Commit**:
    - Stage strictly the test files (`git add <test-files>`).
    - Commit using the proposed test commit message (e.g. `test(order): add failing test for discount calculation`).
@@ -86,8 +86,8 @@ Execute each scenario strictly through the **Red -> Green -> Refactor** sequence
 > Never delete, skip (`it.skip`, `@Disabled`), or weaken assertions to make a failing test pass.
 > If a test is discovered to be logically flawed or specifications change:
 > 1. **STOP immediately**.
-> 2. Explain the discrepancy clearly to the user.
-> 3. Invoke `/align` to calibrate before making any changes to the test.
+> 2. Explain the defect or architectural gap to me with exact line references and wait for my guidance.
+> 3. Invoke `/align` to calibrate with me before making any changes to the test.
 
 ---
 
@@ -123,9 +123,9 @@ Immediately after each commit succeeds, update the active plan document (`docs/p
 
 ### Phase 5: Phase Milestone Checkpoint Review
 Once all tasks within the active phase are completed:
-1. **Pause for Review**: Stop execution to give the user space to digest progress step by step.
+1. **Pause for Review**: Stop execution to give me space to digest progress and prevent run-away modifications.
 2. **Deliver Milestone Summary**:
    - Report the completed phase name.
    - List the created commit pairs (tests + feats) with their hashes and verified test outputs.
    - Display the updated overall plan progress (e.g. `6 / 12 Tasks Completed (50%)`).
-3. **Awaiting Next Green Light**: Ask the user whether to proceed to the next phase.
+3. **Awaiting Next Green Light**: Ask me for explicit confirmation before starting the next phase (e.g., *"Phase 1 is complete and all tests pass. Ready to proceed to Phase 2?"*).

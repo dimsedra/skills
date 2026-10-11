@@ -17,7 +17,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 flowchart TD
     A["Invoke /adr"] --> B["Phase 1: Ingest Context & Map Architectural Forces"]
     B --> C{"Are there unguided trade-offs or contested choices?"}
-    C -- YES --> D["Phase 2: Invoke /align with the User"]
+    C -- YES --> D["Phase 2: Invoke /align with Me"]
     D --> E["Calibrate options, evaluate pros/cons & reach consensus"]
     E --> F["Phase 3: Decision & Trade-Off Rigor Gate"]
     C -- NO --> F
@@ -30,34 +30,35 @@ flowchart TD
 ### Phase 1: Ingest Context & Architectural Forces
 1. **Enforce Single & Short Scope**:
    - Each ADR must address exactly **one** architectural decision (e.g., *"Use PostgreSQL for the order service"*, not *"Database and storage architecture roadmap"*).
-   - If a request spans multiple distinct architectural choices, break them down into separate sequential ADRs.
+   - If my request spans multiple distinct architectural choices, break them down into separate sequential ADRs.
 2. **Map Architectural Forces & Constraints**:
-   - Technical drivers: throughput, latency percentiles, data volume, consistency model, reliability needs.
-   - Organizational & team drivers: team familiarity, operational overhead, vendor lock-in, licensing.
-   - Compliance & business constraints: budget, deadlines, security, regulatory policies (e.g. PCI-DSS, SOC2, GDPR).
+   - Identify and map the architectural forces and constraints governing my project:
+     - Technical drivers: throughput, latency percentiles, data volume, consistency model, reliability needs.
+     - Organizational & team drivers: team familiarity, operational overhead, vendor lock-in, licensing.
+     - Compliance & business constraints: budget, deadlines, security, regulatory policies (e.g. PCI-DSS, SOC2, GDPR).
 
 ---
 
 ### Phase 2: Technical Alignment Gate (Invoke `/align`)
 > [!IMPORTANT]
 > **Strictly No Unilateral Architectural Decisions**:
-> Never lock in frameworks, database engines, messaging queues, or communication protocols unilaterally without alignment.
+> Never lock in frameworks, database engines, messaging queues, or communication protocols unilaterally without aligning with me first.
 > 1. If multiple viable architectural patterns exist, **immediately invoke `/align`**.
-> 2. Present 2–3 concrete options with their pros, cons, and operational consequences.
-> 3. Calibrate with the user until consensus is reached before authoring the record.
+> 2. Present 2–3 concrete options to me with their pros, cons, and operational consequences.
+> 3. Calibrate with me until we reach consensus before authoring the record.
 
 ---
 
 ### Phase 3: Decision & Trade-Off Rigor Gate
 Before drafting the record, apply these quality filters:
 1. **Unambiguous & Active Voice**: State the decision as a firm choice (*"We will use Apache Kafka for inter-service event streaming"*), never as a tentative suggestion (*"Kafka should be considered"*).
-2. **Explicit Rejected Alternatives**: Prevent endless future relitigation by clearly documenting which alternatives were evaluated and specifically why they were rejected.
+2. **Explicit Rejected Alternatives**: Prevent endless future relitigation for me by clearly documenting which alternatives were evaluated and specifically why they were rejected, ensuring I can defend this choice later.
 3. **Intellectual Honesty on Consequences**: Every architecture choice introduces trade-offs. You must explicitly document negative consequences and operational risks alongside positive benefits.
 
 ---
 
 ### Phase 4: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing & Sequential Naming**: Declare destination file path before writing:
+1. **Zero Stealth Writing & Sequential Naming**: Declare your destination file path to me before writing:
    - Target format: `docs/decisions/adr_NNN_<decision_slug>.md` in full snake_case with 3-digit zero-padding (e.g., `docs/decisions/adr_001_use_kafka_for_inter_service_communication.md`).
    - Determine sequential number `NNN` by inspecting existing files in `docs/decisions/` and incrementing the highest existing index (starting at `001`).
 2. **Immutability & Superseding Protocol**:
@@ -124,4 +125,4 @@ Before drafting the record, apply these quality filters:
 
 ### Phase 5: Anti-Rot Indexing & Delivery
 1. **Single Source of Map**: Open `docs/README.md` and catalog the new ADR in the **Architectural Decisions (ADR)** table with its identifier, title, status, date, and relative markdown link.
-2. **Delivery**: Present an executive summary of the decision, key trade-offs, and next steps in chat.
+2. **Delivery**: Present to me an executive summary of the decision, key trade-offs, and next steps in chat.

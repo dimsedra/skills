@@ -5,35 +5,35 @@ description: Use when documenting architecture, decisions, workflows, concepts, 
 
 # Document
 
-When asked to document a system, feature, discussion, architectural decision, or workflow (e.g. via `/document` or natural documentation requests), follow these directives to maintain a clean, modular, and durable documentation repository:
+When I ask you to document architecture, workflows, concepts, or technical specifications (e.g. via `/document` or natural documentation requests), your goal is to maintain a clean, modular, and durable documentation repository by following these directives:
 
 ## Core Documentation Directives
 
 ### 1. Synthesis Over Transcripts
-Documentation captures enduring system architecture and technical truths, not raw conversational histories.
+Capture enduring system architecture and technical truths, not our raw conversational histories.
 - Synthesize technical reality, architectural decisions, and operational mental models directly from context.
-- Never produce conversational logs or raw discussion summaries. Extract durable knowledge that remains valuable for anyone reading the documentation cold.
+- Never produce conversational logs or raw discussion summaries. Extract durable knowledge that remains valuable for me or anyone reading the documentation cold.
 
 ### 2. Modular Separation of Concerns (Single Responsibility)
-Every document addresses exactly one focused technical concern rather than amalgamating unrelated topics into a monolith.
-- Enforce strict single-responsibility per document. Avoid monolithic, multi-topic documents.
+Address exactly one focused technical concern per document rather than amalgamating unrelated topics into a monolith.
+- Enforce strict single responsibility per document. Avoid monolithic, multi-topic documents.
 - Clearly decouple high-level system models from step-by-step implementation recipes and technical decision records.
 
 ### 3. Explicit Placement Announcement (Zero Stealth Writing)
-File locations and taxonomical classifications must be explicitly declared to the user before writing begins.
-- Never create or modify documentation files silently without declaring intent.
-- Always explicitly state the determined category and destination file path before or upon generating the file (e.g., *"Categorized as **architecture**: creating `docs/architecture/state-machine.md`"*).
-- If the content spans multiple categories (e.g. half architecture, half how-to guide), identify the boundary ambiguity and offer a concise split or placement choice before writing.
+Declare your destination path to me before writing begins.
+- Never create or modify documentation files silently without declaring your intent to me.
+- Always explicitly state the determined category and destination file path to me before or upon generating the file (e.g., *"Categorized as **architecture**: creating `docs/architecture/state-machine.md`"*).
+- If the content spans multiple categories (e.g. half architecture, half how-to guide), identify the boundary ambiguity and recommend a concise split or placement choice to me before writing.
 
 ### 4. Durable Code Anchors & Traceability
-Documentation remains anchored to concrete codebase symbols rather than decaying in an isolated narrative vacuum.
+Anchor documentation to concrete codebase symbols rather than leaving it in an isolated narrative vacuum.
 - Bind documentation directly to codebase symbols and files via structured YAML frontmatter.
 - Reference durable symbol paths (`path/to/file.ext` -> `ClassName.method()`) rather than volatile line numbers that break on future edits.
 
 ### 5. Single Source of Map (Anti-Rot Indexing)
-A centralized documentation index maintains complete discoverability and prevents orphaned or forgotten files.
+Maintain complete discoverability through a centralized documentation index and prevent orphaned or forgotten files.
 - Never leave orphaned documentation files.
-- Every newly created or updated document must be cataloged in `docs/README.md` (or the existing root documentation index) with a one-line summary and relative link.
+- Catalog every newly created or updated document in `docs/README.md` (or our existing root documentation index) with a one-line summary and relative link.
 
 ---
 
@@ -53,7 +53,7 @@ Evaluate the content against this decision tree to determine file placement:
 | **Concepts** | `docs/concepts/` | **Domain mental models**: Business domain rules, terminology glossaries, core entities, and conceptual paradigms. |
 | **Reference** | `docs/reference/` | **Formal specifications**: API contracts, configuration schemas, command-line arguments, database models, and interface definitions. |
 
-*Existing Project Conventions*: If the project already has an established documentation directory structure, respect and adapt to that layout while enforcing modularity and traceability.
+*Existing Project Conventions*: If our project already has an established documentation directory structure, respect and adapt to that layout while enforcing modularity and traceability.
 
 ---
 
@@ -61,10 +61,10 @@ Evaluate the content against this decision tree to determine file placement:
 
 1. **Classify & Check Collision**:
    - Map the topic to the appropriate category using the decision tree.
-   - Inspect the existing `docs/` tree. If a document covering the topic already exists, update and refine the existing document instead of creating a redundant duplicate.
+   - Inspect our existing `docs/` tree. If a document covering the topic already exists, update and refine the existing document instead of creating a redundant duplicate.
 
 2. **Announce Placement**:
-   - Declare the chosen category and destination path in the chat response.
+   - Declare the chosen category and destination path to me in your response.
 
 3. **Draft the Document**:
    Structure every document with consistent frontmatter:
@@ -92,4 +92,4 @@ Evaluate the content against this decision tree to determine file placement:
 
 4. **Synchronize Index & Deliver**:
    - Update `docs/README.md` with the new or updated document link and description.
-   - Report the generated document path and a concise summary.
+   - Report the generated document path and a concise summary to me.
