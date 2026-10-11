@@ -26,14 +26,15 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **I own, maintain, and defend this codebase**: Even when you (the agent) write the code technically, this project is fundamentally mine to own, operate, account for, and defend. You will not be there to explain it in code reviews, answer to stakeholders, or debug it during incidents—I will.
 - **Prioritize my comprehension and long-term ease**: Every implementation, architectural choice, and test must prioritize what makes the codebase easiest and most intuitive for me to understand, maintain, and defend. Never write esoteric, overly clever, or convoluted code that leaves me detached from my own project.
 
-## How We Build Code
+### What this means when you write code
 
 - **Wait for clear instructions**: Only start writing or editing code when I explicitly ask you to build or change something.
 - **Take small steps**: Please make progress in small, bite-sized steps. Don't do huge code changes all at once because I need space to digest progress step by step.
 - **Keep it simple & minimal**: Stick strictly to what we agreed to build. Deliver the minimal implementation required to satisfy the agreed scenarios without adding unrequested complexity or extra features.
 - **Follow existing codebase patterns**: Write code that naturally conforms to the established idioms, naming conventions, error handling styles, and directory structures already present in the codebase.
-- **Resist unsolicited abstractions**: Do not invent new abstractions, indirection layers, or generic helpers unless explicitly requested. The cost of reading with a cold context is far higher than the cost of writing; straightforward, direct code is always preferred.
-- **Justify abstractions via `/align`**: If an abstraction is genuinely necessary because its value substantially outweighs the cognitive trade-offs of indirection, pause and invoke `/align` to discuss it first. If approved, proactively recommend creating architectural documentation via `/document` so I have a durable mental map to defend and maintain it later.
+- **Semantically distinct naming**: Name variables, types, functions, and files so they are semantically distinct, easily differentiated at a glance, and immediately understandable, while staying simple and straightforward. Never use vague, overlapping generic names (e.g. `data`, `info`, `handler`, `manager`, `temp`) or artificially esoteric jargon.
+- **Resist unsolicited abstractions**: Do not invent new abstractions, indirection layers, or generic helpers unless I explicitly ask for them. The cost of reading with a cold context is far higher than the cost of writing; straightforward, direct code is always preferred.
+- **Justify abstractions via `/align`**: If an abstraction is genuinely necessary because its value substantially outweighs the cognitive trade-offs of indirection, pause and invoke `/align` to discuss it with me first. Once I approve it, proactively recommend creating architectural documentation via `/document` so I have a durable mental map to defend and maintain it later.
 - **Write purposeful, concise comments (What & Why)**: Code comments across the entire codebase (source files, tests, and configuration) must concisely explain *what* is being achieved and *why* that specific approach, rule, or invariant exists, rather than restating what the syntax already shows.
 - **Flag blockers early**: If you notice something missing in the specs that could block us down the road, point it out and explain the situation clearly so we can figure it out together.
 - **Map codebase baseline before testing**: Before writing tests, inspect the existing codebase in the impacted area to ground tests in existing signatures, types, and invariants, preventing friction and test tampering down the line.
@@ -53,7 +54,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
   - For Product Requirements Documents, strictly invoke and follow the `prd` skill (`/prd`).
   - For Software Requirements Specifications, strictly invoke and follow the `srs` skill (`/srs`).
   - For commit-driven implementation roadmaps and progress tracking, strictly invoke and follow the `plans` skill (`/plans`).
-  - Never make unilateral assumptions on unguided high-level decisions; invoke `/align` to calibrate before drafting.
+  - Never make unilateral assumptions on unguided high-level decisions; invoke `/align` to calibrate with me before drafting.
   - All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
 - **`docs/` boundary rules**:
   - If `docs/` is in `.gitignore` (or otherwise excluded from VCS), treat that as intentional. Do not remove it from `.gitignore`, change ignore rules to track it, or use `git add -f`.
@@ -61,11 +62,11 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
   - If `docs/` is in a nested separate repository, never reference, mention, or write links to it inside the parent codebase (e.g. in source files, docstrings, code comments, or codebase READMEs).
   - In both cases, never stage or commit `docs/` files as part of the parent project's commits.
   - If `docs/` is a normal tracked folder in the project repo (not ignored, no `.git` of its own), handle it like any other directory.
-  - If it's unclear whether `docs/` should be tracked, or where it should be committed, ask before changing anything.
+  - If it's unclear whether `docs/` should be tracked, or where it should be committed, ask me before changing anything.
 
 ## Subagent Behavior & Delegation
 
-- **Precise & Bounded File Reading (Strictly No Overreading)**: Subagents must strictly read only the files or line ranges explicitly instructed by the parent agent, or those strictly necessary to accomplish the scoped task. Never speculatively wander across the repository, inspect unrelated files, or overread broad context. Keep file exploration tightly bounded, clear-cut, and disciplined at all times.
+- **Precise & Bounded File Reading (Strictly No Overreading)**: Subagents must strictly read only the files or line ranges explicitly instructed by you (the parent agent) or me, or those strictly necessary to accomplish the scoped task. Never speculatively wander across the repository, inspect unrelated files, or overread broad context. Keep file exploration tightly bounded, clear-cut, and disciplined at all times.
 
 <!-- context7 -->
 Use Context7 MCP to fetch current documentation whenever the user asks about a library, framework, SDK, API, CLI tool, or cloud service — even well-known ones like React, Next.js, Prisma, Express, Tailwind, Django, or Spring Boot. This includes API syntax, configuration, version migration, library-specific debugging, setup instructions, and CLI tool usage. Use even when you think you know the answer — your training data may not reflect recent changes. Prefer this over web search for library docs.
