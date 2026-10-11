@@ -57,13 +57,14 @@ Before writing numbered requirements, enforce these technical filters:
 ---
 
 ### Phase 4: Placement Announcement & Specification Authoring
-1. **Zero Stealth Writing**: Declare destination file path before writing:
-   - Default target: `docs/srs/<module-slug>.md` (e.g., `docs/srs/auth-service.md`).
+1. **Zero Stealth Writing & Chronological Naming**: Declare destination file path before writing:
+   - Target format: `docs/srs/YYYYMMDD_<module_slug>.md` in full snake_case (e.g., `docs/srs/20261011_auth_service.md`).
+   - **Chronological Revision Rule**: If this SRS is modified or revised on a subsequent calendar date, rename the file using `git mv` to match the new date (`YYYYMMDD_<module_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize all references in `docs/README.md` and downstream documents (`parent_srs` in Plans).
 2. **Required 7-Section Document Structure**:
    Structure the document with frontmatter (`title`, `type: srs`, `parent_prd`, `status: Draft`, `last_updated`):
 
    - **Section 1: Metadata, Versioning & Traceability**
-     - Specification version (`v1.0.0`), status, authors/reviewers, and explicit links to parent PRD (`docs/prd/xxx.md`) and ADRs.
+     - Specification version (`v1.0.0`), status, authors/reviewers, and explicit links to parent PRD (`docs/prd/YYYYMMDD_xxx.md`) and ADRs.
    - **Section 2: System Overview & Architectural Context**
      - Scope boundaries, system actors, and C4/Mermaid architecture diagram showing service context and data stores.
    - **Section 3: External Interface Requirements**

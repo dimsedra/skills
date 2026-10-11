@@ -57,8 +57,9 @@ Before writing requirements, pass every capability through these filters:
 ---
 
 ### Phase 4: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing**: Declare destination file path before writing:
-   - Default target: `docs/prd/<feature-slug>.md` (e.g., `docs/prd/user-onboarding.md`).
+1. **Zero Stealth Writing & Chronological Naming**: Declare destination file path before writing:
+   - Target format: `docs/prd/YYYYMMDD_<feature_slug>.md` in full snake_case (e.g., `docs/prd/20261011_user_onboarding.md`).
+   - **Chronological Revision Rule**: If this PRD is modified or revised on a subsequent calendar date, rename the file using `git mv` to match the new date (`YYYYMMDD_<feature_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize all references in `docs/README.md` and downstream documents (`parent_prd` in SRS/Plans).
 2. **Required 7-Section Document Structure**:
    Structure the document with frontmatter (`title`, `type: prd`, `status: Draft`, `last_updated`):
 

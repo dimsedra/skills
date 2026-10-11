@@ -15,7 +15,7 @@ npx skills add dimsedra/skills --skill plans
 - **Stateful Progress Tracker**: Uses interactive markdown checkboxes (`- [ ]` / `- [x]`) and progress indicators designed to be updated in real-time by downstream implementation skills (e.g. `/implement`).
 - **Scale-Aware Phasing**: Breaks large, complex specifications into logical sequential milestones (storage, domain logic, interfaces, UI, end-to-end testing).
 - **Alignment Gate (`/align`)**: Proactively surfaces sequencing ambiguities and architecture trade-offs before locking in implementation order.
-- **Durable Repo Artifacts**: Generates persistent documentation in `docs/plan/<name>.md` and catalogs every plan in `docs/README.md`.
+- **Durable Chronological Artifacts**: Generates persistent documentation in `docs/plan/YYYYMMDD_<plan_slug>.md` and catalogs every plan in `docs/README.md`.
 
 ## Usage
 

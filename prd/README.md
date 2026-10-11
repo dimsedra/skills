@@ -14,7 +14,7 @@ npx skills add dimsedra/skills --skill prd
 - **Alignment Gate (`/align`)**: Enforces proactive gap analysis and calibration on high-level business or scope decisions before drafting.
 - **Strict Prioritization**: Categorizes deliverables via MoSCoW or P0–P2 bands to guard against scope creep.
 - **Standardized 7-Section Structure**: Covers Metadata, Context, Goals & Metrics, Scope & Constraints, Requirements (CUJs), References, and Launch/Risk Log.
-- **Zero Stealth Writing & Anti-Rot Indexing**: Declares destination paths upfront and registers all PRDs in `docs/README.md`.
+- **Zero Stealth Writing & Chronological Indexing**: Declares destination paths upfront in `docs/prd/YYYYMMDD_<feature_slug>.md` and registers all PRDs in `docs/README.md`.
 
 ## Usage
 

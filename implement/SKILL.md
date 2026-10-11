@@ -35,7 +35,7 @@ flowchart TD
 ---
 
 ### Phase 1: Ingest Plan & Active Phase Discovery
-1. **Locate & Read the Plan**: Inspect `docs/plan/` to find the active plan matching the discussion or prompt.
+1. **Locate & Read the Plan**: Inspect `docs/plan/` to find the active plan matching the discussion or prompt (formatted as `docs/plan/YYYYMMDD_<plan_slug>.md`).
 2. **Identify the Active Phase**:
    - Scan for the first phase containing unchecked tasks (`- [ ]`).
    - If all tasks across all phases are already checked (`- [x]`), declare the plan fully implemented and suggest running `/audit`.
@@ -70,7 +70,8 @@ Within the active phase, execute tasks strictly **one by one**:
 ---
 
 ### Phase 4: Real-Time Plan Synchronization (Living Audit Trail)
-Immediately after the commit succeeds, update `docs/plan/<name>.md` in real-time:
+Immediately after the commit succeeds, update the active plan document (`docs/plan/YYYYMMDD_<plan_slug>.md`) in real-time.
+*(Note: Routine checklist ticking, commit hash appending, and progress counter updates preserve the existing plan filename without renaming it across calendar days.)*
 1. **Tick Checkbox & Append Commit Hash**:
    Update the task item from:
    ```markdown

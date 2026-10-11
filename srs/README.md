@@ -14,7 +14,7 @@ npx skills add dimsedra/skills --skill srs
 - **Alignment Gate (`/align`)**: Flags unguided architectural decisions (database paradigms, auth models, API protocols) and calibrates with the user before locking in specifications.
 - **Rigorous Bidirectional Traceability**: Assigns stable `REQ-[MODULE]-[INDEX]` identifiers to every requirement, mapping back to parent PRDs and forward to test suites.
 - **Unhappy Path as First-Class Citizen**: Systematically defines error response schemas, timeout recovery, edge cases, and rate limits.
-- **Verification Matrix & Anti-Rot Indexing**: Generates a test verification matrix and catalogs every SRS in `docs/README.md`.
+- **Verification Matrix & Chronological Indexing**: Generates a test verification matrix, places files at `docs/srs/YYYYMMDD_<module_slug>.md`, and catalogs every SRS in `docs/README.md`.
 
 ## Usage
 

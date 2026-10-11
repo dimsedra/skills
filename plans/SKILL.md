@@ -73,8 +73,10 @@ In alignment with the core principle **"Take small steps"**, every task must rep
 ---
 
 ### Phase 5: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing**: Declare destination file path before writing:
-   - Default target: `docs/plan/<feature-or-module-slug>.md` (e.g., `docs/plan/checkout-pipeline.md`).
+1. **Zero Stealth Writing & Chronological Naming**: Declare destination file path before writing:
+   - Target format: `docs/plan/YYYYMMDD_<plan_slug>.md` in full snake_case (e.g., `docs/plan/20261011_checkout_pipeline.md`).
+   - **Chronological Revision Rule**: If this plan's tasks, scope, or structure are revised on a subsequent calendar date (via `/plans`), rename the file using `git mv` to match the new date (`YYYYMMDD_<plan_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize references in `docs/README.md`.
+   - **Preservation During Implementation**: Routine task completion ticking, commit hash recording, and progress bar updates during execution (`/implement`) preserve the plan filename without renaming.
 2. **Required Implementation Plan Structure**:
    Structure the document with frontmatter (`title`, `type: plan`, `parent_prd`, `parent_srs`, `status: planned`, `total_tasks`, `completed_tasks`, `last_updated`):
 
@@ -82,8 +84,8 @@ In alignment with the core principle **"Take small steps"**, every task must rep
    ---
    title: Implementation Plan - [Feature Name]
    type: plan
-   parent_prd: docs/prd/[feature].md
-   parent_srs: docs/srs/[feature].md
+   parent_prd: docs/prd/YYYYMMDD_[feature].md
+   parent_srs: docs/srs/YYYYMMDD_[feature].md
    status: planned          # planned | in_progress | completed
    total_tasks: [Total Number]
    completed_tasks: 0
