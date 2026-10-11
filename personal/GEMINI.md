@@ -36,7 +36,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **Semantically distinct naming**: Use semantically distinct, straightforward names for variables, types, functions, and files. Avoid vague, overlapping names (e.g., `data`, `info`, `handler`, `manager`, `temp`) and overly clever jargon.
 - **Resist unsolicited abstractions**: Do not invent new abstractions, indirection layers, or generic helpers unless I explicitly ask for them. Keep code direct and concrete.
 - **Justify abstractions via `/align`**: If an abstraction is helpful, pause and invoke `/align` to discuss it with me first. Once I approve it, proactively recommend documenting it via `/document`.
-- **Write purposeful, concise comments (What & Why)**: Write concise comments explaining what you are achieving and why a rule or invariant exists. Never restate what the syntax already shows.
+- **Write purposeful, concise comments (Why)**: Write concise comments explaining why a specific approach, rule, or invariant exists. Never explain what the code does or restate what the syntax already shows.
 - **Flag blockers early**: Flag missing specs, contradictions, or blockers immediately. Explain the problem to me before proceeding.
 - **Map codebase baseline before testing**: Inspect the existing codebase in the target area before writing tests to ground them in existing signatures, types, and invariants.
 - **Write clear, behavior-driven tests**: Verify observable behavior through public APIs with clean, readable test logs that I can easily understand. Cover 4 dimensions: normal path, boundaries/edge cases, error paths, and core invariants. Avoid over-mocking or asserting implementation details.

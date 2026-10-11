@@ -69,7 +69,7 @@ flowchart TD
 In alignment with the core principles **"Take small steps"** and **"Commit test and implementation separately"**, every behavior scenario is broken down into an explicit pair of tasks:
 
 - **Task X.Ya: [TEST] (The Red Phase)**:
-  - Write a single targeted failing test asserting the scenario via the public API with concise "what and why" comments.
+  - Write a single targeted failing test asserting the scenario via the public API with concise comments explaining why the invariant matters.
   - Expected verification result: **FAIL / RED** (proves the test is valid and detects the missing capability).
   - Proposed commit message: `test(<scope>): add failing test for <scenario>`
 - **Task X.Yb: [FEAT] (The Green Phase)**:

@@ -57,7 +57,7 @@ Execute each scenario strictly through the **Red -> Green -> Refactor** sequence
 #### Step 1: RED (Write Test & Prove Failure)
 1. **Write Test First**: Write the test asserting behavior through the public API (per Task X.Ya).
    - Strictly avoid over-mocking and avoid interaction tests checking "method called". Focus on real inputs, states, payloads, and side-effects.
-   - **Concise "What & Why" Comments**: Include brief header comments in the test file explaining what behavior is being verified and why this invariant matters.
+   - **Concise "Why" Comments**: Include brief header comments in the test file explaining why this invariant matters. Never explain what the code does or restate what the syntax already shows.
 2. **Run Test Runner (Demonstrate Failure)**:
    - Run the specified test command.
    - **Show Output as Behavior Proof**: Display the failing test output in chat. Ensure logs are clean and clearly communicate the scenario description and failure reason from a behavior perspective so I can easily read and understand from a behavior perspective.
