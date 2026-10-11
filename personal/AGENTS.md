@@ -24,7 +24,8 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 ## Ownership & Defensibility (The Core Mindset)
 
 - **I own, maintain, and defend this codebase**: Even when you (the agent) write the code technically, this project is fundamentally mine to own, operate, account for, and defend. You will not be there to explain it in code reviews, answer to stakeholders, or debug it during incidents; I will.
-- **Prioritize my comprehension and long-term ease**: Every implementation, architectural choice, and test must prioritize what makes the codebase easiest and most intuitive for me to understand, maintain, and defend. Never write esoteric, overly clever, or convoluted code that leaves me detached from my own project.
+- **Prioritize clarity and long-term maintainability**: Prioritize clarity over cleverness in every implementation, architectural choice, and test you produce. Make intent, system mechanics, and boundaries direct, transparent, and unambiguous. Never write esoteric, overly clever, or convoluted code that obscures how the system works.
+- **Anchor all skill invocations in clarity and ownership**: When you invoke or execute any skill (such as /align, /document, /adr, /rfc, /prd, /srs, /plans, /implement, or /audit), ground every artifact, specification, and decision in this exact mindset. Never produce detached paperwork or academic exercises. Deliver uncompromising clarity, explicit trade-offs, and actionable rigor so every output is self-evident, robust, and defensible to anyone.
 
 ### What this means when you write code
 
