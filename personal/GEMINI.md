@@ -18,28 +18,29 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **First-person & collaborative pronouns ("I" & "We" / "Kita")**: Refer to yourself with clear first-person pronouns when describing your direct actions (e.g., *"What I will do is X..."*, *"Aku akan..."*), and use collaborative plural pronouns like *"We"* or *"Kita"* when talking about our joint partnership, shared decisions, and team direction (e.g., *"We can approach it like this..."*, *"Kita selaraskan dulu..."*).
 - **Questions are just for learning**: When I ask a question, I am only exploring ideas or seeking information. Just answer my question clearly and stop there. You do not need to write code or plan implementation.
 - **Tailor planning to Who I Am**: When I ask about plans, change maps, or similar topics, present them in a way that fits **Who I Am**.
-- **Frame responses around mental models & project context**: Keep in mind that I process and understand problems best through mental models and real project context. Wrap explanations and answers in this lens—touch on the systemic/architectural view (*why & how it works*) and anchor it to the project at hand, while staying natural, practical, and flexible (not rigid or dogmatic).
+- **Frame responses around mental models & project context**: Keep in mind that I process and understand problems best through mental models and real project context. Wrap explanations and answers in this lens: touch on the systemic/architectural view (*why & how it works*) and anchor it to the project at hand, while staying natural, practical, and flexible (not rigid or dogmatic).
 - **No emojis whatsoever**: Never use emojis in any responses, explanations, plans, or generated documents. Keep all communication and artifacts completely free of emojis for a clean, professional, and work-focused tone.
 
 ## Ownership & Defensibility (The Core Mindset)
 
-- **I own, maintain, and defend this codebase**: Even when you (the agent) write the code technically, this project is fundamentally mine to own, operate, account for, and defend. You will not be there to explain it in code reviews, answer to stakeholders, or debug it during incidents—I will.
+- **I own, maintain, and defend this codebase**: Even when you (the agent) write the code technically, this project is fundamentally mine to own, operate, account for, and defend. You will not be there to explain it in code reviews, answer to stakeholders, or debug it during incidents; I will.
 - **Prioritize my comprehension and long-term ease**: Every implementation, architectural choice, and test must prioritize what makes the codebase easiest and most intuitive for me to understand, maintain, and defend. Never write esoteric, overly clever, or convoluted code that leaves me detached from my own project.
 
 ### What this means when you write code
 
-- **Wait for clear instructions**: Only start writing or editing code when I explicitly ask you to build or change something.
-- **Take small steps**: Please make progress in small, bite-sized steps. Don't do huge code changes all at once because I need space to digest progress step by step.
-- **Keep it simple & minimal**: Stick strictly to what we agreed to build. Deliver the minimal implementation required to satisfy the agreed scenarios without adding unrequested complexity or extra features.
-- **Follow existing codebase patterns**: Write code that naturally conforms to the established idioms, naming conventions, error handling styles, and directory structures already present in the codebase.
-- **Semantically distinct naming**: Name variables, types, functions, and files so they are semantically distinct, easily differentiated at a glance, and immediately understandable, while staying simple and straightforward. Never use vague, overlapping generic names (e.g. `data`, `info`, `handler`, `manager`, `temp`) or artificially esoteric jargon.
-- **Resist unsolicited abstractions**: Do not invent new abstractions, indirection layers, or generic helpers unless I explicitly ask for them. The cost of reading with a cold context is far higher than the cost of writing; straightforward, direct code is always preferred.
-- **Justify abstractions via `/align`**: If an abstraction is genuinely necessary because its value substantially outweighs the cognitive trade-offs of indirection, pause and invoke `/align` to discuss it with me first. Once I approve it, proactively recommend creating architectural documentation via `/document` so I have a durable mental map to defend and maintain it later.
-- **Write purposeful, concise comments (What & Why)**: Code comments across the entire codebase (source files, tests, and configuration) must concisely explain *what* is being achieved and *why* that specific approach, rule, or invariant exists, rather than restating what the syntax already shows.
-- **Flag blockers early**: If you notice something missing in the specs that could block us down the road, point it out and explain the situation clearly so we can figure it out together.
-- **Map codebase baseline before testing**: Before writing tests, inspect the existing codebase in the impacted area to ground tests in existing signatures, types, and invariants, preventing friction and test tampering down the line.
-- **Write clear, behavior-driven tests**: Tests must verify observable behavior through public APIs with clean, human-readable test logs that I can easily read and understand from a behavior perspective. Always communicate test coverage upfront across 4 dimensions: normal path, boundaries (edge cases), error paths, and core invariants. Avoid over-mocking or tests that merely assert a method was called.
-- **Invoke & Comply With the `implement` Skill**: For executing approved roadmaps or multi-step changes, strictly follow the `implement` skill (`/implement`)—working phase-by-phase with strict TDD cycles (Red-Green-Refactor), separate test and implementation commits, pre-commit test verification, and real-time plan tracking.
+- **Wait for clear instructions**: Only write or edit code when I explicitly ask you to.
+- **Take small steps**: Work in small, bite-sized increments. Never make huge changes all at once.
+- **Keep scope minimal (YAGNI)**: Build strictly what we agreed on. Deliver the minimal implementation needed for the target scenario without adding unrequested features, speculative layers, or extra complexity.
+- **Simplicity is not sloppiness**: Never cut corners, write brittle hacks, or leave half-baked code. Write solid, properly typed implementations with robust error handling and boundary checks so I can reliably operate and defend them.
+- **Follow existing codebase patterns**: Conform strictly to established patterns in my codebase: idioms, naming conventions, error handling styles, and directory structures.
+- **Semantically distinct naming**: Use semantically distinct, straightforward names for variables, types, functions, and files. Avoid vague, overlapping names (e.g., `data`, `info`, `handler`, `manager`, `temp`) and overly clever jargon.
+- **Resist unsolicited abstractions**: Do not invent new abstractions, indirection layers, or generic helpers unless I explicitly ask for them. Keep code direct and concrete.
+- **Justify abstractions via `/align`**: If an abstraction is helpful, pause and invoke `/align` to discuss it with me first. Once I approve it, proactively recommend documenting it via `/document`.
+- **Write purposeful, concise comments (What & Why)**: Write concise comments explaining what you are achieving and why a rule or invariant exists. Never restate what the syntax already shows.
+- **Flag blockers early**: Flag missing specs, contradictions, or blockers immediately. Explain the problem to me before proceeding.
+- **Map codebase baseline before testing**: Inspect the existing codebase in the target area before writing tests to ground them in existing signatures, types, and invariants.
+- **Write clear, behavior-driven tests**: Verify observable behavior through public APIs with clean, readable test logs that I can easily understand. Cover 4 dimensions: normal path, boundaries/edge cases, error paths, and core invariants. Avoid over-mocking or asserting implementation details.
+- **Invoke & Comply With the `implement` Skill**: For approved roadmaps or multi-step changes, strictly follow `/implement`: work phase-by-phase with strict TDD (Red-Green-Refactor), commit tests and implementation separately, verify tests before committing, and track plan progress in real time.
 
 ## UI Design & Front-End Philosophy
 
