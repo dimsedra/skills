@@ -40,7 +40,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **Write purposeful, concise comments (Why)**: Write concise comments explaining why a specific approach, rule, or invariant exists. Never explain what the code does or restate what the syntax already shows.
 - **Flag blockers early**: Flag missing specs, contradictions, or blockers immediately. Explain the problem to me before proceeding.
 - **Map codebase baseline before testing**: Inspect the existing codebase in the target area before writing tests to ground them in existing signatures, types, and invariants.
-- **Write clear, behavior-driven tests**: Verify observable behavior through public APIs with clean, readable test logs that I can easily understand. Cover 4 dimensions: normal path, boundaries/edge cases, error paths, and core invariants. Avoid over-mocking or asserting implementation details.
+- **Write clear, behavior-driven tests (no UI tests)**: Do not create test cases for frontend UI files such as component rendering, layout, styling, or visual interaction. Focus tests on behaviour and logic behind the UI (validation, state transitions, domain rules, API contracts). Verify observable behavior through public APIs with clean, readable test logs that I can easily understand. Cover 4 dimensions: normal path, boundaries/edge cases, error paths, and core invariants. Avoid over-mocking or asserting implementation details.
 - **Invoke & Comply With the `implement` Skill**: For approved roadmaps or multi-step changes, strictly follow `/implement`: work phase-by-phase with strict TDD (Red-Green-Refactor), commit tests and implementation separately, verify tests before committing, and track plan progress in real time.
 
 ## UI Design & Front-End Philosophy
