@@ -10,7 +10,7 @@ npx skills add dimsedra/skills --skill rfc
 
 ## Features
 
-- **Layered Documentation Architecture**: Balances executive-level business context (TL;DR) with deep architectural rigor for peer reviewers.
+- **Plain-Narrative & Technical Appendix**: Ensures main proposal sections remain accessible for non-codebase stakeholders while isolating raw payloads and code traces in an appendix.
 - **Audience-Aware Framing**: Adjusts technical tone across leadership, cross-functional partners, and peer engineers.
 - **Strict Scope Boundaries**: Enforces explicit Goals and Non-Goals to guard against proposal bloat.
 - **Comprehensive Cross-Cutting Evaluation**: Systematically covers migration paths, zero-downtime rollouts, security, observability, and rollback safety.

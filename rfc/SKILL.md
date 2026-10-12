@@ -16,7 +16,7 @@ Execute this activity strictly following the decision flow from top to bottom:
 ```mermaid
 flowchart TD
     A["Invoke /rfc"] --> B["Phase 1: Ingest Context & Scope Proposal"]
-    B --> C["Phase 2: Audience Calibration & Tone Framing"]
+    B --> C["Phase 2: Audience Calibration & Plain-Narrative Framing"]
     C --> D{"Are there unguided strategic or architectural choices?"}
     D -- YES --> E["Phase 3: Invoke /align with Me"]
     E --> F["Calibrate options, evaluate trade-offs & reach consensus"]
@@ -38,14 +38,20 @@ flowchart TD
 
 ---
 
-### Phase 2: Audience Calibration & Tone Framing
+### Phase 2: Audience Calibration & Plain-Narrative Framing
+> [!IMPORTANT]
+> **Codebase Outsider Assumption**:
+> Treat readers as stakeholders who do not work inside this specific codebase on a daily basis (such as engineering leadership, product managers, or engineers from adjacent teams).
+> - **Plain-Language Narrative**: Focus on how the system behaves, operational cause-and-effect mechanics, and conceptual boundaries rather than repo-internal jargon.
+> - **Zero In-Line Code Blocks**: Keep Sections 1 through 8 strictly free of raw code blocks, raw JSON payloads, and low-level script snippets. All concrete code and data traces belong in Section 9 (Appendix).
+
 Tailor the explanation depth across three primary audiences within a single layered document:
 
 | Audience | Primary Concerns | Framing & Tone Directive |
 | :--- | :--- | :--- |
 | **Engineering Leadership & Executives** | Business impact, operational risks, timeline, infrastructure costs, and resource allocation. | **Strategic & Concise**: Translate technical debt into operational risk or cost of inaction in the Executive Summary. Keep it readable in under 2 minutes. |
-| **Cross-Functional Stakeholders** | Breaking changes, service dependencies, rollout schedules, and user experience. | **Outcome-Oriented**: Clearly highlight dependency timelines, rollback guarantees, and service-level impact. |
-| **Peer Engineers & System Architects** | Technical soundness, edge cases, failure modes, maintainability, and interface elegance. | **Open, Rigorous & Collaborative**: Treat the document as a canvas for shared thinking; be transparent about trade-offs, unknowns, and invite critique. |
+| **Cross-Functional Stakeholders** | Breaking changes, service dependencies, rollout schedules, and user experience. | **Outcome-Oriented**: Clearly highlight dependency timelines, rollback guarantees, and service-level impact without assuming familiarity with internal code mechanics. |
+| **Peer Engineers & System Architects** | Technical soundness, edge cases, failure modes, maintainability, and interface elegance. | **Open, Rigorous & Collaborative**: Treat the document as a canvas for shared thinking; rely on conceptual diagrams and data tables in the body, with raw code references deferred to the Appendix. |
 
 ---
 
@@ -78,7 +84,7 @@ Before authoring, enforce these structural quality gates:
    - `Accepted`: Consensus reached; approved to derive formal SRS, ADRs, or Implementation Plans.
    - `Rejected`: Proposal evaluated but discarded (retained for historic context).
    - `Superseded`: Replaced by a newer proposal (`superseded_by: docs/rfc/rfc_XXX.md`).
-3. **Required 8-Section Document Structure**:
+3. **Required 9-Section Document Structure**:
    Structure the document with frontmatter:
 
    ```markdown
@@ -113,8 +119,8 @@ Before authoring, enforce these structural quality gates:
 
    ## 4. Proposed Solution & Architecture
    - **System Architecture**: High-level component diagram (Mermaid) showing service boundaries and data flow.
-   - **Interface & Data Contracts**: Proposed API payloads, protocols, and data models.
-   - **State Transitions & Edge Cases**: Happy path and failure mode recovery mechanisms.
+   - **Interface & Data Contracts**: Conceptual data fields and protocols presented as structured markdown tables (Field, Type, Description, Business Validation). Do NOT embed raw JSON payloads or code blocks here.
+   - **State Transitions & Edge Cases**: Narrative explanation and state/flow diagrams of normal flow and failure recovery.
 
    ## 5. Alternatives Considered
    ### [Alternative A]
@@ -126,7 +132,7 @@ Before authoring, enforce these structural quality gates:
    - **Security & Privacy**: Auth, data protection, and compliance considerations.
    - **Scalability & Performance**: Load expectations, resource bounds, and caching strategy.
    - **Observability**: Metrics, telemetry events, alerting, and log tracking.
-   - **Migration & Rollout Strategy**: Phased rollout, feature flags, zero-downtime database migrations, and fallback/rollback procedures.
+   - **Migration & Rollout Strategy**: Phased rollout, feature flags, zero-downtime database migrations, and fallback/rollback procedures. Explain schema shifts conceptually without embedding raw script code.
 
    ## 7. Open Questions & Risks
    - Unresolved technical decisions requiring reviewer input.
@@ -134,6 +140,11 @@ Before authoring, enforce these structural quality gates:
 
    ## 8. Review Log & Decision Summary
    - Record of key feedback, stakeholder consensus notes, and final disposition upon review completion.
+
+   ## 9. Appendix & Technical References
+   Dedicated section at the end of the proposal for concrete technical traces:
+   - **Code & File Pointers**: Links or relative paths to relevant files and symbols in the codebase.
+   - **Raw Payloads & Code Artifacts**: Raw data samples (such as JSON payloads) or proof-of-concept code snippets supporting the proposal.
    ```
 
 ---
