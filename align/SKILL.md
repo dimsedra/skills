@@ -7,9 +7,9 @@ description: Use when the user asks to align (e.g. via /align), to iterate on id
 
 ## Rationale & Purpose
 
-The greatest risk in human-AI collaboration is **divergent mental models**, when we use the same words but mean different things, or when the agent silently assumes details and builds in the wrong direction. Code, specs, and architectural choices are expensive to undo once implemented; alignment in thought is fast, lightweight, and preventative.
+The greatest risk in human-AI collaboration is **divergent mental models**—when we use the same words but mean different things, or when the agent silently assumes details and builds in the wrong direction. Code, specs, and architectural choices are expensive to undo once implemented; alignment in thought is fast, lightweight, and preventative.
 
-Invoking `/align` is not a bureaucratic checkpoint or a passive question-and-answer session. It is a deliberate **synchronization ritual** designed to:
+- **Grounding in Ownership & Defensibility**: I own, maintain, and defend this codebase. You will not be there to answer for it during incidents, code reviews, or refactors; I will. Alignment exists so that every architectural decision, invariant, and trade-off is self-evident, deliberate, and 100% defensible by me. Never leave me with code or specs I cannot explain or defend.
 - **Anchor Shared Reality**: Ensure both of us see the exact same system mechanics, constraints, boundaries, and trade-offs before any code is written or committed.
 - **Act as a Thinking Partner**: Provide an active sounding board where ideas can be shaped, pressure-tested, and refined collaboratively rather than executed blindly.
 - **Eliminate Unilateral Guesswork**: Surface hidden assumptions, unstated trade-offs, and ambiguous requirements early, when they cost the least to resolve.
@@ -50,6 +50,7 @@ Alignment is rarely a single-turn exchange. High-level architectural choices nat
    - Immediately evaluate the child decisions unlocked by the chosen branch:
      - *Does this path introduce specific storage, interface, state, or error-handling choices?*
      - *What are the immediate trade-offs or constraints introduced by this specific choice?*
+     - *Does this choice keep the system easily defendable and maintainable for me?*
    - Present the next layer of 2–3 concrete options or unpack the specific mechanics of that chosen path.
    - Continue walking down the decision tree together until the design is solid and unambiguous.
 
@@ -89,3 +90,8 @@ When this skill is invoked, follow these execution principles:
    - Listen carefully to feedback, reframing, and corrections.
    - We are only aligned when we mutually confirm that our shared understanding is 100% accurate.
    - Only when we are explicitly on the same page and confirmation is given do you have the green light to proceed to execution.
+
+6. **Achieve 100% Grounded Confidence Before Execution**:
+   - Do not enter the execution phase (writing code or specifications) in a state of hesitation or lingering ambiguity.
+   - You must be confident and certain that all confirmations, understandings, and decisions are 100% aligned with me.
+   - Once that alignment is confirmed, execute with conviction, rigor, and precision.
