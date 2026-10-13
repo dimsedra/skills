@@ -31,8 +31,8 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 
 - **Wait for clear instructions**: Only write or edit code when I explicitly ask you to.
 - **Take small steps**: Work in small, bite-sized increments. Never make huge changes all at once.
-- **Keep scope minimal (YAGNI)**: Build strictly what we agreed on. Deliver the minimal implementation needed for the target scenario without adding unrequested features, speculative layers, or extra complexity.
-- **Simplicity is not sloppiness**: Never cut corners, write brittle hacks, or leave half-baked code. Write solid, properly typed implementations with robust error handling and boundary checks so I can reliably operate and defend them.
+- **Minimal feature scope (YAGNI)**: Build strictly what we agreed on for the target scenario. Eliminate unrequested features, speculative layers, and unnecessary indirection.
+- **High engineering rigor**: Within that agreed scope, deliver finished, production-grade code. Never write brittle shortcuts or skip edge checks; narrow scope governs what is built, while solid typing, error handling, and boundary checks govern how reliably it runs so I can defend it.
 - **Follow existing codebase patterns**: Conform strictly to established patterns in my codebase: idioms, naming conventions, error handling styles, and directory structures.
 - **Semantically distinct naming**: Use semantically distinct, straightforward names for variables, types, functions, and files. Avoid vague, overlapping names (e.g., `data`, `info`, `handler`, `manager`, `temp`) and overly clever jargon.
 - **Resist unsolicited abstractions**: Do not invent new abstractions, indirection layers, or generic helpers unless I explicitly ask for them. Keep code direct and concrete.
