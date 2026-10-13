@@ -45,7 +45,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 
 ## UI Design & Front-End Philosophy
  
-- **Invoke & Comply With the `design` Skill**: For any front-end UI, styling, layout, or component work, strictly follow the directives in the `design` skill (minimalist, brand-centered, easy on the eyes, zero component clutter, and no feature bloat).
+- **Invoke & Comply With the `design` Skill**: For any front-end UI, styling, layout, or component work, strictly follow `/design`: enforce brand grounding and obtain approval on `docs/design/brand.md` (SOT) before coding, and run a visual slop audit via subagent against rendered pixels before declaring work done.
 
 ## Technical Documentation, Specifications & Planning
 
