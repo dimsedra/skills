@@ -5,33 +5,87 @@ description: Use when the user asks to align (e.g. via /align), to iterate on id
 
 # Align
 
-When I ask you to align (e.g. via `/align`, when iterating on ideas/specs in `/prd` or `/srs`, when starting a fresh session to grasp the codebase, or when we need to be on the same page), your goal is to **actively meet me where I'm at and make sure we share the same mental model**—proactively eliminating guesswork, blind assumptions, and blind spots on either side.
+## Rationale & Purpose
+
+The greatest risk in human-AI collaboration is **divergent mental models**, when we use the same words but mean different things, or when the agent silently assumes details and builds in the wrong direction. Code, specs, and architectural choices are expensive to undo once implemented; alignment in thought is fast, lightweight, and preventative.
+
+Invoking `/align` is not a bureaucratic checkpoint or a passive question-and-answer session. It is a deliberate **synchronization ritual** designed to:
+- **Anchor Shared Reality**: Ensure both of us see the exact same system mechanics, constraints, boundaries, and trade-offs before any code is written or committed.
+- **Act as a Thinking Partner**: Provide an active sounding board where ideas can be shaped, pressure-tested, and refined collaboratively rather than executed blindly.
+- **Eliminate Unilateral Guesswork**: Surface hidden assumptions, unstated trade-offs, and ambiguous requirements early, when they cost the least to resolve.
+
+---
+
+## When and How Align Operates (Context Spectrum)
+
+The `/align` skill is intentionally flexible. It adapts to the nature of where we are in the development lifecycle:
+
+1. **Prompt & Intent Verification**:
+   - *Scenario*: I give you a complex instruction, bug report, or feature request.
+   - *Role*: Restate your understanding of the core problem and underlying goals in plain language. Confirm the boundaries and non-negotiables before taking any action. Never jump into implementation while still guessing my intent.
+
+2. **Ideation & Thinking Partner**:
+   - *Scenario*: An idea is nascent, unformed, or still exploring trade-offs (e.g. before drafting a PRD, SRS, or RFC).
+   - *Role*: Actively brainstorm and evaluate constraints. Don't just nod along; pressure-test the concept, highlight edge-case failure modes, present concrete options with explicit operational trade-offs, and help us converge toward a solid foundation.
+
+3. **Mental Model & Codebase Calibration**:
+   - *Scenario*: Starting a fresh session, onboarding into an existing codebase, or reconciling different interpretations of how a subsystem functions.
+   - *Role*: Explore architectural boundaries, inspect real code, and synthesize the actual runtime behavior. Compare notes: if I share a hypothesis about how something works, verify it against the codebase and transparently point out any nuances or discrepancies.
+
+4. **Technical & Architectural Discussion**:
+   - *Scenario*: Deciding between technical approaches, evaluating external dependencies, or choosing data models and API contracts.
+   - *Role*: Walk through cause-and-effect system mechanics. Clarify who owns what, where boundaries lie, and what operational burden each choice introduces.
+
+---
+
+## Multi-Turn Cascading Decisions (Decision Tree Traversal)
+
+Alignment is rarely a single-turn exchange. High-level architectural choices naturally act as root nodes that spawn lower-level design decisions.
+
+1. **Alignment Mode Persists Across Turns**:
+   - Once `/align` is active, you remain in alignment mode across subsequent conversational turns until an explicit exit.
+   - When I pick an option from your initial pass, **do not treat that selection as a green light to start coding or writing specs**. A single choice is merely picking a branch in the decision tree, not the conclusion of the discussion.
+
+2. **Cascade Down the Tree**:
+   - Immediately evaluate the child decisions unlocked by the chosen branch:
+     - *Does this path introduce specific storage, interface, state, or error-handling choices?*
+     - *What are the immediate trade-offs or constraints introduced by this specific choice?*
+   - Present the next layer of 2–3 concrete options or unpack the specific mechanics of that chosen path.
+   - Continue walking down the decision tree together until the design is solid and unambiguous.
+
+3. **Explicit Exit Gate (No Sneak-Execution)**:
+   - Only when all significant structural branches are settled should you present a compact summary of our agreed direction.
+   - Explicitly ask for confirmation to transition into the next skill or phase (e.g. `/prd`, `/srs`, `/plans`, or implementation).
+   - Never transition from alignment to execution silently.
+
+---
 
 ## How to Align With Me
 
+When this skill is invoked, follow these execution principles:
+
 1. **Verify Your Understanding (Don't Guess)**:
-   - **When exploring the codebase**: Explore project architecture, key boundaries, and conventions. Synthesize your mental model of how the system works and present it to me.
-   - Prove to me that you genuinely grasp my intent. Lay out your understanding of what I want in plain, direct language.
-   - Ask clarifying confirmation questions like:
+   - Prove that you genuinely grasp my intent by explaining what you understood in direct, plain language.
+   - Use direct confirmation questions when needed:
      - *"Do you mean X?"*
-     - *"So in essence, what you want is X, correct?"*
-   - Never proceed on assumptions or pretend to understand if something is unclear.
+     - *"So in essence, what you want is X, with the boundary that Y is untouched, correct?"*
+   - Never proceed on assumptions or pretend to understand something that is vague.
 
-2. **Actively Meet Me Where I'm At (Two-Way Calibration)**:
-   - Alignment isn't just a one-way test of your understanding; it's a two-way calibration between us.
-   - **Comparing notes**: If I share my own mental model or hypothesis (e.g. *"I understand this module/function does XYZ, did you find the same 'XYZ' after exploring the codebase?"*), cross-check it against what's actually in the code. Let me know if we see eye-to-eye or point out any nuances and differences you spotted.
-   - **When I need more explaining**: First, check my baseline understanding (e.g., *"How much do you already know about this part?"*). Meet me right at my boundary and work our way from there until we're 100% aligned.
-   - **Iterating on ideas, specs & requirements (Thinking Partner)**:
-     - When discussing nascent ideas, unformed requirements, or architectural trade-offs (such as during `/prd`, `/srs`, or open brainstorms):
-     - **Actively shape, stress-test, and refine**: Don't passively wait or just nod along. Help me pressure-test ideas, evaluate constraints, and spot edge-case failure modes early.
-     - **Surface concrete options with trade-offs**: Rather than vague, open-ended questions, present 2–3 viable approaches with their respective pros, cons, and operational consequences (e.g., speed of delivery vs. long-term maintenance burden).
-     - **Help me converge**: Keep the iteration focused so we progressively narrow down choices until we land on a crisp, settled decision.
+2. **Meet Me Where I'm At (Two-Way Calibration)**:
+   - Alignment is a calibration, not an interrogation.
+   - Gauge my current context and technical depth on the topic at hand.
+   - Meet me at that boundary and build forward together, avoiding both unsolicited over-explanation and ungrounded jargon.
 
-3. **Unpack Ambiguities & Check Mental Models**:
-   - Explain how you understand the runtime behavior, system design, or architecture, and check whether your mental model matches mine.
-   - If there is any ambiguity, hidden trade-off, or architectural gap, point it out transparently.
+3. **Surface Concrete Options with Trade-Offs**:
+   - When choices are open, avoid vague open-ended prompts.
+   - Present 2–3 concrete, viable approaches with clear pros, cons, and maintenance consequences.
+   - Focus on practical trade-offs: complexity vs. speed, flexibility vs. cognitive load, local ergonomics vs. long-term maintenance.
 
-4. **Get on the Same Boat**:
-   - Listen to my feedback, follow up, or corrections.
-   - We are aligned only when we confirm that our shared understanding is 100% accurate.
-   - Once we confirm we are in the exact same boat, you have the green light to proceed.
+4. **Transparently Unpack Ambiguities**:
+   - If a requirement contradicts an existing codebase pattern or exposes an unhandled edge case, flag it immediately.
+   - Explain the systemic consequence through direct logic: *"If we choose X, then Y will occur whenever Z happens."*
+
+5. **Confirm We Are in the Same Boat**:
+   - Listen carefully to feedback, reframing, and corrections.
+   - We are only aligned when we mutually confirm that our shared understanding is 100% accurate.
+   - Only when we are explicitly on the same page and confirmation is given do you have the green light to proceed to execution.

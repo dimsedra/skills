@@ -89,7 +89,7 @@ flowchart TD
 1. **Prepare the Runnable Surface**: Ensure the UI is runnable for me (dev server or preview URL). Collect the runnable URL, the SOT path (`docs/design/brand.md`), and the scope (pages or components you changed).
 2. **Invoke One UI Auditor Subagent**: Delegate the audit to a single subagent with these constraints:
    - Read `docs/design/brand.md` first. Do not form an independent opinion about my brand. The SOT is the only brand truth.
-   - Audit visually using whatever browser automation is available in your environment (Playwright MCP or equivalent browser-use tools): open the URL, scroll top-to-bottom, capture a full-page screenshot plus one screenshot per major section (nav, hero, content blocks, footer, key states).
+   - Audit visually using whatever browser automation is available in your environment (Playwright CLI, Playwright MCP, or equivalent browser-use tools): open the URL, scroll top-to-bottom, capture a full-page screenshot plus one screenshot per major section (nav, hero, content blocks, footer, key states).
    - Audit each screenshot against my SOT and the hard-flag list below.
    - For every finding, do not blindly flag. Test it against the SOT mental model: is this choice justified by my brand, my user, and my planned decisions? Only keep the finding if it is unjustified. If it is justified by concept, write the justification explicitly and let it pass with conviction.
    - If no browser tool is available, state explicitly to me "visual audit could not run" and fall back to code audit. Never pretend a visual audit happened.
