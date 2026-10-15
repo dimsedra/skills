@@ -23,26 +23,55 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 - **Frame responses around mental models & project context**: Keep in mind that I process and understand problems best through mental models and real project context. Wrap explanations and answers in this lens: touch on the systemic/architectural view (*why & how it works*) and anchor it to the project at hand, while staying natural, practical, and flexible (not rigid or dogmatic).
 - **No emojis whatsoever**: Never use emojis in any responses, explanations, plans, or generated documents. Keep all communication and artifacts completely free of emojis for a clean, professional, and work-focused tone.
 
-## Ownership & Defensibility (The Core Mindset)
+## Engineering Rules & Directives
 
-- **I own, maintain, and defend this codebase**: Even when you (the agent) write the code technically, this project is fundamentally mine to own, operate, account for, and defend. You will not be there to explain it in code reviews, answer to stakeholders, or debug it during incidents; I will.
-- **Prioritize clarity and long-term maintainability**: Prioritize clarity over cleverness in every implementation, architectural choice, and test you produce. Make intent, system mechanics, and boundaries direct, transparent, and unambiguous. Never write esoteric, overly clever, or convoluted code that obscures how the system works.
-- **Anchor all skill invocations in clarity and ownership**: When you invoke or execute any skill (such as /align, /document, /adr, /rfc, /prd, /srs, /plans, /implement, or /audit), ground every artifact, specification, and decision in this exact mindset. Never produce detached paperwork or academic exercises. Deliver uncompromising clarity, explicit trade-offs, and actionable rigor so every output is self-evident, robust, and defensible to anyone.
+### Primary Directive
 
-### What this means when you write code
+Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/document`, `/adr`, `/rfc`, `/prd`, `/srs`, `/plans`, `/implement`, or `/audit`) in this exact mindset.
 
-- **Wait for clear instructions**: Only write or edit code when I explicitly ask you to.
-- **Take small steps**: Work in small, bite-sized increments. Never make huge changes all at once.
-- **Minimal feature scope (YAGNI)**: Build strictly what we agreed on for the target scenario. Eliminate unrequested features, speculative layers, and unnecessary indirection.
-- **High engineering rigor**: Within that agreed scope, deliver finished, production-grade code. Never write brittle shortcuts or skip edge checks; narrow scope governs what is built, while solid typing, error handling, and boundary checks govern how reliably it runs so I can defend it.
-- **Follow existing codebase patterns**: Conform strictly to established patterns in my codebase: idioms, naming conventions, error handling styles, and directory structures.
-- **Semantically distinct naming**: Use semantically distinct, straightforward names for variables, types, functions, and files. Avoid vague, overlapping names (e.g., `data`, `info`, `handler`, `manager`, `temp`) and overly clever jargon.
-- **Resist unsolicited abstractions**: Do not invent new abstractions, indirection layers, or generic helpers unless I explicitly ask for them. Keep code direct and concrete.
+### 1. Architecture & Abstraction (AHA > DRY)
+
+- **Prefer duplication over premature abstraction**: Do NOT extract shared helpers, base classes, or generic wrappers until a pattern is repeated at least 3 times in my codebase and its future variation is certain.
+- **Solve only my immediate problem (YAGNI)**: Do NOT add configuration parameters, plugin architectures, or extensible hooks "just in case" I need them later.
+- **Stop creating unnecessary interfaces**: Do NOT create an Interface or Abstract Class if there is only one implementation, unless I explicitly ask you to mock an external I/O boundary (e.g., database, 3rd-party API).
 - **Justify abstractions via `/align`**: If an abstraction is helpful, pause and invoke `/align` to discuss it with me first. Once I approve it, proactively recommend documenting it via `/document`.
-- **Write purposeful, concise comments (Why)**: Write concise comments explaining why a specific approach, rule, or invariant exists. Never explain what the code does or restate what the syntax already shows.
-- **Flag blockers early**: Flag missing specs, contradictions, or blockers immediately. Explain the problem to me before proceeding.
-- **Map codebase baseline before testing**: Inspect the existing codebase in the target area before writing tests to ground them in existing signatures, types, and invariants.
-- **Write clear, behavior-driven tests (no UI tests)**: Do not create test cases for frontend UI files such as component rendering, layout, styling, or visual interaction. Focus tests on behaviour and logic behind the UI (validation, state transitions, domain rules, API contracts). Verify observable behavior through public APIs with clean, readable test logs that I can easily understand. Cover 4 dimensions: normal path, boundaries/edge cases, error paths, and core invariants. Avoid over-mocking or asserting implementation details.
+
+### 2. Structure & Modularity (Deep Modules & Locality)
+
+- **Co-locate related logic (Locality of Behavior)**: Keep code that changes together in the same file or directory. Let me read a feature's entire execution flow from top to bottom in one file rather than forcing me to jump across 6 different folders.
+- **Build deep modules, not shallow ones**: Write functions and modules with simple, minimal signatures (few parameters, clear return types) that encapsulate substantial work inside.
+- **Do not fragment sequential logic into micro-functions**: Do NOT split a sequential 40-line business flow into five 8-line private functions just to make functions look short. Extract a function only when it represents a distinct, reusable domain concept or significantly reduces my cognitive load.
+- **Optimize for delete-ability**: Isolate feature logic so I can delete a feature by removing a single file or folder rather than surgically editing 15 shared files.
+
+### 3. Data Integrity & Error Handling (Parse, Don't Validate)
+
+- **Parse strictly at the boundary, trust types inside the core**: Validate and parse untrusted data (API payloads, user input, env vars) strictly at the entry boundary using schemas or strict types. Once inside the core business logic, trust the data types—do NOT clutter core logic with defensive `if (x !== null)` checks.
+- **Fail fast and loud**: NEVER write silent fallbacks (e.g., `const price = input.price ?? 0` or empty `catch (e) {}` blocks) that hide underlying bugs or corrupted state. Throw a descriptive, context-rich error immediately when an invariant is violated.
+- **Catch errors only when you can handle them**: Catch an error only if you have enough context to recover from it or add meaningful context before re-throwing. Otherwise, let it bubble up to my boundary error handler.
+
+### 4. Code Style & Readability (Boring is Good)
+
+- **Write boring, obvious code**: Avoid complex regexes, bitwise hacks, nested ternary operators, or obscure language features. Write code as if I will be debugging it at 2:00 AM during an outage.
+- **Flatten control flow**: Use guard clauses (early returns) at the top of functions to handle edge cases and errors. Keep the happy path unindented at the main level of the function. Never nest blocks more than 2 levels deep.
+- **Eliminate boolean traps**: Do NOT use boolean flags in function signatures (e.g., `processUser(user, true, false)`). Pass a named options object or split it into distinct, explicitly named functions.
+- **Name things explicitly**: Name variables after what data they hold and functions after what they actually do. Avoid vague, overlapping names (e.g., `data`, `info`, `handler`, `manager`, `temp`) and overly clever jargon.
+- **Comment the "Why", never the "What"**: Do NOT write comments that narrate what the code is doing. Write comments only to explain why a non-obvious decision, trade-off, or workaround was necessary.
+
+### 5. Testing (Behavior-Driven via Public API)
+
+- **Test behavior, NEVER implementation details (no UI tests)**: Write tests strictly against the module's public API (entry points, exported functions, HTTP endpoints, or domain contracts). Do NOT create test cases for frontend UI files such as component rendering, layout, styling, or visual interaction (focus UI verification on the `/design` skill). Do NOT export or expose private functions/internal state just to test them.
+- **Make tests resilient to refactoring**: My tests must pass without modification if I completely rewrite the internal implementation of a module while keeping its external behavior identical.
+- **Minimize mocking (Mock only at architectural boundaries)**: Do NOT mock internal collaborators, private methods, or domain classes. Use real instances for core domain logic, and only mock/stub external I/O boundaries (e.g., 3rd-party APIs, payment gateways, system clock, or network calls).
+- **Assert on outcomes, not internal call sequences**: Verify returned values, state mutations, or observable side effects. Do NOT write brittle spy assertions (e.g., `expect(internalHelper).toHaveBeenCalledWith(...)`) unless firing that specific external side effect is the core business requirement.
+- **Structure tests around business scenarios (Given / When / Then)**: Name and structure tests after user or business behaviors (e.g., "rejects checkout when cart exceeds credit limit"), not method names. Keep test setup explicit and local to the test file rather than hiding critical context in shared, magical test fixtures. Clean, readable test logs that I can easily understand. Cover 4 dimensions: normal path, boundaries/edge cases, error paths, and core invariants.
+
+### 6. Workflow & Collaboration Rules
+
+- **Wait for clear instructions**: Only start writing or editing code when I explicitly ask you to build or change something.
+- **Take small steps**: Please make progress in small, bite-sized increments. Don't do huge code changes all at once.
+- **Match my existing codebase**: Check the surrounding files before writing code. Use my existing libraries, utilities, and architectural patterns instead of inventing new ones.
+- **Keep diffs minimal and focused**: Modify only the lines necessary to fulfill my request. Do NOT perform unrequested drive-by refactoring, formatting changes, or variable renaming in unrelated parts of the file.
+- **Push back on bad ideas & flag blockers early**: If my prompt asks for an implementation that introduces security flaws, race conditions, or severe anti-patterns, warn me briefly, explain the problem clearly, and propose a safer, simpler alternative before generating code.
 - **Invoke & Comply With the `implement` Skill**: For approved roadmaps or multi-step changes, strictly follow `/implement`: work phase-by-phase with strict TDD (Red-Green-Refactor), commit tests and implementation separately, verify tests before committing, and track plan progress in real time.
 
 ## UI Design & Front-End Philosophy
