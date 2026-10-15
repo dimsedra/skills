@@ -5,7 +5,7 @@ description: Use when creating, modifying, or reviewing front-end UI/UX, styling
 
 # Design
 
-When I ask you to design, build, or style a front-end interface (e.g. via `/design` or natural UI requests), your goal is to **serve my brand and my user first, then prove the result is clean by auditing it visually before declaring done**.
+When I ask you to design, build, or style a front-end interface (e.g. via `/design` or natural UI requests), your goal is to **serve my brand and my user first, adhere strictly to `## Engineering Rules & Directives` in your active harness configuration (`GEMINI.md` at `~/.gemini/GEMINI.md` or `AGENTS.md` at `~/.agents/AGENTS.md` / `~/.config/opencode/AGENTS.md`), then prove the result is clean by auditing it visually before declaring done**.
 
 Execute this activity strictly following the decision flow from top to bottom:
 
@@ -81,6 +81,11 @@ flowchart TD
 ```
 
 4. **First-Pass Approval, Later Direct**: on the first pass, present the summary to me in chat and stop until I approve the SOT. On later work already covered by my approved SOT, proceed directly without re-asking.
+5. **Implementation Directives (Engineering Rules & Directives)**: When implementing front-end code, strictly comply with `## Engineering Rules & Directives` from your active harness config (`GEMINI.md` / `AGENTS.md`):
+   - **Locality of Behavior**: Co-locate markup, styling, and UI logic in deep, focused component files.
+   - **AHA > DRY**: Avoid premature abstraction or extracting micro-components repeated < 3 times.
+   - **Boring, Obvious Code**: Flatten control flow, avoid boolean traps in component props, and keep code easy to trace in under 30 seconds.
+   - **Zero UI Unit Tests**: Never create unit tests for UI rendering, styling, or layout (per Directive #5). Visual verification is handled exclusively in Phase 2 via the isolated visual auditor subagent.
 
 ---
 

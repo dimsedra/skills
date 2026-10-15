@@ -5,7 +5,7 @@ description: Use when creating a structured, commit-driven implementation plan w
 
 # Plans (TDD Implementation Planning)
 
-When I ask you to create, draft, or refine an implementation plan (e.g. via `/plans` or natural planning requests), your goal is to **translate high-level PRD user outcomes and SRS technical specifications into an executable, commit-driven roadmap organized by behavioral TDD scenarios**.
+When I ask you to create, draft, or refine an implementation plan (e.g. via `/plans` or natural planning requests), your goal is to **translate high-level PRD user outcomes and SRS technical specifications into an executable, commit-driven roadmap organized by behavioral TDD scenarios, adhering strictly to the `## Engineering Rules & Directives` defined in your active harness configuration (`GEMINI.md` at `~/.gemini/GEMINI.md` or `AGENTS.md` at `~/.agents/AGENTS.md` / `~/.config/opencode/AGENTS.md`)**.
 
 Execute this activity strictly following the decision flow from top to bottom:
 
@@ -40,8 +40,9 @@ flowchart TD
 ---
 
 ### Phase 2: Extract & Order Behavior Scenarios (4 Dimensions)
-1. **Derive Scenarios from Public API Boundaries**:
-   - Frame tests around behavioral interactions through the public interface/API.
+1. **Derive Scenarios from Public API Boundaries (Engineering Directive #5)**:
+   - Frame tests around behavioral interactions through the public interface/API per `## Engineering Rules & Directives`.
+   - Never write test cases for frontend UI files such as component rendering, layout, styling, or visual interaction (delegate UI verification to the `/design` skill).
    - Strictly avoid over-mocking and avoid assertions that merely verify "method X was called". Focus on inputs, observable states, returned payloads, and side-effects.
 2. **Systematically Cover 4 Testing Dimensions**:
    Organize scenarios across four essential dimensions:

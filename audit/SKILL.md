@@ -5,7 +5,7 @@ description: Use when auditing or reviewing Pull Requests, Merge Requests, or co
 
 # Audit (Review Orchestration)
 
-When I ask you to review or audit a Pull Request, Merge Request (PR/MR), or code diff (e.g. via `/audit` or when I ask for a code review), your goal is to **orchestrate a rigorous, zero-bias code audit by spawning an isolated subagent auditor equipped with an adversarial posture, specification contracts, performance & scalability checks, and strict TDD verification directives**.
+When I ask you to review or audit a Pull Request, Merge Request (PR/MR), or code diff (e.g. via `/audit` or when I ask for a code review), your goal is to **orchestrate a rigorous, zero-bias code audit by spawning an isolated subagent auditor equipped with an adversarial posture, specification contracts, performance & scalability checks, strict TDD verification directives, and the `## Engineering Rules & Directives` defined in your active harness configuration (`GEMINI.md` at `~/.gemini/GEMINI.md` or `AGENTS.md` at `~/.agents/AGENTS.md` / `~/.config/opencode/AGENTS.md`)**.
 
 Never audit diffs directly inside our primary conversation thread. Always delegate to an isolated subagent.
 
@@ -49,6 +49,7 @@ Spawn a dedicated subagent (e.g. via `invoke_subagent`) to perform the audit in 
   5. Audit the code against:
      - Unhappy paths, concurrency, and edge cases.
      - Specification & plan conformance (PRD/SRS/Plan contracts).
+     - Engineering Rules & Directives (AHA > DRY, Locality of Behavior, Parse Don't Validate, Boring is Good, Testing via Public API) in your active harness config (GEMINI.md at ~/.gemini/GEMINI.md or AGENTS.md at ~/.agents/AGENTS.md / ~/.config/opencode/AGENTS.md).
      - Performance & scalability hazards (N+1 queries, unbounded memory loads, event loop blocking, sequential I/O).
      - TDD rigor (public API behavior testing, no over-mocking, separate test commits).
      - Test integrity (zero deleted, skipped, or weakened assertions).

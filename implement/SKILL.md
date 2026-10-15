@@ -5,7 +5,7 @@ description: Use when executing implementation tasks phase-by-phase from an appr
 
 # Implement (TDD Plan Execution)
 
-When I ask you to implement code (e.g. via `/implement` or natural execution requests), your goal is to **faithfully execute the approved roadmap in `docs/plan/`, working phase-by-phase with strict TDD cycles (Red -> Green -> Refactor), committing tests and implementation separately, and recording real-time progress and Git commit hashes directly in the plan document**.
+When I ask you to implement code (e.g. via `/implement` or natural execution requests), your goal is to **faithfully execute the approved roadmap in `docs/plan/`, working phase-by-phase with strict TDD cycles (Red -> Green -> Refactor), committing tests and implementation separately, recording real-time progress and Git commit hashes directly in the plan document, and strictly complying with the `## Engineering Rules & Directives` defined in your active harness configuration (`GEMINI.md` at `~/.gemini/GEMINI.md` or `AGENTS.md` at `~/.agents/AGENTS.md` / `~/.config/opencode/AGENTS.md`)**.
 
 Never write code without an existing, approved plan in `docs/plan/`. If no plan exists, instruct me to run `/plans` first.
 
@@ -67,7 +67,7 @@ Execute each scenario strictly through the **Red -> Green -> Refactor** sequence
    - Extract short commit hash (e.g. `a1b2c3d`).
 
 #### Step 2: GREEN (Minimal Implementation & Prove Success)
-1. **Minimal Implementation Only**: Write the minimal implementation code required to pass the test (per Task X.Yb). Do not add unrequested complexity or speculative extra features.
+1. **Minimal Implementation Only**: Write the minimal implementation code required to pass the test (per Task X.Yb). Do not add unrequested complexity or speculative extra features. Strictly adhere to `## Engineering Rules & Directives` from your harness config (`GEMINI.md` / `AGENTS.md`): AHA > DRY (prefer duplication over premature abstraction), Locality of Behavior (keep related logic together in deep modules), Parse Don't Validate (fail fast and loud, zero silent fallbacks), and Boring is Good (flatten control flow, eliminate boolean traps).
 2. **Run Test Runner (Demonstrate Success)**:
    - Run the test suite. Must turn completely GREEN with clean, readable logs.
    - **Show Output as Behavior Proof**: Display the passing test runner output in chat as concrete proof of delivery.
