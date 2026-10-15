@@ -89,6 +89,14 @@ Execute each scenario strictly through the **Red -> Green -> Refactor** sequence
 > 2. Explain the defect or architectural gap to me with exact line references and wait for my guidance.
 > 3. Invoke `/align` to calibrate with me before making any changes to the test.
 
+#### Non-Negotiable UI & Visual Verification Gate:
+> [!IMPORTANT]
+> **No UI Done Without Subagent Visual Certification**:
+> When implementing tasks that modify views, templates, styling, layout, or UI components:
+> 1. **Backend Tests Are Only Half the Proof**: A passing backend test suite (e.g. Pest/Jest 100% green) only proves server-side contracts, data structures, and business logic. It does NOT prove visual correctness.
+> 2. **Mandatory `/design` Subagent Audit**: You are strictly forbidden from ticking `[x]` on a UI task or declaring a UI milestone complete without running `/design` Phase 2.
+> 3. **Certified Verdict Required**: You must spawn the `UI Visual Auditor` subagent, verify rendered pixels across target viewports (mobile 360px and desktop 1280px), and receive an explicit `PASS & CERTIFIED` verdict in the subagent report before recording the commit hash or progressing to the next task.
+
 ---
 
 ### Phase 4: Real-Time Plan Synchronization (Living Audit Trail)
@@ -127,5 +135,6 @@ Once all tasks within the active phase are completed:
 2. **Deliver Milestone Summary**:
    - Report the completed phase name.
    - List the created commit pairs (tests + feats) with their hashes and verified test outputs.
+   - If the phase modified UI components, present the certified `UI Visual Auditor` subagent report confirming zero blockers across target viewports.
    - Display the updated overall plan progress (e.g. `6 / 12 Tasks Completed (50%)`).
 3. **Awaiting Next Green Light**: Ask me for explicit confirmation before starting the next phase (e.g., *"Phase 1 is complete and all tests pass. Ready to proceed to Phase 2?"*).

@@ -15,7 +15,7 @@ npx skills add dimsedra/skills --skill design
 - **Zero Component Clutter**: Prevents unnecessary cards, dividers, nested wrappers, and visual noise ("Less is More").
 - **Micro-Details Over Macro-Gimmicks**: Emphasizes deliberate typography, restrained palettes, disciplined radius, and intentional spacing tokens.
 - **Strict Anti-Bloat**: Enforces zero unsolicited interactions or feature bloat beyond what the user requested.
-- **Pre-Completion Audit**: Includes an audit checklist before declaring any UI task done.
+- **Isolated UI Visual Auditor Subagent**: Dispatches a dedicated, adversarial subagent (`UI Visual Auditor`) reading `UI-AUDITOR-INSTRUCTIONS.md` to verify rendered pixels across the 4 Dimensions of Visual Testing (Core, Boundaries, Errors, Invariants) across viewports before declaring any UI task done.
 
 ## Usage
 

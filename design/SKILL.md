@@ -20,8 +20,12 @@ flowchart TD
     C -- YES --> D["Implement UI per approved SOT"]
     C -- NO --> B1["Calibrate via /align, write/update SOT, await approval"]
     B1 --> D
-    D --> E["Phase 2: Visual Slop Audit via Subagent"]
-    E --> F["Deliver audited UI + findings to Me"]
+    D --> E["Phase 2: Spawn Isolated UI Visual Auditor Subagent"]
+    E --> F["Subagent reads UI-AUDITOR-INSTRUCTIONS.md & audits 4 visual dimensions"]
+    F --> G{"Is Verdict BLOCKED?"}
+    G -- YES --> H["Parent Agent Fixes UI Defects -> Re-audit"]
+    H --> E
+    G -- NO --> I["Deliver Certified UI + Visual Report to Me"]
 ```
 
 ---
@@ -80,20 +84,41 @@ flowchart TD
 
 ---
 
-### Phase 2: Visual Slop Audit via Subagent
+### Phase 2: Visual Slop & Quality Audit via Subagent
 
 > [!IMPORTANT]
-> **Strictly No Done Without Visual Audit**:
-> Never declare a UI task complete without running this audit. Audit from rendered pixels, never from code alone.
+> **Strict Anti-Self-Audit Gate**:
+> The primary agent must NEVER audit rendered UI screenshots directly in the primary conversation thread. Inspecting your own UI implementation introduces self-confirmation bias and superficial macro-shape checking. Always delegate visual verification to an isolated subagent.
 
-1. **Prepare the Runnable Surface**: Ensure the UI is runnable for me (dev server or preview URL). Collect the runnable URL, the SOT path (`docs/design/brand.md`), and the scope (pages or components you changed).
-2. **Invoke One UI Auditor Subagent**: Delegate the audit to a single subagent with these constraints:
-   - Read `docs/design/brand.md` first. Do not form an independent opinion about my brand. The SOT is the only brand truth.
-   - Audit visually using whatever browser automation is available in your environment (Playwright CLI, Playwright MCP, or equivalent browser-use tools): open the URL, scroll top-to-bottom, capture a full-page screenshot plus one screenshot per major section (nav, hero, content blocks, footer, key states).
-   - Audit each screenshot against my SOT and the hard-flag list below.
-   - For every finding, do not blindly flag. Test it against the SOT mental model: is this choice justified by my brand, my user, and my planned decisions? Only keep the finding if it is unjustified. If it is justified by concept, write the justification explicitly and let it pass with conviction.
-   - If no browser tool is available, state explicitly to me "visual audit could not run" and fall back to code audit. Never pretend a visual audit happened.
-3. **Hard-Flag List**: Avoid these unless my concept demands them with conviction (written justification referencing my SOT):
+1. **Prepare the Runnable Surface & Visual Evidence**:
+   - Ensure the UI is runnable (dev server or preview URL).
+   - Capture rendered screenshots across at least two standard viewports using browser automation (Playwright MCP or CLI):
+     - **Mobile Viewport**: 360x640px (or similar narrow screen).
+     - **Desktop Viewport**: 1280x800px (or standard workstation screen).
+   - Ensure screenshots capture active interaction states (e.g. open modal, expanded accordion, validation error state) rather than just passive static loads.
+   - If no browser tool is available in your environment, state explicitly to me "visual audit could not run" and fall back to code audit. Never pretend a visual audit happened.
+
+2. **Spawn Isolated UI Visual Auditor Subagent**:
+   Dispatch a dedicated subagent (e.g. via `invoke_subagent`) acting as the **End-User Advocate and Quality Defense for the Codebase Owner**:
+   - **Subagent Role**: `UI Visual Auditor`
+   - **Subagent Instructions Prompt**:
+     ```text
+     You are an isolated third-party Visual and UI/UX Quality Assurance Auditor representing the end-user and the codebase owner.
+
+     1. Read your audit protocol in: design/UI-AUDITOR-INSTRUCTIONS.md.
+     2. Read the brand Single Source of Truth in: docs/design/brand.md.
+     3. Inspect the modified UI files: [list of view files].
+     4. Inspect the rendered screenshots / preview URL: [paths to screenshots / URL].
+     5. Context of visual task: [Describe specific task, e.g. "Migrated inline upload form to responsive bottom-sheet/modal dialog"].
+     6. Audit the rendered pixels against the 4 Dimensions of Visual Testing (Core, Boundaries, Errors, Invariants) with an adversarial, skeptical posture.
+     7. Return your audit report strictly following the Output Report Structure in UI-AUDITOR-INSTRUCTIONS.md.
+     ```
+
+3. **Process Subagent Verdict & Remediation**:
+   - **`BLOCKED`**: Immediately resolve the reported defects in code, re-capture fresh screenshots, and re-invoke the subagent auditor until certified. Never bypass or ignore blockers.
+   - **`PASS & CERTIFIED`**: Deliver the verified UI, subagent audit report, and certified screenshots to me.
+
+4. **Hard-Flag List**: Avoid these unless my concept demands them with conviction (written justification referencing my SOT):
    - Centered hero over a gradient blob.
    - Three equal feature cards.
    - Purple-blue AI gradients.

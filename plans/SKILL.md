@@ -77,6 +77,12 @@ In alignment with the core principles **"Take small steps"** and **"Commit test 
   - Expected verification result: **PASS / GREEN** with clean, human-readable test logs.
   - Proposed commit message: `feat(<scope>): implement minimal logic for <scenario>`
 
+#### Non-Negotiable Front-End & UI Verification Standard:
+For tasks that modify user-facing views, templates, styling, layout, or UI components:
+- **Never accept vague or passive verification** such as "npm run build passes", "Vite build success", or generic "visual check".
+- **Explicitly specify visual verification** using the `/design` subagent protocol across target viewports:
+  - **Verification**: `/design` visual test via isolated `UI Visual Auditor` subagent across 4 visual dimensions (Core, Edge, Error, Invariant) on mobile (360px) and desktop (1280px) Playwright captures (EXPECTED: PASS & CERTIFIED).
+
 ---
 
 ### Phase 5: Placement Announcement & Document Authoring
