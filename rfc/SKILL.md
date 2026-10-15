@@ -5,7 +5,9 @@ description: Use when authoring, reviewing, or iterating on an engineering Reque
 
 # RFC (Request for Comments)
 
-When I ask you to write, draft, or refine a technical proposal or Request for Comments (e.g. via `/rfc` or natural requests), your goal is to **serve as a collaborative thinking partner and author a structured engineering proposal that drives consensus, surfaces risks early, and balances business impact with technical rigor**.
+When I ask you to write, draft, or refine a Request for Comments (e.g. via `/rfc` or natural requests), your goal is to **serve as a collaborative thinking partner and author a purposeful, audience-tailored document composed of modular structural components that directly serve the specific intent—whether seeking policy clarification, requesting authority/permission, or proposing concrete technical architectures**.
+
+Never force a rigid, monolithic template. Intelligently compose only the structural components required for the specific topic and audience.
 
 Execute this activity strictly following the decision flow from top to bottom:
 
@@ -15,12 +17,12 @@ Execute this activity strictly following the decision flow from top to bottom:
 
 ```mermaid
 flowchart TD
-    A["Invoke /rfc"] --> B["Phase 1: Ingest Context & Scope Proposal"]
-    B --> C["Phase 2: Audience Calibration & Plain-Narrative Framing"]
-    C --> D{"Are there unguided strategic or architectural choices?"}
+    A["Invoke /rfc"] --> B["Phase 1: Ingest Context, Audience & Core Intent"]
+    B --> C["Phase 2: Audience Calibration & Stakeholder Dynamics"]
+    C --> D{"Are intent, audience, or component assembly ambiguous?"}
     D -- YES --> E["Phase 3: Invoke /align with Me"]
-    E --> F["Calibrate options, evaluate trade-offs & reach consensus"]
-    F --> G["Phase 4: Goals, Non-Goals & Rigor Gate"]
+    E --> F["Calibrate intent, select modular components & reach consensus"]
+    F --> G["Phase 4: Component Catalog & Modular Composition"]
     D -- NO --> G
     G --> H["Phase 5: Announce Placement & Draft RFC (rfc_NNN_<slug>.md)"]
     H --> I["Phase 6: Anti-Rot Indexing in docs/README.md & Delivery"]
@@ -28,127 +30,92 @@ flowchart TD
 
 ---
 
-### Phase 1: Ingest Context & Scope Proposal
-1. **Determine Proposal Boundary**:
-   - Assess whether the initiative warrants a formal RFC (significant architectural shifts, cross-team API contracts, database migrations, new subsystems, or high-risk operational changes).
-   - Distill my request into the core problem statement. If my request is a single narrow architectural choice, suggest an **ADR** to me instead. If it defines user outcomes without technical designs, suggest a **PRD** to me.
+### Phase 1: Ingest Context, Audience & Core Intent
+
+1. **Identify the Core Intent**:
+   Distill my request to understand what this RFC is fundamentally trying to achieve:
+   - **Inquiry & Policy Clarification**: When business rules, legal constraints, or administrative processes are ambiguous, and no technical solution exists yet. The primary goal is seeking factual answers and decisions from stakeholders.
+   - **Permission & Authority Request**: When the developer needs formal authorization from senior engineers or DevOps/infrastructure teams to modify restricted files, pipelines, or server configurations with a minimal blast radius.
+   - **Technical & Architectural Proposal**: When a concrete engineering initiative (new subsystem, migration, API contract, or breaking change) has a viable technical design proposed for team critique and consensus.
+   - **Hybrid / Emergent Scenario**: Any other situation requiring structured written stakeholder input.
 2. **Collect Problem Reality**:
-   - Gather concrete data: performance bottlenecks, error rates, maintenance costs, latency percentiles, or business growth projections.
-   - Anchor the motivation in real evidence rather than subjective dissatisfaction.
+   - Gather concrete context: operational bottlenecks, outdated configurations, policy vacuums, or technical risks.
+   - Anchor the document in factual background rather than speculative assumptions.
 
 ---
 
-### Phase 2: Audience Calibration & Plain-Narrative Framing
+### Phase 2: Audience Calibration & Stakeholder Dynamics
+
 > [!IMPORTANT]
-> **Codebase Outsider Assumption**:
-> Treat readers as stakeholders who do not work inside this specific codebase on a daily basis (such as engineering leadership, product managers, or engineers from adjacent teams).
-> - **Plain-Language Narrative**: Focus on how the system behaves, operational cause-and-effect mechanics, and conceptual boundaries rather than repo-internal jargon.
-> - **Zero In-Line Code Blocks**: Keep Sections 1 through 8 strictly free of raw code blocks, raw JSON payloads, and low-level script snippets. All concrete code and data traces belong in Section 9 (Appendix).
-
-Tailor the explanation depth across three primary audiences within a single layered document:
-
-| Audience | Primary Concerns | Framing & Tone Directive |
-| :--- | :--- | :--- |
-| **Engineering Leadership & Executives** | Business impact, operational risks, timeline, infrastructure costs, and resource allocation. | **Strategic & Concise**: Translate technical debt into operational risk or cost of inaction in the Executive Summary. Keep it readable in under 2 minutes. |
-| **Cross-Functional Stakeholders** | Breaking changes, service dependencies, rollout schedules, and user experience. | **Outcome-Oriented**: Clearly highlight dependency timelines, rollback guarantees, and service-level impact without assuming familiarity with internal code mechanics. |
-| **Peer Engineers & System Architects** | Technical soundness, edge cases, failure modes, maintainability, and interface elegance. | **Open, Rigorous & Collaborative**: Treat the document as a canvas for shared thinking; rely on conceptual diagrams and data tables in the body, with raw code references deferred to the Appendix. |
+> **Calibrate to Stakeholder Profile (High Impact vs Implementation Interest)**:
+> Stakeholders frequently have high organizational impact but relatively low interest in low-level code mechanics.
+> - **Tailor Depth to the Reader**: If the audience is senior management, leadership, or external department leads, keep technical prose concise and prioritize actionable business/operational choices.
+> - **Zero In-Line Code Blocks in Main Body**: Keep high-level narrative and decision sections free of raw code blocks or JSON payloads. Place concrete file references, schema tables, and technical snippets in the Appendix.
+> - **Structured Choice Formatting**: When asking stakeholders for decisions, formulate questions with explicit, mutually distinct options (e.g. checkboxed choices `[ ] A. ... [ ] B. ...`) so reviewers can respond effortlessly.
 
 ---
 
 ### Phase 3: Technical Alignment Gate (Invoke `/align`)
+
 > [!IMPORTANT]
-> **Strictly No Unilateral Strategic Decisions**:
-> Never lock in fundamental technologies, vendor platforms, or breaking interface changes unilaterally.
-> 1. If major competing architectures exist, **immediately trigger the `/align` skill**.
-> 2. Present viable approaches with concrete trade-offs, operational consequences, and recommended paths.
-> 3. Align with me before writing to resolve high-impact architectural forks.
+> **No Unilateral Structural Assumptions**:
+> If the RFC's purpose, audience profile, or necessary components are not immediately obvious from my prompt:
+> 1. **Immediately trigger `/align`**.
+> 2. Propose a tailored component outline based on the identified intent.
+> 3. Confirm with me before writing to ensure we do not generate unneeded paperwork.
 
 ---
 
-### Phase 4: Goals, Non-Goals & Rigor Filters
-Before authoring, enforce these structural quality gates:
-1. **Explicit Non-Goals**: Define what is intentionally out of scope to prevent endless scope creep during the review period.
-2. **Meaningful Alternatives Considered**: Document at least 1–2 rejected alternatives with clear, objective reasons for rejection.
-3. **Intellectual Honesty on Trade-offs**: Disclose operational downsides, learning curves, and system overhead introduced by the proposed solution.
-4. **Actionable Open Questions**: Highlight unresolved technical questions and specify a clear review deadline.
+### Phase 4: Component Catalog & Modular Assembly
+
+Treat document sections as **modular building blocks**, not a mandatory rigid checklist. Assemble ONLY the components that directly serve the document's intent:
+
+#### 1. Core Components (Present in All RFCs)
+- **Frontmatter Metadata**: Structured header (`title`, `type: rfc`, `status`, `author`, `reviewers`, `created_date`, `review_deadline`, `parent_prd`, `supersedes`, `superseded_by`).
+- **Executive Summary (TL;DR)**: Concise overview stating the core problem, document purpose/status, and estimated effort or timeline.
+- **Problem Statement & Context**: Detailed background explaining the current state, operational friction, or administrative gap.
+- **Review Log & Decision Summary**: Living record of stakeholder feedback, meetings, and final decisions.
+
+#### 2. Modular Components (Selected Dynamically on Demand)
+- **Stakeholder Decision Matrix & Inquiries**: Formatted questions with actionable checkbox choices (`- [ ] A. ... - [ ] B. ...`) and conditional follow-ups. Essential for inquiry and policy clarification RFCs.
+- **Permission & Scope Request**: Specific authorizations requested from leads/DevOps, detailing exact files or environments affected and governance boundaries.
+- **Goals & Non-Goals**: Explicit outcomes desired versus explicit scope exclusions to prevent scope creep.
+- **Proposed Solution & Architecture**: Conceptual architecture, component diagrams (Mermaid), and interface contracts. **Omit completely when no solution is being proposed yet.**
+- **Minimal Action Plan**: Bounded, low-risk execution steps if permission or decisions are granted.
+- **Alternatives Considered**: Viable alternative approaches evaluated with trade-offs and rejection reasons. **Omit when not proposing a technical solution.**
+- **Risk Analysis & Mitigations**: Operational, bureaucratic, or security risks and their preventative safeguards.
+- **Cross-Cutting Concerns**: Security, compliance, telemetry, zero-downtime migration, or rollback strategies.
+- **Appendix & Technical References**: Direct links to codebase files, database models, configuration scripts, or raw data payloads.
+
+#### Common Component Assembly Examples:
+
+- **Policy Inquiry RFC** (e.g. clarifying duty rosters or external auditor boundaries):
+  `Frontmatter` + `Executive Summary` + `Problem Statement & Context` + `Goals & Non-Goals` + `Stakeholder Decision Inquiries (Checkboxes)` + `Risk Analysis` + `Review Log` + `Appendix`.
+- **Permission Request RFC** (e.g. requesting CI/CD edits or staging deployment):
+  `Frontmatter` + `Background & Problem` + `Permission Request & Authority Choices` + `Minimal Action Plan` + `Review Log` + `Appendix & File References`.
+- **Architectural Proposal RFC** (e.g. event-driven service migration):
+  `Frontmatter` + `Executive Summary` + `Problem Statement` + `Goals & Non-Goals` + `Proposed Solution & Architecture` + `Alternatives Considered` + `Cross-Cutting Concerns` + `Risks & Open Questions` + `Review Log` + `Appendix`.
 
 ---
 
 ### Phase 5: Placement Announcement & RFC Authoring
+
 1. **Zero Stealth Writing & Sequential Naming**: Declare your destination file path to me before writing:
-   - Target format: `docs/rfc/rfc_NNN_<proposal_slug>.md` in full snake_case with 3-digit zero-padding (e.g., `docs/rfc/rfc_001_migrating_to_event_driven_orders.md`).
+   - Target format: `docs/rfc/rfc_NNN_<proposal_slug>.md` in full snake_case with 3-digit zero-padding (e.g., `docs/rfc/rfc_004_auditor_duty_schedule.md`).
    - Determine sequential number `NNN` by inspecting existing files in `docs/rfc/` and incrementing the highest existing index (starting at `001`).
 2. **RFC Lifecycle State Management**:
-   - `Draft`: Initial proposal under our active proposal/development.
-   - `In-Review`: Published for team feedback with an active review deadline.
-   - `Accepted`: Consensus reached; approved to derive formal SRS, ADRs, or Implementation Plans.
-   - `Rejected`: Proposal evaluated but discarded (retained for historic context).
-   - `Superseded`: Replaced by a newer proposal (`superseded_by: docs/rfc/rfc_XXX.md`).
-3. **Required 9-Section Document Structure**:
-   Structure the document with frontmatter:
-
-   ```markdown
-   ---
-   title: "RFC-NNN: [Title Describing the Proposal]"
-   type: rfc
-   status: Draft           # Draft | In-Review | Accepted | Rejected | Superseded
-   author: [Name / Team]
-   reviewers: [Key Reviewers / Stakeholders]
-   created_date: YYYY-MM-DD
-   review_deadline: YYYY-MM-DD
-   parent_prd: docs/prd/YYYYMMDD_[feature].md # Optional
-   supersedes: null
-   superseded_by: null
-   ---
-
-   # RFC-NNN: [Title Describing the Proposal]
-
-   ## 1. Executive Summary (TL;DR)
-   - **Problem**: 1–2 sentence summary of the core bottleneck or opportunity.
-   - **Proposed Solution**: High-level technical approach and expected business/system impact.
-   - **Effort & Timeline**: Estimated engineering investment and major milestones.
-
-   ## 2. Problem Statement & Context
-   Detailed explanation of the current state, pain points, and supporting metrics (latency, error rates, throughput limits, infrastructure bills).
-
-   ## 3. Goals & Non-Goals
-   ### Goals
-   - Specific, measurable outcomes expected upon delivery.
-   ### Non-Goals
-   - Explicitly excluded items and deferred capabilities to prevent scope creep.
-
-   ## 4. Proposed Solution & Architecture
-   - **System Architecture**: High-level component diagram (Mermaid) showing service boundaries and data flow.
-   - **Interface & Data Contracts**: Conceptual data fields and protocols presented as structured markdown tables (Field, Type, Description, Business Validation). Do NOT embed raw JSON payloads or code blocks here.
-   - **State Transitions & Edge Cases**: Narrative explanation and state/flow diagrams of normal flow and failure recovery.
-
-   ## 5. Alternatives Considered
-   ### [Alternative A]
-   - **Description**: Summary of alternative approach.
-   - **Pros**: Key advantages.
-   - **Cons & Rejection Reason**: Why this was rejected in favor of the proposed solution.
-
-   ## 6. Cross-Cutting Concerns
-   - **Security & Privacy**: Auth, data protection, and compliance considerations.
-   - **Scalability & Performance**: Load expectations, resource bounds, and caching strategy.
-   - **Observability**: Metrics, telemetry events, alerting, and log tracking.
-   - **Migration & Rollout Strategy**: Phased rollout, feature flags, zero-downtime database migrations, and fallback/rollback procedures. Explain schema shifts conceptually without embedding raw script code.
-
-   ## 7. Open Questions & Risks
-   - Unresolved technical decisions requiring reviewer input.
-   - Known operational risks and proposed mitigation strategies.
-
-   ## 8. Review Log & Decision Summary
-   - Record of key feedback, stakeholder consensus notes, and final disposition upon review completion.
-
-   ## 9. Appendix & Technical References
-   Dedicated section at the end of the proposal for concrete technical traces:
-   - **Code & File Pointers**: Links or relative paths to relevant files and symbols in the codebase.
-   - **Raw Payloads & Code Artifacts**: Raw data samples (such as JSON payloads) or proof-of-concept code snippets supporting the proposal.
-   ```
+   - `Draft`: Initial proposal or inquiry under active formulation.
+   - `In-Review`: Published for stakeholder feedback with an active review deadline.
+   - `Accepted`: Consensus or formal permission reached; approved to derive formal SRS, ADRs, or Implementation Plans.
+   - `Rejected`: Proposal evaluated but discarded (retained for historical context).
+   - `Superseded`: Replaced by a newer document (`superseded_by: docs/rfc/rfc_XXX.md`).
+3. **Document Authoring**:
+   - Output the document containing strictly the assembled components agreed upon in Phase 4.
+   - Never generate boilerplate or speculative content for omitted components.
 
 ---
 
 ### Phase 6: Anti-Rot Indexing & Delivery
+
 1. **Single Source of Map**: Open `docs/README.md` and catalog the new RFC in the **Technical Proposals (RFC)** table with its identifier, title, status, review deadline, and relative markdown link.
-2. **Delivery**: Present the RFC to me in chat with an executive overview, highlighting key trade-offs and calling out open questions that need feedback.
+2. **Delivery**: Present the RFC to me in chat with a clear, conversational summary highlighting the core intent, the specific stakeholder questions or permission requests, and the review timeline.
