@@ -3,133 +3,71 @@ name: plans
 description: Use when creating a structured, commit-driven implementation plan with real-time progress tracking based on PRD and SRS specifications into docs/plan/.
 ---
 
-# Plans (TDD Implementation Planning)
+# Plans
 
-When I ask you to create, draft, or refine an implementation plan (e.g. via `/plans` or natural planning requests), your goal is to **translate high-level PRD user outcomes and SRS technical specifications into an executable, commit-driven roadmap organized by behavioral TDD scenarios, adhering strictly to the `## Engineering Rules & Directives` defined in your active harness configuration (`GEMINI.md` at `~/.gemini/GEMINI.md` or `AGENTS.md` at `~/.agents/AGENTS.md` / `~/.config/opencode/AGENTS.md`)**.
+When I ask you to create or refine an implementation plan, your goal is to translate our approved PRD user outcomes and SRS technical specifications into a clear, commit-driven TDD roadmap in `docs/plan/` that we can execute step by step with `/implement`.
 
-Execute this activity strictly following the decision flow from top to bottom:
+## Grounding in Specs and the Codebase
 
+Start by reading the parent PRD (`docs/prd/YYYYMMDD_<feature>.md`) and SRS (`docs/srs/YYYYMMDD_<module>.md`) so every task in the plan traces back to a real `REQ-XXX` requirement or user story. Before designing the tasks, inspect the existing source code, types, and boundaries in the area we are modifying so the plan fits how our codebase actually works rather than relying on assumptions.
+
+If the order of phases, migration steps, or technical trade-offs is still open to interpretation, do not guess—pause and invoke `/align` first so we can weigh 2 or 3 sequencing options and agree on the approach before you write the plan.
+
+## Designing Behavioral TDD Scenarios
+
+Follow our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config/opencode/AGENTS.md`) when breaking the work down into scenarios:
+
+- Frame tests around observable behavior through the public API. Never plan unit tests for frontend UI rendering, layout, or styling, and never plan brittle tests that mock internal collaborators or just check that an internal method was called.
+- Make sure the planned scenarios cover all 4 dimensions: normal happy paths, boundaries and edge cases (empty inputs, limits, off-by-one conditions), error paths (validation rejections, timeouts, unauthorized access), and core business invariants.
+- Order scenarios from the most foundational and design-revealing behaviors first (core domain rules and main contracts) down to peripheral edge cases and error handling. Write scenario titles as clear behavioral statements, such as "rejects order when inventory is insufficient."
+
+Do not leave phases or scenarios standing as bare headings and checkboxes without context. Give the plan a brief overview of our overall approach, explain the goal and architectural boundary of each phase, and include a short paragraph under each scenario explaining what behavior is being proven, how it connects to the codebase, and what requirement (`REQ-XXX`) it fulfills.
+
+To keep our steps small and commits clean, break every behavioral scenario into two separate tasks (1 scenario = 2 commits):
+
+1. Task `a` (the Red step): Write a failing public-API test for the scenario, verify that running the test command fails as expected, and commit it as `test(<scope>): add failing test for <scenario>`.
+2. Task `b` (the Green step): Write the minimal implementation code needed to pass the test, verify that the test suite turns green, and commit it as `feat(<scope>): implement minimal logic for <scenario>`.
+
+For tasks that build or modify frontend UI, views, layout, or styling, never use vague verification criteria like "build succeeds." Specify that verification requires running the `/design` isolated `UI Visual Auditor` subagent against mobile (`360x640`) and desktop (`1280x800`) Playwright screenshots until it returns `PASS & CERTIFIED`.
+
+## File Placement, Lifecycle, and Format
+
+Always tell me the target file path before creating or updating a plan. Save plans at `docs/plan/YYYYMMDD_<plan_slug>.md` in snake_case. If we revise the plan's scope or structure on a later date via `/plans`, rename the file with `git mv` to match the new date and update `docs/README.md` (whereas routine checkbox ticking and commit hash updates during `/implement` keep the original filename).
+
+Structure the plan file like this so it reads clearly and stays easy to track during `/implement`:
+
+```markdown
+---
+title: "Implementation Plan: [Feature Name]"
+type: plan
+parent_prd: docs/prd/YYYYMMDD_[feature].md
+parent_srs: docs/srs/YYYYMMDD_[feature].md
+status: planned
+total_tasks: [Total Number of Tasks]
+completed_tasks: 0
+last_updated: YYYY-MM-DD
 ---
 
-## The TDD Plans Decision & Execution Flow
+# Implementation Plan: [Feature Name]
 
-```mermaid
-flowchart TD
-    A["Invoke /plans"] --> B["Phase 1: Ingest Specs & Map Codebase Baseline"]
-    B --> C["Phase 2: Extract & Order 4-Dimension Behavior Scenarios"]
-    C --> D{"Are there sequencing ambiguities or unguided trade-offs?"}
-    D -- YES --> E["Phase 3: Invoke /align with Me"]
-    E --> F["Calibrate sequence, order & reach consensus"]
-    F --> G["Phase 4: Dual-Task TDD Breakdown (Task a: TEST / Task b: FEAT)"]
-    D -- NO --> G
-    G --> H["Phase 5: Announce Placement & Draft Plan (YYYYMMDD_<slug>.md)"]
-    H --> I["Phase 6: Index in docs/README.md & Delivery"]
+Progress: 0 / [Total] tasks completed (0%)
+
+## Overview & Approach
+Briefly explain the overall implementation strategy, how these changes fit into the existing codebase, and why the phases below are sequenced in this order.
+
+## Phase 1: [Milestone Name]
+Explain what this phase accomplishes, which subsystem or boundary it touches, and what foundation it lays for the next phase.
+
+### Scenario 1.1: [Behavioral description, e.g. Rejects order when inventory is insufficient]
+Explain the specific behavior and mechanics being built here, the testing dimension it covers (Normal Path, Boundary, Error Path, or Core Invariant), the requirement it fulfills (`REQ-XXX`), and the files involved (`tests/...`, `src/...`).
+
+- [ ] Task 1.1a (Red): Write failing test for [behavior]
+  Commit: `test(scope): add failing test for [behavior]`
+  Verify: `npm test path/to/test.ts` (expected to fail)
+
+- [ ] Task 1.1b (Green): Implement minimal logic for [behavior]
+  Commit: `feat(scope): implement minimal logic for [behavior]`
+  Verify: `npm test path/to/test.ts` (expected to pass)
 ```
 
----
-
-### Phase 1: Ingest PRD & SRS Contracts & Baseline Mapping
-1. **Locate Specifications**: Read the parent documents:
-   - `docs/prd/YYYYMMDD_<feature_slug>.md` (Problem framing, user journeys, MVP scope).
-   - `docs/srs/YYYYMMDD_<module_slug>.md` (Interface schemas, REQ identifiers, NFR targets).
-2. **Anchor Requirements**: Every planned task must trace back to a specific `REQ-XXX` identifier or PRD User Story.
-3. **Map Codebase Baseline in Target Area**:
-   - Inspect existing source code, signatures, types, and invariants in the subsystems that will be modified or integrated.
-   - Grounding test scenarios in the existing codebase reality upfront eliminates guesswork and mitigates test tampering down the line.
-
----
-
-### Phase 2: Extract & Order Behavior Scenarios (4 Dimensions)
-1. **Derive Scenarios from Public API Boundaries (Engineering Directive #5)**:
-   - Frame tests around behavioral interactions through the public interface/API per `## Engineering Rules & Directives`.
-   - Never write test cases for frontend UI files such as component rendering, layout, styling, or visual interaction (delegate UI verification to the `/design` skill).
-   - Strictly avoid over-mocking and avoid assertions that merely verify "method X was called". Focus on inputs, observable states, returned payloads, and side-effects.
-2. **Systematically Cover 4 Testing Dimensions**:
-   Organize scenarios across four essential dimensions:
-   - **Normal Path**: Core workflows and happy-path journeys.
-   - **Boundaries (Edge Cases)**: Empty inputs, boundary limits, maximum payloads, off-by-one conditions.
-   - **Error Paths**: Validation rejections, network failures, unauthorized requests, timeouts.
-   - **Core Invariants**: Fundamental business integrity rules and system guarantees that must never be violated.
-3. **Order by Design-Revealing Impact**:
-   - Order scenarios from the most design-revealing (foundational schema, core interface contract, central domain rule) to peripheral edge cases and error handling.
-   - Formulate scenario titles as clear behavioral statements (e.g. *"should reject order when inventory is insufficient"*) with human-readable test logs that I can easily understand from a behavior perspective.
-
----
-
-### Phase 3: Technical Alignment Gate (Invoke `/align`)
-> [!IMPORTANT]
-> **No Unilateral Sequencing Assumptions**:
-> If phase ordering, migration sequencing, or technical trade-offs are ambiguous:
-> 1. Immediately invoke `/align`.
-> 2. Present 2–3 sequencing strategies with pros and cons.
-> 3. Align with me on phase boundaries, TDD verification criteria, and commit granularity before writing the plan.
-
----
-
-### Phase 4: Dual-Task TDD Breakdown (1 Scenario = 2 Atomic Commits)
-In alignment with the core principles **"Take small steps"** and **"Commit test and implementation separately"**, every behavior scenario is broken down into an explicit pair of tasks:
-
-- **Task X.Ya: [TEST] (The Red Phase)**:
-  - Write a single targeted failing test asserting the scenario via the public API with concise comments explaining why the invariant matters.
-  - Expected verification result: **FAIL / RED** (proves the test is valid and detects the missing capability).
-  - Proposed commit message: `test(<scope>): add failing test for <scenario>`
-- **Task X.Yb: [FEAT] (The Green Phase)**:
-  - Write the minimal implementation code needed to satisfy the test.
-  - Expected verification result: **PASS / GREEN** with clean, human-readable test logs.
-  - Proposed commit message: `feat(<scope>): implement minimal logic for <scenario>`
-
-#### Non-Negotiable Front-End & UI Verification Standard:
-For tasks that modify user-facing views, templates, styling, layout, or UI components:
-- **Never accept vague or passive verification** such as "npm run build passes", "Vite build success", or generic "visual check".
-- **Explicitly specify visual verification** using the `/design` subagent protocol across target viewports:
-  - **Verification**: `/design` visual test via isolated `UI Visual Auditor` subagent across 4 visual dimensions (Core, Edge, Error, Invariant) on mobile (360px) and desktop (1280px) Playwright captures (EXPECTED: PASS & CERTIFIED).
-
----
-
-### Phase 5: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing & Chronological Naming**: Declare your destination file path to me before writing:
-   - Target format: `docs/plan/YYYYMMDD_<plan_slug>.md` in full snake_case (e.g., `docs/plan/20261011_checkout_pipeline.md`).
-   - **Chronological Revision Rule**: If this plan's tasks, scope, or structure are revised on a subsequent calendar date (via `/plans`), rename the file using `git mv` to match the new date (`YYYYMMDD_<plan_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize references in `docs/README.md`.
-   - **Preservation During Implementation**: Routine task completion ticking, commit hash recording, and progress bar updates during execution (`/implement`) preserve the plan filename without renaming.
-2. **Required Implementation Plan Structure**:
-   Structure the document with frontmatter:
-
-   ```markdown
-   ---
-   title: Implementation Plan - [Feature Name]
-   type: plan
-   parent_prd: docs/prd/YYYYMMDD_[feature].md
-   parent_srs: docs/srs/YYYYMMDD_[feature].md
-   status: planned          # planned | in_progress | completed
-   total_tasks: [Total Number of Sub-Tasks]
-   completed_tasks: 0
-   last_updated: YYYY-MM-DD
-   ---
-
-   # Implementation Plan: [Feature Name]
-
-   > **Progress Tracker:** `[░░░░░░░░░░░░░░░░]` **0 / [Total] Tasks Completed (0%)**
-
-   ---
-
-   ## Phase 1: [Milestone Name]
-
-   ### Scenario 1.1: [Behavior Description] (Normal Path / Boundary / Error / Invariant)
-   - [ ] **Task 1.1a: [TEST] Write failing test for [Behavior]**
-     - **Fulfills**: `REQ-XXX`
-     - **Files**: `[NEW] tests/unit/...test.ts`
-     - **Commit**: `test(scope): add failing test for [behavior]`
-     - **Verification**: `npm test path/to/test.ts` (EXPECTED: FAIL / RED)
-
-   - [ ] **Task 1.1b: [FEAT] Implement minimal logic for [Behavior]**
-     - **Fulfills**: `REQ-XXX`
-     - **Files**: `[NEW/MODIFY] src/...`
-     - **Commit**: `feat(scope): implement minimal logic for [behavior]`
-     - **Verification**: `npm test path/to/test.ts` (EXPECTED: PASS / GREEN)
-   ```
-
----
-
-### Phase 6: Anti-Rot Indexing & Delivery
-1. **Single Source of Map**: Open `docs/README.md` and catalog the new plan in the **Implementation Plans (Plan)** table with its title, linked SRS, status (`Planned`), progress (`0%`), and relative markdown link.
-2. **Delivery**: Present the implementation plan to me in chat with an executive overview of the phases, test coverage across the 4 dimensions, total commit pairs, and execution roadmap.
+Once you create or update the plan, add or update its entry in `docs/README.md` and walk me through the phases and scenario coverage in chat.
