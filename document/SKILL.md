@@ -5,91 +5,46 @@ description: Use when documenting architecture, decisions, workflows, concepts, 
 
 # Document
 
-When I ask you to document architecture, workflows, concepts, or technical specifications (e.g. via `/document` or natural documentation requests), your goal is to maintain a clean, modular, and durable documentation repository by following these directives:
+When I ask you to document architecture, workflows, domain concepts, or technical references, the goal is to keep our `docs/` folder clean, modular, and useful over time.
 
-## Core Documentation Directives
+Write documentation for someone reading it cold months from now. Synthesize how the system actually works and the mental models behind it—never dump raw chat transcripts or summaries of our back-and-forth conversation. Keep each document focused on a single topic rather than mixing high-level architecture, step-by-step setup guides, and decision records into one giant file. If what I ask you to document spans multiple categories, point that out and suggest how we should split it before writing.
 
-### 1. Synthesis Over Transcripts
-Capture enduring system architecture and technical truths, not our raw conversational histories.
-- Synthesize technical reality, architectural decisions, and operational mental models directly from context.
-- Never produce conversational logs or raw discussion summaries. Extract durable knowledge that remains valuable for me or anyone reading the documentation cold.
+## Where Documents Live
 
-### 2. Modular Separation of Concerns (Single Responsibility)
-Address exactly one focused technical concern per document rather than amalgamating unrelated topics into a monolith.
-- Enforce strict single responsibility per document. Avoid monolithic, multi-topic documents.
-- Clearly decouple high-level system models from step-by-step implementation recipes and technical decision records.
+Before creating a new file, check our existing `docs/` tree. If our project already has its own established folder layout, follow that convention, and if a file covering the topic already exists, update that file instead of creating a duplicate. Otherwise, organize files into these folders:
 
-### 3. Explicit Placement Announcement (Zero Stealth Writing)
-Declare your destination path to me before writing begins.
-- Never create or modify documentation files silently without declaring your intent to me.
-- Always explicitly state the determined category and destination file path to me before or upon generating the file (e.g., *"Categorized as **architecture**: creating `docs/architecture/state-machine.md`"*).
-- If the content spans multiple categories (e.g. half architecture, half how-to guide), identify the boundary ambiguity and recommend a concise split or placement choice to me before writing.
+- `docs/architecture/`: How the system works, including component boundaries, data flow, state transitions, and how services talk to each other.
+- `docs/guides/`: Practical how-to recipes, local setup, runbooks, migrations, and operational steps.
+- `docs/concepts/`: Domain mental models, core entities, terminology, and business rules.
+- `docs/reference/`: Formal contracts such as API endpoints, config schemas, CLI flags, and database models.
+- Specialized documents have their own skills and folders: use `/prd` for `docs/prd/`, `/srs` for `docs/srs/`, `/plans` for `docs/plan/`, `/rfc` for `docs/rfc/`, and `/adr` for `docs/decisions/`.
 
-### 4. Durable Code Anchors & Traceability
-Anchor documentation to concrete codebase symbols rather than leaving it in an isolated narrative vacuum.
-- Bind documentation directly to codebase symbols and files via structured YAML frontmatter.
-- Reference durable symbol paths (`path/to/file.ext` -> `ClassName.method()`) rather than volatile line numbers that break on future edits.
+## How to Draft and Maintain Docs
 
-### 5. Single Source of Map (Anti-Rot Indexing)
-Maintain complete discoverability through a centralized documentation index and prevent orphaned or forgotten files.
-- Never leave orphaned documentation files.
-- Catalog every newly created or updated document in `docs/README.md` (or our existing root documentation index) with a one-line summary and relative link.
+Always tell me which category and file path you plan to use before you create or edit a document. Anchor technical explanations to the actual codebase by listing relevant files in the YAML frontmatter and referencing stable symbol names (`path/to/file.ext` -> `ClassName.method()`) in the text rather than line numbers that will quickly go stale.
 
+Use this frontmatter and basic structure so our documentation stays consistent:
+
+```markdown
+---
+title: "[Descriptive Document Title]"
+type: "[architecture | guide | concept | reference]"
+status: active
+related_code:
+  - path/to/file.ts
+last_updated: YYYY-MM-DD
 ---
 
-## Taxonomy & Decision Tree
+# [Document Title]
 
-Evaluate the content against this decision tree to determine file placement:
+## Overview
+Explain the context and purpose of this document in plain language.
 
-| Category | Target Directory | Content Type & Scope |
-| :--- | :--- | :--- |
-| **PRD (Product)** | `docs/prd/YYYYMMDD_<slug>.md` | **Why & What to build**: Problem framing, user personas, business goals, scope boundaries, and CUJs. Handled via specialized sub-skill `/prd`. |
-| **SRS (Software)** | `docs/srs/YYYYMMDD_<slug>.md` | **How the software behaves**: Technical system capabilities, REQ identifiers, interface schemas, and NFRs. Handled via specialized sub-skill `/srs`. |
-| **Plan (Implementation)** | `docs/plan/YYYYMMDD_<slug>.md` | **Step-by-step roadmap**: Commit-driven task breakdown, stateful progress checkboxes, and execution phases based on PRD/SRS. Handled via specialized sub-skill `/plans`. |
-| **RFC (Proposal)** | `docs/rfc/rfc_NNN_<slug>.md` | **Technical proposal & consensus**: Major architectural shifts, cross-team interfaces, and migration strategies before commitment. Handled via specialized sub-skill `/rfc`. |
-| **Architecture** | `docs/architecture/` | **How the system works**: Component hierarchy, data lifecycle, runtime state transitions, subsystem boundaries, and inter-service communication. |
-| **Decisions (ADR)** | `docs/decisions/adr_NNN_<slug>.md` | **Why a technical choice was made**: Architectural Decision Records detailing context, considered alternatives, evaluated trade-offs, and consequences. Handled via specialized sub-skill `/adr`. |
-| **Guides** | `docs/guides/` | **How to accomplish a task**: Step-by-step developer recipes, environment setup, runbooks, migration guides, and operational procedures. |
-| **Concepts** | `docs/concepts/` | **Domain mental models**: Business domain rules, terminology glossaries, core entities, and conceptual paradigms. |
-| **Reference** | `docs/reference/` | **Formal specifications**: API contracts, configuration schemas, command-line arguments, database models, and interface definitions. |
+## [Core Content Sections]
+Walk through the system mechanics, domain concepts, reference details, or step-by-step instructions using clear headings and natural prose.
 
-*Existing Project Conventions*: If our project already has an established documentation directory structure, respect and adapt to that layout while enforcing modularity and traceability.
+## Related Documents & Code
+Link to related files in `docs/` and key entry points in the codebase.
+```
 
----
-
-## Execution Workflow
-
-1. **Classify & Check Collision**:
-   - Map the topic to the appropriate category using the decision tree.
-   - Inspect our existing `docs/` tree. If a document covering the topic already exists, update and refine the existing document instead of creating a redundant duplicate.
-
-2. **Announce Placement**:
-   - Declare the chosen category and destination path to me in your response.
-
-3. **Draft the Document**:
-   Structure every document with consistent frontmatter:
-   ```markdown
-   ---
-   title: [Descriptive Document Title]
-   type: [architecture | decision | guide | concept | reference]
-   status: [active | draft | superseded]
-   related_code:
-     - path/to/file.ts
-   last_updated: YYYY-MM-DD
-   ---
-
-   # [Document Title]
-
-   ## Overview & Purpose
-   [High-level context and the problem this document addresses]
-
-   ## [Core Technical Section / System Model / Steps]
-   [Technical explanation, diagrams, architectural breakdown, or guide steps]
-
-   ## Related Documents & Code
-   [Cross-links to related documents in docs/ and key source files]
-   ```
-
-4. **Synchronize Index & Deliver**:
-   - Update `docs/README.md` with the new or updated document link and description.
-   - Report the generated document path and a concise summary to me.
+Whenever you create or update a document, make sure it is listed in `docs/README.md` with a relative link and a short one-line summary so no file becomes orphaned, then let me know in chat what you updated.
