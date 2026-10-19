@@ -5,46 +5,37 @@ description: Use when converting a debugging session, bug report, architectural 
 
 # Issue
 
-When I ask you to track or turn a problem, bug, architectural gap, or debugging findings into an issue (e.g. via `/issue` or natural requests), handle it using these instructions:
+When I ask you to turn a bug, architectural gap, or debugging session into a tracking issue, write it so that anyone reading it weeks later with zero context can immediately understand what is broken and why it matters.
 
-## How I Want Issues Drafted
+## How to Frame an Issue
 
-1. **Problem-First, Not Solution-First**:
-   - Title must state what is broken, failing, or missing—not your speculative fix (e.g., `Authentication token expiration bypasses database validation on high-concurrency requests`, not `Fix auth.ts and add locking`).
-   - Frame the issue so that anyone reading it weeks later with zero active context can immediately orient themselves.
+Always frame the issue around the problem, not a speculative solution. The title should clearly state what is failing or missing (for example, "Authentication token expiration bypasses database validation on high-concurrency requests") rather than how you think we should code the fix ("Fix auth.ts and add locking"). If the problem we found actually spans multiple separate bugs or independent subsystems, split them into individual issues instead of cramming everything into one giant ticket.
 
-2. **Durable Symbol Pointers (No Decaying Code Dumps)**:
-   - Identify affected locations using durable symbol paths: `path/to/file.ext` -> `ClassName.method()`.
-   - Never paste large blocks of code or volatile line numbers that become obsolete after a single commit.
+When pointing to the codebase, use stable symbol paths (`path/to/file.ext` -> `ClassName.method()`) instead of pasting large code blocks or volatile line numbers that will go stale after a few commits.
 
-3. **Cognitive Slicing (No Monolithic Issues)**:
-   - If the problem spans multiple distinct layers, independent subsystems, or separate bugs, slice them into focused, individual sub-issues rather than packing everything into one bloated issue.
+In the proposed direction section, outline the high-level approach, boundary changes, and testing expectations (such as regression or integration tests). If the fix is not obvious yet or involves architectural trade-offs that need discussion, say so openly and list the options rather than guessing a premature solution.
 
-4. **Honest Fix Direction & Discussion**:
-   - Outline the high-level architectural direction and boundaries.
-   - For bugs or regressions, explicitly note testing expectations (unit, integration, or regression suites).
-   - If the solution requires team consensus or trade-offs, state clearly that the direction is open for discussion and list the key trade-offs/options. Do not hallucinate or guess a premature fix.
+## Workflow and Issue Format
 
-5. **Confirmation Before Publishing**:
-   - Present the clean markdown draft in chat first for my review.
-   - Provide the optional GitHub CLI command (`gh issue create ...`).
-   - NEVER publish or create remote tracker issues automatically without my explicit confirmation.
+If I give you a specific topic (like `/issue memory leak in worker`), focus on that. If I invoke `/issue` without arguments after we just finished debugging or reviewing code, pull the failure details directly from our conversation. Ask me a quick clarifying question if the scope is unclear, and if you need to inspect 3 or more unfamiliar files to trace the problem, spawn a `research` subagent so our main chat stays clean.
 
-## Execution Steps
+Draft the issue using this structure:
 
-1. **Target Identification**:
-   - If I provide arguments (e.g. `/issue memory leak in worker`), target that problem.
-   - If invoked without arguments after a debugging or review discussion, synthesize the core failure condition directly from our active conversation context. If scope is ambiguous, ask me one clarifying question.
-   - If you need to explore 3+ unfamiliar files across the codebase, dispatch a `research` subagent to keep our main chat clean.
+```markdown
+Title: [Problem-first statement of what is broken or missing]
 
-2. **Drafting the Issue**:
-   Structure the draft cleanly using this markdown schema:
-   - **Title**: Problem-first statement.
-   - **Context**: 1–2 high-level sentences for cold re-orientation.
-   - **Problem Description**: Concrete failure mechanics, triggers, and operational impact.
-   - **Affected Locations**: File paths and durable symbol references (`file` -> `Symbol()`).
-   - **Proposed Direction**: High-level fix approach, testing expectations, or key trade-offs open for discussion.
+## Context
+1 or 2 sentences explaining where this subsystem fits in the bigger picture so a reader coming in cold can orient themselves.
 
-3. **Review & Hand-off**:
-   - Present the draft directly in chat (do not clutter with internal meta-labels like "Gate 1/Gate 2").
-   - Offer the `gh issue create` CLI snippet, and wait for my review.
+## Problem Description
+Explain what breaks, what triggers it, and the concrete impact on the system or users.
+
+## Affected Locations
+- `path/to/file.ext` -> `SymbolName()`
+- `path/to/another_file.ext` -> `ClassName.methodName()`
+
+## Proposed Direction
+Outline the high-level fix strategy and testing expectations, or note that the approach is open for discussion along with the key trade-offs to weigh.
+```
+
+Show me the markdown draft in chat first and wait for my confirmation. If our project uses an issue tracker CLI (such as `gh issue create`, `glab issue create`, or whatever tool we use for the repository), include the ready-to-run command or offer to publish it once I approve. Never create or publish an issue to a remote tracker automatically without my confirmation.
