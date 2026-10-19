@@ -5,83 +5,52 @@ description: Use when writing, drafting, or refining a Product Requirements Docu
 
 # PRD (Product Requirements Document)
 
-When I ask you to write, draft, or refine a PRD (e.g. via `/prd` or natural requests), your goal is to **define the problem space and desired outcomes while leaving implementation details flexible for engineering**.
+When I ask you to draft or refine a PRD, the goal is to clearly define the problem we are solving, who we are solving it for, the outcomes we want, and the scope boundaries—while leaving technical implementation details flexible for engineering and the `/srs` spec.
 
-Execute this activity strictly following the decision flow from top to bottom:
+## Align on Open Product Decisions First
 
+Start by reading my prompt, our prior discussion, and the current codebase context. Separate what we have already settled (such as the core problem, target users, and main MVP need) from high-level product or scope questions that are still open (such as edge-case business rules, scope boundaries, or policy trade-offs).
+
+Never guess or silently invent product and scope decisions on my behalf. If there are open gaps or trade-offs we have not discussed yet, pause and invoke `/align` first so we can walk through the options and agree on the direction before you write the PRD. If we intentionally decide to leave a question open for later, note it clearly in the document.
+
+## Keep the Focus on Problems, Outcomes, and Scope
+
+When shaping the requirements, keep three things in mind:
+
+- Tie every capability directly back to the root problem we are solving, and leave out surface-level bells and whistles.
+- Focus on what the user needs to accomplish and the observable outcome ("what" and "why"), leaving database schemas, internal APIs, and code architecture to `/srs` and `/plans`.
+- Draw a hard line on scope. Clearly separate what is in scope for the MVP (must-have items required for launch) from what is explicitly out of scope so we prevent scope creep early.
+
+## File Placement, Lifecycle, and Format
+
+Always tell me the target file path before creating or updating a PRD. Save PRD files at `docs/prd/YYYYMMDD_<feature_slug>.md` in snake_case. If we revise the PRD on a later calendar date, rename the file using `git mv` to match the new date, update `last_updated` in the frontmatter, and update references to it in `docs/README.md` as well as any downstream SRS or Plan files.
+
+Structure the PRD with consistent YAML frontmatter and clear, readable sections:
+
+```markdown
+---
+title: "PRD: [Feature or Initiative Name]"
+type: prd
+status: Draft
+last_updated: YYYY-MM-DD
 ---
 
-## The PRD Decision & Execution Flow
+# PRD: [Feature or Initiative Name]
 
-```mermaid
-flowchart TD
-    A["Invoke /prd"] --> B["Phase 1: Ingest Context & Synthesize Gaps"]
-    B --> C{"Are there unguided high-level decisions?"}
-    C -- YES --> D["Phase 2: Invoke /align with Me"]
-    D --> E["Calibrate, resolve trade-offs & reach consensus"]
-    E --> F["Phase 3: Scope & Prioritization Gate"]
-    C -- NO --> F
-    F --> G["Phase 4: Announce Placement & Draft PRD"]
-    G --> H["Phase 5: Index in docs/README.md & Deliver"]
+## Problem & Context
+Explain the root problem we are solving, why it matters now, and who the target users are. Write this in clear paragraphs so anyone reading it cold understands the background.
+
+## Goals & Success Criteria
+Describe the concrete user and product outcomes we want to achieve, along with how we will know the solution is working.
+
+## Scope & Constraints
+Clearly separate what is in scope for the MVP (must-haves) from what is explicitly out of scope (deferred or non-goals), and note any business, timeline, or compliance constraints.
+
+## User Journeys & Requirements
+Walk through the critical user journeys (step-by-step or Given/When/Then), the core functional requirements and business rules, and any high-level non-functional expectations (such as responsiveness, security, or reliability).
+
+## Risks, Rollout & Open Questions
+Note key operational or product risks and how we will handle them, any rollout considerations, links to related design or technical docs, and any remaining open questions.
 ```
 
----
-
-### Phase 1: Ingest Context & Gap Synthesis
-1. **Ingest the Raw Context**: Read my prompt, issue thread, background discussion, and codebase state.
-2. **Sort into Two Mental Buckets**:
-   - **Directed & Settled**: Items where I have provided clear direction (problem statement, target end users/personas, core MVP need).
-   - **Unguided High-Level Decisions (Gaps)**: Strategic trade-offs, scope boundaries, policy edge-cases, or monetization/business rules that have not yet been addressed.
-
----
-
-### Phase 2: Alignment Gate (Invoke `/align`)
-> [!IMPORTANT]
-> **Strictly No Unilateral Assumptions on Unguided Decisions**:
-> Never invent or silently assume high-level business or scope decisions. If gaps exist in Phase 1:
-> 1. **Immediately trigger the `/align` skill**.
-> 2. Present the identified gaps, compare viable options/trade-offs, and suggest recommendations to me.
-> 3. Discuss and calibrate with me until we are on the same page.
-> 4. Only proceed to Phase 3 once we reach alignment. (Any intentionally deferred items must be flagged as `[PENDING ALIGNMENT WITH ME]`).
-
----
-
-### Phase 3: Scope & Prioritization Gate
-Before writing requirements, pass every capability through these filters:
-1. **Problem-Oriented**: Does every feature directly solve the root problem identified? Eliminate surface-level bells and whistles.
-2. **Outcome-Focused ("What", not "How")**: Focus on end-user capabilities and measurable impact. Leave technical architecture to engineering and the SRS.
-3. **Rigorous Prioritization**:
-   - **In-Scope (MVP)**: Strictly `Must-Have` (MoSCoW) or `P0` items required for launch.
-   - **Out-of-Scope**: Explicitly list deferred items (`Won't-Have` / `P2`) to prevent scope creep.
-
----
-
-### Phase 4: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing & Chronological Naming**: Declare your destination file path to me before writing:
-   - Target format: `docs/prd/YYYYMMDD_<feature_slug>.md` in full snake_case (e.g., `docs/prd/20261011_user_onboarding.md`).
-   - **Chronological Revision Rule**: If this PRD is modified or revised on a subsequent calendar date, rename the file using `git mv` to match the new date (`YYYYMMDD_<feature_slug>.md`), update `last_updated: YYYY-MM-DD` in frontmatter, and synchronize all references in `docs/README.md` and downstream documents (`parent_prd` in SRS/Plans).
-2. **Required 7-Section Document Structure**:
-   Structure the document with frontmatter (`title`, `type: prd`, `status: Draft`, `last_updated`):
-
-   - **Section 1: Metadata & Status**
-     - Owner / Lead PM, cross-functional team (Design, Eng, QA, GTM), status (`Draft`/`In Review`/`Approved`), target release timeline.
-   - **Section 2: Overview & Context**
-     - Root problem statement, strategic alignment (OKRs/pillars), target audience & personas.
-   - **Section 3: Goals & Success Metrics**
-     - Qualitative business goals and quantitative Key Results with baseline/target metrics (e.g., *"Reduce drop-off by 15%"*).
-   - **Section 4: Scope & Constraints**
-     - In-Scope (MVP), Out-of-Scope (deferred), business/regulatory constraints, and budget/timeline assumptions.
-   - **Section 5: Requirements**
-     - Critical User Journeys (CUJs) / User Stories (*Given-When-Then* or step-by-step).
-     - Functional requirements & business logic rules.
-     - High-level Non-Functional Requirements (accessibility, security expectations, performance targets).
-   - **Section 6: Design & Technical References**
-     - Links to Figma wireframes/mockups and links to technical design docs / SRS.
-   - **Section 7: Launch, Risk & Appendix**
-     - Operational risks & mitigation, rollout/GTM strategy (feature flags, canary), open questions, and decision log.
-
----
-
-### Phase 5: Anti-Rot Indexing & Delivery
-1. **Single Source of Map**: Open `docs/README.md` and catalog the new document in the **Product Requirements (PRD)** table with its title, status, and relative markdown link.
-2. **Executive Delivery**: Provide a concise summary to me in chat, listing the key outcomes and any remaining open questions.
+Once you create or update the file, add or update its entry in `docs/README.md` and give me a brief summary of the PRD and any remaining open questions in chat.
