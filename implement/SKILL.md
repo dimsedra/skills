@@ -3,138 +3,33 @@ name: implement
 description: Use when executing implementation tasks phase-by-phase from an approved docs/plan/ document with atomic commits, strict TDD cycles (Red-Green-Refactor), automated test verification, and real-time plan tracking.
 ---
 
-# Implement (TDD Plan Execution)
+# Implement
 
-When I ask you to implement code (e.g. via `/implement` or natural execution requests), your goal is to **faithfully execute the approved roadmap in `docs/plan/`, working phase-by-phase with strict TDD cycles (Red -> Green -> Refactor), committing tests and implementation separately, recording real-time progress and Git commit hashes directly in the plan document, and strictly complying with the `## Engineering Rules & Directives` defined in your active harness configuration (`GEMINI.md` at `~/.gemini/GEMINI.md` or `AGENTS.md` at `~/.agents/AGENTS.md` / `~/.config/opencode/AGENTS.md`)**.
+When I ask you to implement a feature or execute a roadmap, work from our approved implementation plan in `docs/plan/` phase by phase using strict TDD (Red -> Green -> Refactor). Never start writing implementation code without an approved plan in `docs/plan/`; if we do not have one yet, tell me to run `/plans` first.
 
-Never write code without an existing, approved plan in `docs/plan/`. If no plan exists, instruct me to run `/plans` first.
+## Starting a Phase
 
-Execute this activity strictly following the decision flow from top to bottom:
+Find the active plan in `docs/plan/YYYYMMDD_<plan_slug>.md` and locate the first phase that still has unchecked tasks (`- [ ]`). If all tasks in the plan are already checked off, let me know that the plan is complete and suggest running `/audit`.
 
----
+Before touching any code, read the target files in the codebase so you understand the existing types, function signatures, and invariants we are building on. Then tell me in chat which phase we are starting, the sequence of TDD scenarios you are about to run, and how they cover the 4 test dimensions (normal path, boundaries and edge cases, error paths, and core invariants).
 
-## The TDD Implementation Decision & Execution Flow
+## The TDD Execution Cycle (Red -> Green -> Refactor)
 
-```mermaid
-flowchart TD
-    A["Invoke /implement"] --> B["Phase 1: Ingest Plan & Map Codebase Baseline"]
-    B --> C{"Are all tasks in plan completed?"}
-    C -- YES --> D["Notify: Plan fully completed, suggest /audit"]
-    C -- NO --> E["Phase 2: Announce Phase Scope & 4-Dimension Coverage"]
-    E --> F["Phase 3: The Strict TDD Cycle per Scenario"]
-    F --> G["Step 1 (RED): Write Test -> Run Test (Show FAIL) -> Commit test(...)"]
-    G --> H["Step 2 (GREEN): Minimal Code -> Run Test (Show PASS) -> Commit feat(...)"]
-    H --> I["Step 3 (REFACTOR): Clean up -> Ensure GREEN -> Optional refactor(...)"]
-    I --> J["Phase 4: Real-Time Plan Update: Tick [x] & Record Hash"]
-    J --> K{"Are there remaining tasks in this Phase?"}
-    K -- YES --> F
-    K -- NO --> L["Phase 5: Phase Milestone Checkpoint Review with Me"]
-```
+Work through each scenario in the phase using a strict Red -> Green -> Refactor loop, committing tests and implementation separately:
 
----
+1. Red (write the failing test first): Write a test that checks observable behavior through the public API. Do not mock internal collaborators or assert that private methods were called, and only add brief comments when explaining why an invariant matters (never what the syntax does). Run the test runner and show me the failing output in chat so I can see the failure reason from a behavior perspective. Once verified failing, stage only the test files, commit them using the `test(...)` message from the plan, and note the short commit hash.
+2. Green (minimal implementation): Write only the code needed to make the test pass, without adding unrequested features or extra complexity. Follow our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config/opencode/AGENTS.md`): prefer duplication over premature abstraction, keep related logic co-located in deep modules, parse strictly at boundaries and fail fast without silent fallbacks, and keep control flow flat and obvious. Run the test suite, show me the passing output in chat as proof, then stage only the implementation files, commit them using the `feat(...)` message from the plan, and note the short commit hash.
+3. Refactor (clean up while staying green): If the new code introduced duplication or clutter that needs tidying up without changing behavior, clean it up now, re-run the tests to make sure everything stays green, and commit as `refactor(...)`.
 
-### Phase 1: Ingest Plan, Active Phase Discovery & Baseline Mapping
-1. **Locate & Read the Plan**: Inspect `docs/plan/` to find the active plan matching the discussion or prompt (formatted as `docs/plan/YYYYMMDD_<plan_slug>.md`).
-2. **Identify the Active Phase & Task Pair**: Scan for the first phase containing unchecked tasks (`- [ ]`).
-3. **Inspect Task Scope**: Read the linked `REQ-XXX` requirements, target files, proposed commit messages, and verification commands.
-4. **Map Codebase Baseline in Target Area**:
-   - Inspect existing source code, signatures, types, and invariants in the files that will be modified or extended.
-   - Grounding the implementation in existing codebase reality upfront eliminates false assumptions and prevents test tampering friction.
+Never delete, skip (`it.skip`, `@Disabled`), or weaken a test assertion just to force a failing test to pass. If you find that a test is flawed or the requirements need adjustment, stop immediately, explain the problem to me with exact file and line references, and invoke `/align` before changing the test.
 
----
+## UI Verification and Real-Time Plan Tracking
 
-### Phase 2: Phase Scope Announcement & Coverage Intent
-Before touching any code files, declare the execution boundary:
-- State which Phase is being started.
-- List the planned sequence of TDD scenario pairs for this phase.
-- Explicitly state the test coverage intent across the 4 dimensions: **normal path**, **boundaries (edge cases)**, **error paths**, and **core invariants**.
+If a task modifies frontend UI, views, layout, or styling, remember that passing backend tests only proves server-side logic—and we do not write unit tests for UI layout or styling. Before marking any UI task or phase complete, follow `/design` by spawning the `UI Visual Auditor` subagent against real mobile (`360x640`) and desktop (`1280x800`) screenshots until it returns a `PASS & CERTIFIED` verdict.
 
----
+Right after each test or feature commit succeeds, update the active plan file in `docs/plan/` in real time (keep the original filename even if our work spans multiple days):
 
-### Phase 3: The Strict TDD Execution Cycle
-Execute each scenario strictly through the **Red -> Green -> Refactor** sequence:
+- Check off the completed task (`- [x]`) and append the short commit hash at the end of the task title, such as `(`a1b2c3d`)`.
+- Update `completed_tasks`, `status` (`in_progress` or `completed`), and the progress summary in the plan file.
 
-#### Step 1: RED (Write Test & Prove Failure)
-1. **Write Test First**: Write the test asserting behavior through the public API (per Task X.Ya).
-   - Strictly avoid over-mocking and avoid interaction tests checking "method called". Focus on real inputs, states, payloads, and side-effects.
-   - **Concise "Why" Comments**: Include brief header comments in the test file explaining why this invariant matters. Never explain what the code does or restate what the syntax already shows.
-2. **Run Test Runner (Demonstrate Failure)**:
-   - Run the specified test command.
-   - **Show Output as Behavior Proof**: Display the failing test output in chat. Ensure logs are clean and clearly communicate the scenario description and failure reason from a behavior perspective so I can easily read and understand from a behavior perspective.
-3. **Atomic Test Commit**:
-   - Stage strictly the test files (`git add <test-files>`).
-   - Commit using the proposed test commit message (e.g. `test(order): add failing test for discount calculation`).
-   - Extract short commit hash (e.g. `a1b2c3d`).
-
-#### Step 2: GREEN (Minimal Implementation & Prove Success)
-1. **Minimal Implementation Only**: Write the minimal implementation code required to pass the test (per Task X.Yb). Do not add unrequested complexity or speculative extra features. Strictly adhere to `## Engineering Rules & Directives` from your harness config (`GEMINI.md` / `AGENTS.md`): AHA > DRY (prefer duplication over premature abstraction), Locality of Behavior (keep related logic together in deep modules), Parse Don't Validate (fail fast and loud, zero silent fallbacks), and Boring is Good (flatten control flow, eliminate boolean traps).
-2. **Run Test Runner (Demonstrate Success)**:
-   - Run the test suite. Must turn completely GREEN with clean, readable logs.
-   - **Show Output as Behavior Proof**: Display the passing test runner output in chat as concrete proof of delivery.
-3. **Atomic Feature Commit**:
-   - Stage strictly the implementation files (`git add <src-files>`).
-   - Commit using the proposed feature commit message (e.g. `feat(order): implement minimal tiered discount calculation`).
-   - Extract short commit hash (e.g. `e4f5g6h`).
-
-#### Step 3: REFACTOR (Clean Up while Staying Green)
-1. If duplication or code clutter exists, refactor for clarity and maintainability without altering observable behavior.
-2. Re-run tests to verify the green bar remains intact. If refactored, commit as `refactor(scope): ...`.
-
-#### Non-Negotiable Anti-Tampering Rules:
-> [!IMPORTANT]
-> **Strictly No Test Tampering**:
-> Never delete, skip (`it.skip`, `@Disabled`), or weaken assertions to make a failing test pass.
-> If a test is discovered to be logically flawed or specifications change:
-> 1. **STOP immediately**.
-> 2. Explain the defect or architectural gap to me with exact line references and wait for my guidance.
-> 3. Invoke `/align` to calibrate with me before making any changes to the test.
-
-#### Non-Negotiable UI & Visual Verification Gate:
-> [!IMPORTANT]
-> **No UI Done Without Subagent Visual Certification**:
-> When implementing tasks that modify views, templates, styling, layout, or UI components:
-> 1. **Backend Tests Are Only Half the Proof**: A passing backend test suite (e.g. Pest/Jest 100% green) only proves server-side contracts, data structures, and business logic. It does NOT prove visual correctness.
-> 2. **Mandatory `/design` Subagent Audit**: You are strictly forbidden from ticking `[x]` on a UI task or declaring a UI milestone complete without running `/design` Phase 2.
-> 3. **Certified Verdict Required**: You must spawn the `UI Visual Auditor` subagent, verify rendered pixels across target viewports (mobile 360px and desktop 1280px), and receive an explicit `PASS & CERTIFIED` verdict in the subagent report before recording the commit hash or progressing to the next task.
-
----
-
-### Phase 4: Real-Time Plan Synchronization (Living Audit Trail)
-Immediately after each commit succeeds, update the active plan document (`docs/plan/YYYYMMDD_<plan_slug>.md`) in real-time.
-*(Note: Routine checklist ticking, commit hash appending, and progress counter updates preserve the existing plan filename without renaming it across calendar days.)*
-
-1. **Tick Checkbox & Append Commit Hash**:
-   Update the task item from:
-   ```markdown
-   - [ ] **Task 1.1a: [TEST] Write failing test for discount calculation**
-     - **Fulfills**: `REQ-ORD-001`
-     - **Files**: `[NEW] tests/unit/discount.test.ts`
-     - **Commit**: `test(order): add failing test for discount calculation`
-     - **Verification**: `npm test tests/unit/discount.test.ts` (EXPECTED: FAIL / RED)
-   ```
-   To:
-   ```markdown
-   - [x] **Task 1.1a: [TEST] Write failing test for discount calculation** (`a1b2c3d`)
-     - **Fulfills**: `REQ-ORD-001`
-     - **Files**: `[NEW] tests/unit/discount.test.ts`
-     - **Commit**: `test(order): add failing test for discount calculation`
-     - **Verification**: `npm test tests/unit/discount.test.ts` (FAILED as expected)
-   ```
-   And similarly tick Task 1.1b upon green bar commit (`e4f5g6h`).
-
-2. **Update Metadata Counter & Progress Bar**:
-   - Increment `completed_tasks` in frontmatter.
-   - Update `status: in_progress` (or `status: completed` if this was the final task of the entire plan).
-   - Update markdown progress bar and percentage at the top of the plan.
-
----
-
-### Phase 5: Phase Milestone Checkpoint Review
-Once all tasks within the active phase are completed:
-1. **Pause for Review**: Stop execution to give me space to digest progress and prevent run-away modifications.
-2. **Deliver Milestone Summary**:
-   - Report the completed phase name.
-   - List the created commit pairs (tests + feats) with their hashes and verified test outputs.
-   - If the phase modified UI components, present the certified `UI Visual Auditor` subagent report confirming zero blockers across target viewports.
-   - Display the updated overall plan progress (e.g. `6 / 12 Tasks Completed (50%)`).
-3. **Awaiting Next Green Light**: Ask me for explicit confirmation before starting the next phase (e.g., *"Phase 1 is complete and all tests pass. Ready to proceed to Phase 2?"*).
+When all tasks in the current phase are finished, pause and give me a milestone summary in chat: list the commits created, show the updated plan progress, and include the `UI Visual Auditor` result if UI changed. Wait for my confirmation before moving on to the next phase.
