@@ -5,124 +5,52 @@ description: Use when recording, evaluating, or superseding an Architectural Dec
 
 # ADR (Architecture Decision Record)
 
-When I ask you to write, record, or supersede an architectural decision (e.g. via `/adr` or natural requests), your goal is to **capture the context, rationale, evaluated alternatives, and consequences behind a significant technical choice in a short, immutable, single-decision record**.
+When I ask you to record or supersede an architectural decision, the goal is to capture the context, reasoning, evaluated alternatives, and consequences behind a technical choice in a short, focused record that I can easily reference and defend later.
 
-Execute this activity strictly following the decision flow from top to bottom:
+## How to Approach an ADR
 
+Keep each ADR focused on a single architectural decision, like choosing PostgreSQL for the order service rather than covering an entire storage roadmap. If what we are discussing involves multiple separate decisions, split them into individual ADRs.
+
+Before writing anything, make sure the decision is actually settled between us. Never lock in frameworks, databases, queues, or protocols on your own. If there are still open trade-offs or multiple viable approaches we have not agreed on yet, pause and invoke `/align` first so we can weigh 2 or 3 concrete options and reach a clear decision together.
+
+When you write the ADR, ground it in the real constraints of our project, whether those are technical drivers like latency, throughput, and consistency, team factors like operational overhead and familiarity, or business and compliance boundaries. State the final choice in a clear, active voice ("We will use X...") rather than a tentative suggestion. Be thorough about the alternatives we considered and specifically why we rejected them so we do not end up relitigating the same debate months later. Also be honest about the trade-offs: every architectural choice has downsides and operational costs, and I want those documented right alongside the benefits.
+
+## File Placement, Lifecycle, and Format
+
+Always tell me the target file path before you create or update an ADR. Save ADR files under `docs/decisions/adr_NNN_<decision_slug>.md` using snake_case and a 3-digit sequential number (starting at `001` after checking existing files in `docs/decisions/`). Once you create or update the file, add or update its entry in `docs/README.md` so the documentation index stays accurate, and give me a short summary in chat.
+
+Treat accepted ADRs as immutable history. If we later change our minds and replace an old decision, do not delete or rewrite the old ADR. Instead, create a new ADR that links to the old one in `supersedes`, and update the old ADR's `status` and `superseded_by` fields to point to the new record.
+
+Use this frontmatter and section structure so our records stay consistent and easy to read:
+
+```markdown
+---
+title: "ADR-NNN: [Short Title Describing the Decision]"
+type: adr
+status: Proposed
+date: YYYY-MM-DD
+deciders: [Names or Roles]
+tags: [architecture, storage, messaging]
+parent_prd: null
+parent_srs: null
+supersedes: null
+superseded_by: null
 ---
 
-## The ADR Decision & Execution Flow
+# ADR-NNN: [Short Title Describing the Decision]
 
-```mermaid
-flowchart TD
-    A["Invoke /adr"] --> B["Phase 1: Ingest Context & Map Architectural Forces"]
-    B --> C{"Are there unguided trade-offs or contested choices?"}
-    C -- YES --> D["Phase 2: Invoke /align with Me"]
-    D --> E["Calibrate options, evaluate pros/cons & reach consensus"]
-    E --> F["Phase 3: Decision & Trade-Off Rigor Gate"]
-    C -- NO --> F
-    F --> G["Phase 4: Announce Placement & Draft ADR (adr_NNN_<slug>.md)"]
-    G --> H["Phase 5: Anti-Rot Indexing in docs/README.md & Delivery"]
+## Context
+Explain the problem, project constraints, and technical or operational forces that triggered this decision. Write this in clear paragraphs rather than a fragmented checklist.
+
+## Decision
+State the decision clearly in active voice, including where it applies and its architectural boundaries.
+
+## Alternatives Considered
+Walk through the other realistic options we evaluated. For each alternative, explain its strengths, its drawbacks in our context, and the specific reason we decided against it.
+
+## Consequences
+Explain what becomes easier or better with this choice, what becomes harder or adds operational overhead, and any risks we need to watch out for along with how we plan to handle them.
+
+## Verification & Related Context
+Briefly note how we will keep the codebase aligned with this decision (such as linter rules, tests, or review checks) and link to any superseded ADRs or related PRD/SRS specs if relevant.
 ```
-
----
-
-### Phase 1: Ingest Context & Architectural Forces
-1. **Enforce Single & Short Scope**:
-   - Each ADR must address exactly **one** architectural decision (e.g., *"Use PostgreSQL for the order service"*, not *"Database and storage architecture roadmap"*).
-   - If my request spans multiple distinct architectural choices, break them down into separate sequential ADRs.
-2. **Map Architectural Forces & Constraints**:
-   - Identify and map the architectural forces and constraints governing my project:
-     - Technical drivers: throughput, latency percentiles, data volume, consistency model, reliability needs.
-     - Organizational & team drivers: team familiarity, operational overhead, vendor lock-in, licensing.
-     - Compliance & business constraints: budget, deadlines, security, regulatory policies (e.g. PCI-DSS, SOC2, GDPR).
-
----
-
-### Phase 2: Technical Alignment Gate (Invoke `/align`)
-> [!IMPORTANT]
-> **Strictly No Unilateral Architectural Decisions**:
-> Never lock in frameworks, database engines, messaging queues, or communication protocols unilaterally without aligning with me first.
-> 1. If multiple viable architectural patterns exist, **immediately invoke `/align`**.
-> 2. Present 2–3 concrete options to me with their pros, cons, and operational consequences.
-> 3. Calibrate with me until we reach consensus before authoring the record.
-
----
-
-### Phase 3: Decision & Trade-Off Rigor Gate
-Before drafting the record, apply these quality filters:
-1. **Unambiguous & Active Voice**: State the decision as a firm choice (*"We will use Apache Kafka for inter-service event streaming"*), never as a tentative suggestion (*"Kafka should be considered"*).
-2. **Explicit Rejected Alternatives**: Prevent endless future relitigation for me by clearly documenting which alternatives were evaluated and specifically why they were rejected, ensuring I can defend this choice later.
-3. **Intellectual Honesty on Consequences**: Every architecture choice introduces trade-offs. You must explicitly document negative consequences and operational risks alongside positive benefits.
-
----
-
-### Phase 4: Placement Announcement & Document Authoring
-1. **Zero Stealth Writing & Sequential Naming**: Declare your destination file path to me before writing:
-   - Target format: `docs/decisions/adr_NNN_<decision_slug>.md` in full snake_case with 3-digit zero-padding (e.g., `docs/decisions/adr_001_use_kafka_for_inter_service_communication.md`).
-   - Determine sequential number `NNN` by inspecting existing files in `docs/decisions/` and incrementing the highest existing index (starting at `001`).
-2. **Immutability & Superseding Protocol**:
-   - **Immutable History**: An accepted ADR is never deleted or rewritten to reflect new directions.
-   - **Superseding**: When a past decision is replaced by a newer decision:
-     - The new ADR records `supersedes: docs/decisions/adr_XXX_...md` in frontmatter.
-     - The old ADR's status is updated to `Superseded by docs/decisions/adr_YYY_...md`.
-3. **Required 6-Section Document Structure**:
-   Structure the document with frontmatter:
-
-   ```markdown
-   ---
-   title: "ADR-NNN: [Short Title Describing the Decision]"
-   type: adr
-   status: Proposed        # Proposed | Accepted | Deprecated | Superseded by docs/decisions/adr_XXX.md
-   date: YYYY-MM-DD
-   deciders: [Names or Roles]
-   tags: [architecture, storage, messaging, etc.]
-   parent_srs: docs/srs/YYYYMMDD_[module].md  # Optional
-   parent_prd: docs/prd/YYYYMMDD_[feature].md # Optional
-   supersedes: null                           # Optional relative link to old ADR
-   superseded_by: null                        # Updated when superseded
-   ---
-
-   # ADR-NNN: [Short Title Describing the Decision]
-
-   ## 1. Status & Context
-   - **Status**: [Current status with date]
-   - **Context**: What problem or situation prompted this decision? Detail specific metrics, constraints, and forces at play.
-
-   ## 2. Decision
-   State the specific technical choice in active voice. Detail the scope of application and immediate architectural boundaries.
-
-   ## 3. Alternatives Considered
-   ### [Alternative 1: e.g. RabbitMQ]
-   - **Pros**: [Key advantages]
-   - **Cons**: [Key disadvantages]
-   - **Why Rejected**: [Concrete technical or operational reason for rejection]
-
-   ### [Alternative 2: e.g. Redis Streams]
-   - **Pros**: [Key advantages]
-   - **Cons**: [Key disadvantages]
-   - **Why Rejected**: [Concrete technical or operational reason for rejection]
-
-   ## 4. Consequences
-   ### Positive
-   - [What becomes easier, faster, or better]
-
-   ### Negative & Operational Costs
-   - [What becomes harder, more complex, or requires maintenance overhead]
-
-   ### Risks & Mitigations
-   - [What could go wrong and how we guard against it]
-
-   ## 5. Verification & Compliance
-   - How will this architectural decision be verified and enforced in the codebase? (e.g., architecture tests, linter rules, CI checks, code review guidelines).
-
-   ## 6. Related Decisions
-   - Superseded ADRs: [Links if applicable]
-   - Related specifications: [Links to parent SRS or PRD]
-   ```
-
----
-
-### Phase 5: Anti-Rot Indexing & Delivery
-1. **Single Source of Map**: Open `docs/README.md` and catalog the new ADR in the **Architectural Decisions (ADR)** table with its identifier, title, status, date, and relative markdown link.
-2. **Delivery**: Present to me an executive summary of the decision, key trade-offs, and next steps in chat.
