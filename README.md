@@ -27,7 +27,6 @@ npx skills add dimsedra/skills --skill prd
 npx skills add dimsedra/skills --skill report
 npx skills add dimsedra/skills --skill research
 npx skills add dimsedra/skills --skill rfc
-npx skills add dimsedra/skills --skill slides
 npx skills add dimsedra/skills --skill srs
 ```
 
@@ -61,16 +60,13 @@ Translates approved PRD user outcomes and SRS technical specifications into stru
 Defines the problem space, target outcomes, scope boundaries, and user requirements before building, leaving technical implementation details flexible for engineering.
 
 ### `report`
-Generates standalone, markdown-like HTML reports with console typography, deep black theme, Mermaid diagrams, Chart.js visualizations, and modular layout components.
+Generates standalone, markdown-like HTML reports in `docs/report/` with console typography, deep black theme, Mermaid diagrams, Chart.js visualizations, and modular layout components.
 
 ### `research`
 Conducts outward-facing technical research grounded in authoritative documentation, installed dependencies, and proven real-world codebases rather than static training data.
 
 ### `rfc`
 Proposes significant engineering initiatives, drives technical consensus, and aligns cross-functional stakeholders through structured, review-driven Request for Comments (RFC) documents in `docs/rfc/`.
-
-### `slides`
-Builds modular, responsive HTML presentation decks with full-bleed viewport fitting (16:9), keyboard navigation, background live preview server, and high-fidelity PDF print export.
 
 ### `srs`
 Translates high-level PRD needs into unambiguous, testable, and traceable Software Requirements Specifications (SRS/SRD) with unique requirement identifiers (`REQ-[MODULE]-[INDEX]`).
@@ -79,6 +75,9 @@ Translates high-level PRD needs into unambiguous, testable, and traceable Softwa
 
 ```text
 skills/
+├── adr/
+│   ├── SKILL.md
+│   └── README.md
 ├── align/
 │   ├── SKILL.md
 │   └── README.md
@@ -88,6 +87,7 @@ skills/
 │   └── README.md
 ├── design/
 │   ├── SKILL.md
+│   ├── UI-AUDITOR-INSTRUCTIONS.md
 │   └── README.md
 ├── document/
 │   ├── SKILL.md
@@ -97,7 +97,6 @@ skills/
 │   └── README.md
 ├── issue/
 │   ├── SKILL.md
-│   ├── ISSUE-FORMAT.md
 │   └── README.md
 ├── plans/
 │   ├── SKILL.md
@@ -113,13 +112,9 @@ skills/
 ├── research/
 │   ├── SKILL.md
 │   └── README.md
-├── slides/
+├── rfc/
 │   ├── SKILL.md
-│   ├── ALIGNMENT.md
-│   ├── ARCHITECTURE.md
-│   ├── EXTENSIONS.md
-│   ├── SCRIPTS.md
-│   └── SLIDE-FORMAT.md
+│   └── README.md
 └── srs/
     ├── SKILL.md
     └── README.md
