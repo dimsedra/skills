@@ -5,11 +5,11 @@ description: Use when creating a structured, commit-driven implementation plan w
 
 # Plans
 
-When I ask you to create or refine an implementation plan, your goal is to translate our approved PRD user outcomes and SRS technical specifications into a clear, commit-driven TDD roadmap in `docs/plan/` that we can execute step by step with `/implement`.
+When I ask you to create or refine an implementation plan, your goal is to translate our agreed requirements—whether from an existing PRD or SRS, or directly from our discussion—into a clear, commit-driven TDD roadmap in `docs/plan/` that we can execute step by step with `/implement`.
 
-## Grounding in Specs and the Codebase
+## Grounding in Context and the Codebase
 
-Start by reading the parent PRD (`docs/prd/YYYYMMDD_<feature>.md`) and SRS (`docs/srs/YYYYMMDD_<module>.md`) so every task in the plan traces back to a real `REQ-XXX` requirement or user story. Before designing the tasks, inspect the existing source code, types, and boundaries in the area we are modifying so the plan fits how our codebase actually works rather than relying on assumptions.
+If a parent PRD (`docs/prd/YYYYMMDD_<feature>.md`) or SRS (`docs/srs/YYYYMMDD_<module>.md`) exists, read it first so the tasks in the plan trace back to those `REQ-XXX` requirements or user outcomes; if neither exists, ground the plan directly in our agreed scope from conversation. Before designing the tasks, inspect the existing source code, types, and boundaries in the area we are modifying so the plan fits how our codebase actually works rather than relying on assumptions.
 
 If the order of phases, migration steps, or technical trade-offs is still open to interpretation, do not guess—pause and invoke `/align` first so we can weigh 2 or 3 sequencing options and agree on the approach before you write the plan.
 
@@ -21,7 +21,7 @@ Follow our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config
 - Make sure the planned scenarios cover all 4 dimensions: normal happy paths, boundaries and edge cases (empty inputs, limits, off-by-one conditions), error paths (validation rejections, timeouts, unauthorized access), and core business invariants.
 - Order scenarios from the most foundational and design-revealing behaviors first (core domain rules and main contracts) down to peripheral edge cases and error handling. Write scenario titles as clear behavioral statements, such as "rejects order when inventory is insufficient."
 
-Do not leave phases or scenarios standing as bare headings and checkboxes without context. Give the plan a brief overview of our overall approach, explain the goal and architectural boundary of each phase, and include a short paragraph under each scenario explaining what behavior is being proven, how it connects to the codebase, and what requirement (`REQ-XXX`) it fulfills.
+Do not leave phases or scenarios standing as bare headings and checkboxes without context. Give the plan a brief overview of our overall approach, explain the goal and architectural boundary of each phase, and include a short paragraph under each scenario explaining what behavior is being proven, how it connects to the codebase, and which requirement (`REQ-XXX`, if an SRS exists) it fulfills.
 
 To keep our steps small and commits clean, break every behavioral scenario into two separate tasks (1 scenario = 2 commits):
 
@@ -34,14 +34,14 @@ For tasks that build or modify frontend UI, views, layout, or styling, never use
 
 Always tell me the target file path before creating or updating a plan. Save plans at `docs/plan/YYYYMMDD_<plan_slug>.md` in snake_case. If we revise the plan's scope or structure on a later date via `/plans`, rename the file with `git mv` to match the new date and update `docs/README.md` (whereas routine checkbox ticking and commit hash updates during `/implement` keep the original filename).
 
-Structure the plan file like this so it reads clearly and stays easy to track during `/implement`:
+Structure the plan file like this (leave `parent_prd` or `parent_srs` as `null` when they do not exist) so it reads clearly and stays easy to track during `/implement`:
 
 ```markdown
 ---
 title: "Implementation Plan: [Feature Name]"
 type: plan
-parent_prd: docs/prd/YYYYMMDD_[feature].md
-parent_srs: docs/srs/YYYYMMDD_[feature].md
+parent_prd: null
+parent_srs: null
 status: planned
 total_tasks: [Total Number of Tasks]
 completed_tasks: 0
@@ -59,7 +59,7 @@ Briefly explain the overall implementation strategy, how these changes fit into 
 Explain what this phase accomplishes, which subsystem or boundary it touches, and what foundation it lays for the next phase.
 
 ### Scenario 1.1: [Behavioral description, e.g. Rejects order when inventory is insufficient]
-Explain the specific behavior and mechanics being built here, the testing dimension it covers (Normal Path, Boundary, Error Path, or Core Invariant), the requirement it fulfills (`REQ-XXX`), and the files involved (`tests/...`, `src/...`).
+Explain the specific behavior and mechanics being built here, the testing dimension it covers (Normal Path, Boundary, Error Path, or Core Invariant), any linked requirement (`REQ-XXX`), and the files involved (`tests/...`, `src/...`).
 
 - [ ] Task 1.1a (Red): Write failing test for [behavior]
   Commit: `test(scope): add failing test for [behavior]`
