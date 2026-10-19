@@ -15,7 +15,9 @@ Do not force every RFC into a monolithic engineering template. First, figure out
 - Permission or authority request: When we need sign-off from tech leads, DevOps, or security to modify restricted files, pipelines, or server configs with a controlled blast radius.
 - Technical or architectural proposal: When we are proposing a concrete engineering design, migration, or API contract and want team critique and consensus.
 
-Keep in mind that many stakeholders have high organizational impact but very little interest in low-level code mechanics. Match the depth of the writing to the reader. When writing for management, department leads, or cross-functional reviewers, keep the main narrative focused on operational reality and clear trade-offs, and keep raw code snippets, JSON payloads, or file lists out of the main body (put them in an Appendix if needed). Whenever we need stakeholders to make a call, frame the questions with clear, distinct checkbox options (`- [ ] Option A: ...`) so they can respond without friction.
+Keep in mind that many stakeholders have high organizational impact but very little interest in low-level code mechanics. Match the depth of the writing to the reader. When writing for management, department leads, or cross-functional reviewers, keep the main narrative focused on operational reality, and keep raw code snippets, JSON payloads, or file lists out of the main body (put them in an Appendix if needed).
+
+When we need input from business or operational stakeholders, remember the division of roles: their only job is to describe how they want their operational or bureaucratic workflow to run from upstream to downstream, and our job is to read their narrative and infer the technical architecture from it. Do not box them into premature multiple-choice checkboxes or ask them to make system design calls. Instead, use guided open-ended questions (leading prompts) that walk them through concrete scenarios from start to finish, helping them naturally narrate the full flow, hand-offs, and edge-case rules in their own words.
 
 If the intent, target audience, or right mix of sections is not obvious from my prompt, do not guess—pause and invoke `/align` with me first. Propose a quick section outline based on what we are trying to achieve, and wait for my confirmation so we do not generate unnecessary paperwork.
 
@@ -23,7 +25,7 @@ If the intent, target audience, or right mix of sections is not obvious from my 
 
 Treat RFC sections as modular building blocks and only include the ones that serve our goal. Every RFC should have consistent YAML frontmatter, a brief summary (TL;DR), the problem statement and background context, and a review/decision log. Beyond that, pick only what fits:
 
-- For a policy inquiry: Include the stakeholder decision questions (with checkbox options) and any operational risks, and completely omit sections like "Proposed Architecture" or "Alternatives Considered" since we are asking questions, not pitching a build.
+- For a policy inquiry: Include guided open-ended questions that prompt stakeholders to narrate their desired end-to-end workflow, along with any operational risks, and completely omit sections like "Proposed Architecture" or "Alternatives Considered" since we are gathering their operational story first before inferring a technical build.
 - For a permission request: Include the exact scope of permission requested, the authority choices, a minimal low-risk action plan, and an appendix of affected files or configs.
 - For a technical proposal: Include goals and non-goals, the proposed architecture, alternatives considered (and why they were rejected), cross-cutting concerns (security, rollout, rollback), and open risks.
 
