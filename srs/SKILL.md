@@ -5,27 +5,37 @@ description: Use when drafting, specifying, or breaking down a Software Requirem
 
 # SRS (Software Requirements Specification)
 
-When I ask you to draft or refine an SRS, the goal is to translate our requirements—whether from an existing PRD in `docs/prd/` or directly from our discussion—into clear, testable, and traceable technical specifications that `/plans` and `/implement` can build against without guesswork.
+When I ask you to draft or refine an SRS, your goal is to translate our requirements—whether from an existing PRD in `docs/prd/` or directly from our discussion—into clear, testable, and traceable technical specifications that `/plans` and `/implement` can build against without guesswork.
 
-## Ground in Context and Align on Technical Choices First
+## Assess Domain Boundaries and Decomposition First
 
-Start by reading the parent PRD in `docs/prd/` if one exists, along with our discussion and the existing codebase, so you know which stack choices, conventions, and system boundaries are already settled. Separate that settled baseline from open technical decisions—such as data consistency models, auth mechanisms, state storage, or external dependencies—where I have not given explicit direction yet.
+If a parent PRD in `docs/prd/` exists, do not assume it maps to a single SRS document. PRDs live in the problem space and often span multiple technical domains. Your first job is to evaluate whether the scope should be split into multiple SRS documents using domain-driven decomposition or kept as a single cohesive spec.
 
-Never lock in high-level architecture, database models, or third-party dependencies on my behalf. If there are open technical trade-offs or ambiguous non-functional targets, pause and invoke `/align` with me first. Lay out the concrete options (for example, stateless vs. session-based, polling vs. webhooks) with their pros and cons so we can settle the design before you write the spec. If we intentionally defer an item for later, mark it clearly in the document.
+Look at the underlying system mechanics, data boundaries, and operational lifecycles. If the PRD crosses distinct bounded contexts—such as separating public-facing user workflows from asynchronous background processing, or decoupling independent payment logic from core catalog operations—treat them as separate technical modules. Whenever you see a case for splitting, pause and invoke `/align` with me first. Propose the decomposition map, walk through the domain boundaries and rationale for each proposed SRS, and agree on the breakdown with me before writing any files. If the PRD describes a small, cohesive capability that shares a single lifecycle and data model, keep it as a single SRS so we avoid premature complexity.
 
-## Write Specific, Traceable Requirements
+If there is no parent PRD and we are designing directly from discussion, ground yourself in the existing codebase and confirm the technical boundaries with me before proceeding.
 
-When writing the technical specifications, keep three rules in mind:
+## Align on Open Technical Choices
 
-- Be concrete rather than vague. Avoid subjective words like "fast", "robust", or "scalable", and state explicit thresholds, data types, payload shapes, and status codes instead.
-- Treat the unhappy path as a first-class citizen. Define how the system handles invalid inputs, edge cases, timeouts, rate limits, and network failures right alongside the normal flow.
-- Give every functional capability a unique ID (`REQ-[MODULE]-[INDEX]`, such as `REQ-AUTH-001`) so it traces cleanly forward to the test scenarios in `/plans` (and back to the PRD if one exists).
+Read our discussion, the parent PRD, and the existing codebase to understand what stack choices, conventions, and system boundaries are already settled. Separate that settled baseline from open technical decisions—such as data consistency models, auth mechanisms, state storage, or external dependencies—where I have not given explicit direction yet.
+
+Never lock in high-level architecture, database models, or third-party dependencies on my behalf. If there are open technical trade-offs or ambiguous non-functional targets, pause and invoke `/align` with me first. Lay out concrete options with their pros and cons so we can settle the design together before you write the spec. If we intentionally defer an item for later, mark it clearly in the document.
+
+## Write Concrete, Traceable Specifications
+
+Write requirements with clear cause-and-effect precision. Avoid subjective words like "fast", "robust", or "scalable", and state explicit thresholds, data types, payload shapes, and status codes instead. If a response must return within 200ms or an input must reject payloads over 10KB, write that exact number.
+
+Treat the unhappy path as a first-class citizen. Define how the system handles invalid inputs, boundary conditions, timeouts, rate limits, and network failures right alongside the normal flow. Every error must specify its trigger condition, returned status code, and error payload format.
+
+Give every functional capability a unique identifier in the format `REQ-[MODULE]-[INDEX]` (such as `REQ-AUTH-001`). This ID must trace cleanly forward to behavioral test scenarios in `/plans` and back to the parent PRD if one exists, ensuring full traceability across our documentation.
 
 ## File Placement, Lifecycle, and Format
 
-Always tell me the target file path before creating or updating an SRS. Save SRS files at `docs/srs/YYYYMMDD_<module_slug>.md` in snake_case. If we revise the SRS on a later calendar date, rename the file using `git mv` to match the new date, update `last_updated` in the frontmatter, and update references to it in `docs/README.md` as well as any downstream Plan files (`parent_srs`).
+Always tell me the target file path before creating or updating an SRS. Save each SRS file at `docs/srs/YYYYMMDD_<module_slug>.md` in snake_case. When a single PRD decomposes into multiple SRS documents, create a separate file for each module and point `parent_prd` in the frontmatter to the shared PRD path.
 
-Structure the SRS with consistent YAML frontmatter (leave `parent_prd: null` if there is no parent PRD) and clear, readable sections:
+If we revise an SRS on a later calendar date, rename the file using `git mv` to match the new date, update `last_updated` in the frontmatter, and update references to it in `docs/README.md` as well as any downstream Plan files (`parent_srs`).
+
+Structure each SRS with consistent YAML frontmatter (leave `parent_prd: null` if there is no parent PRD) and clear, readable sections:
 
 ```markdown
 ---

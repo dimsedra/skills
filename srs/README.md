@@ -10,6 +10,7 @@ npx skills add dimsedra/skills --skill srs
 
 ## Features
 
+- **Domain-Driven Decomposition**: Assesses parent PRDs for distinct bounded contexts and proposes multi-SRS splits via `/align` before locking in architecture.
 - **Technical Precision & Zero Ambiguity**: Replaces vague adjectives with quantitative latency percentiles, throughput targets, and exact schemas.
 - **Alignment Gate (`/align`)**: Flags unguided architectural decisions (database paradigms, auth models, API protocols) and calibrates with the user before locking in specifications.
 - **Rigorous Bidirectional Traceability**: Assigns stable `REQ-[MODULE]-[INDEX]` identifiers to every requirement, mapping back to parent PRDs and forward to test suites.
