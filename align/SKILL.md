@@ -1,25 +1,47 @@
 ---
 name: align
-description: Use when the user asks to align (e.g. via /align), to iterate on ideas, requirements, or specs (/prd, /srs), or in a fresh session to explore the codebase, build a project mental model, and establish shared intuition before collaborating or proceeding.
+description: Use whenever the user invokes /align, or whenever we need to calibrate intuition, verify shared mental models, test assumptions, and ensure both parties are on the exact same page before or during any technical work.
 ---
 
 # Align
 
-When we work together, the biggest risk is that we use the same words but picture different things in our heads, or you silently assume details and start building in the wrong direction. Since I am the one who owns, maintains, and has to defend this codebase during code reviews and production incidents, I cannot afford to have code or specs that I do not fully understand or agree with. That is why we align first. Before you write any code or draft any specs, I want us to make sure we are looking at the exact same problem, system mechanics, boundaries, and trade-offs.
+Whenever we discuss, design, debug, or build, the biggest risk is that we use the same words but picture completely different things in our heads. Silently proceeding on unverified assumptions guarantees wasted effort and broken systems.
 
-## How We Align
+That is why `/align` exists. It is our universal calibration tool. 
 
-When I invoke `/align`, treat it as a back-and-forth thinking session between us rather than a command to execute. Depending on where we are, I might need a few different things from you:
+Whenever I invoke `/align`, your only job is to **make sure both of us are in the exact same boat**: calibrating our understanding, mental models, and boundaries until they genuinely converge.
 
-- Verify what I mean when I give you a feature request, bug report, or complex instruction, by restating the problem and boundaries in plain language.
-- Act as a thinking partner when I bring a rough idea, helping me shape it, poke holes in it, and test edge cases instead of just agreeing with me.
-- Check the actual codebase when we are onboarding or discussing how a system works, so we can compare my assumptions against real runtime behavior.
-- Walk through cause-and-effect mechanics when we are weighing technical or architectural choices.
+## When to Align
 
-Whenever something is ambiguous or open to multiple approaches, do not guess on my behalf. Lay out 2 or 3 concrete options and explain their practical trade-offs in plain terms, especially how they affect complexity, cognitive load, and long-term maintenance. If something I ask for contradicts an existing pattern in the codebase or creates a hidden edge case, tell me straight away and explain what will happen if we go down that path. Also, calibrate to where I am at in the conversation so you are neither over-explaining obvious things nor throwing ungrounded jargon at me.
+Alignment is not restricted to the start of a project. You can invoke or enter `/align` at any point in our collaboration:
 
-## Keep the Conversation Going Until We Are Solid
+- **At the start of an idea or requirement**: To clarify the root problem, goals, and boundaries before writing specs or plans.
+- **In the middle of debugging**: To calibrate on the actual symptom, reproduction steps, and root-cause hypotheses before touching code.
+- **During architectural exploration**: To evaluate system boundaries, data flow, or operational trade-offs together.
+- **Whenever there is drift or ambiguity**: The moment either of us senses that we are talking past each other, or when instructions are open to multiple interpretations.
 
-Alignment is almost never a single turn. When I pick one of the high-level options you suggest, do not take that as a green light to immediately start coding or writing specs. Picking a high-level direction usually opens up smaller design questions underneath it, such as how we handle state, data boundaries, or error cases.
+## How We Reach Alignment
 
-Stay in alignment mode across turns and keep unpacking those follow-up decisions with me one layer at a time. We only move to execution when all the important questions are settled and both of us are 100% confident that we share the exact same mental model. Once we reach that point, give me a brief summary of what we agreed on and ask for my confirmation before moving on to writing code, drafting a `/prd` or `/srs`, or creating a `/plans` document. Never jump into execution silently on your own.
+Alignment is a back-and-forth thinking session, not a mechanical questionnaire. Asking questions, laying out trade-offs, or checking code are merely tools to reach a shared understanding - they are not the goal itself.
+
+Depending on what we are discussing, calibrate our understanding using whatever tool best fits the moment:
+
+- **Playback (Mirroring)**: State your current mental model of the problem and boundaries in plain language: *"Here is how I currently understand what you want and how the system behaves... does this match your picture?"*
+- **Surface Hidden Gaps & Assumptions**: Call out edge cases, unstated assumptions, or conflicts with existing codebase patterns that I might have overlooked.
+- **Weigh Concrete Trade-offs**: When multiple viable technical paths exist, do not guess on my behalf. Lay out 2 or 3 realistic options with their practical trade-offs (complexity, maintenance cost, cognitive load) so we can pick a direction together.
+- **Ground in Codebase Reality**: When discussing how something currently works, inspect the actual code and runtime behavior so our discussion is anchored in facts, not assumptions.
+
+Calibrate to where I am at in the conversation: do not over-explain things that are already obvious to me, and never throw ungrounded jargon at me without plain explanation.
+
+## How We Know Alignment Is Met
+
+Alignment is almost never a single turn. Picking a direction or answering a question often reveals smaller questions underneath (state handling, data boundaries, error paths).
+
+Stay in alignment mode across turns and keep calibrating with me until our mental models genuinely meet. 
+
+Alignment is met only when:
+1. Both of us are looking at the exact same problem, boundaries, and mechanics.
+2. Neither of us is relying on unverified assumptions.
+3. You provide a brief, plain-language summary of what we agreed on, and I explicitly confirm that we are on the same page.
+
+Never jump ahead to execution, code generation, or drafting documents silently on your own. Wait for my confirmation, then we proceed together to whatever comes next.
