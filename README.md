@@ -2,123 +2,146 @@
 
 [![skills.sh](https://skills.sh/b/dimsedra/skills)](https://skills.sh/dimsedra/skills)
 
-A personal collection of modular, harness-agnostic skills for AI coding agents. Designed to enforce strict deliverables, prevent chat bloat, and produce evidence-backed results.
+A personal collection of modular, harness-agnostic skills for AI coding agents, built around a single conviction: **alignment must come before execution**.
+
+---
+
+## Why This Exists
+
+If you have spent real time building software with AI coding agents, you have probably lived through this scenario:
+
+You give the agent a prompt. You think you were clear. The agent sounds confident, replies enthusiastically, and immediately starts editing files. Ten minutes later, you are staring at 400 lines of code across seven different files that you cannot fully trace, do not completely understand, and definitely cannot defend in a peer code review.
+
+The code might run, but you do not truly own it. And when it breaks in production at 2:00 AM, the agent will not be the one on call—you will.
+
+The biggest failure mode in AI engineering is almost never basic syntax or lack of intelligence. It is **assumed intent**. We use the same words as the agent, but we picture completely different systems in our heads. When an agent silently assumes details and rushes to write code, the gap between what you wanted and what got built widens with every turn.
+
+I built this collection of skills to fix that specific problem.
+
+---
+
+## The Core Principle: Alignment as the Center
+
+At the heart of this entire system is one skill: [`align`](./align/SKILL.md).
+
+`align` is not just another slash command in a toolbox. It is the gravitational center of how I work with an agent. 
+
+The principle is simple: **we never let the agent guess**.
+
+Before touching any code, drafting a spec, or making an architectural choice, we pause to make sure we share the exact same mental model. In an alignment session:
+* The agent acts as a thinking partner, not a passive yes-man.
+* When something is open to multiple approaches, the agent does not silently pick one. It lays out 2 or 3 concrete options and explains their practical trade-offs in plain terms—focusing on long-term maintenance cost, cognitive load, and system complexity.
+* We unpack decisions layer by layer. Picking a high-level direction usually opens up smaller questions underneath (state management, boundaries, error paths), and we work through them together until there are no hidden assumptions left.
+
+Every other skill in this repository is designed to fall back to `align`. The moment a specification is ambiguous, the moment a test plan reveals an unexpected edge case, or the moment an architectural trade-off emerges, the agent is instructed to stop and say: *"Let's align on this first."*
+
+---
+
+## How the System Works Around That Center
+
+Once you have true alignment, how do you make sure the agent does not lose it over a long coding session? 
+
+That is where the surrounding skills come in:
+
+### 1. Freezing the Boundaries on Disk (`/prd` & `/srs`)
+Conversations in chat evaporate. As a session grows longer, language models suffer from context drift and start forgetting subtle details discussed twenty turns ago. 
+
+We freeze our alignment into simple markdown files on disk:
+* [`/prd`](./prd/SKILL.md) captures the problem space, target user outcomes, and hard boundaries around what is explicitly **out of scope** (the non-goals).
+* [`/srs`](./srs/SKILL.md) translates those outcomes into unambiguous technical contracts, giving every single capability a permanent identifier (`REQ-[MODULE]-[INDEX]`).
+
+These files are not bureaucratic paperwork. They are **mechanical boundary fences**. They give the agent an uncorrupted source of truth to check against, preventing scope creep before a single line of code is written.
+
+### 2. Proving Work in Small Atomic Commits (`/plans` & `/implement`)
+When it is time to build, we do not let the agent write hundreds of lines in one pass. 
+
+[`/plans`](./plans/SKILL.md) translates the SRS requirements into behavioral scenarios covering happy paths, boundaries, error paths, and core invariants. Crucially, every scenario is broken into a strict two-commit cadence (1 scenario = 2 commits):
+* **Task A (Red)**: Write a failing public-API test, verify that it fails in the terminal, and commit it as `test(...)`.
+* **Task B (Green)**: Write only the minimal implementation needed to pass the test, verify that it passes, and commit it as `feat(...)`.
+
+[`/implement`](./implement/SKILL.md) records those commit hashes directly into the plan checklist in real time. Because the agent pauses at each milestone for human confirmation, you stay in control of the pace and can inspect every isolated step.
+
+### 3. Verifying Real Pixels Instead of Guessing (`/design`)
+Passing backend tests only proves that server logic runs; it says nothing about whether a user interface feels comfortable or distinct. 
+
+We do not write brittle unit tests for CSS layout or styling. Instead, [`/design`](./design/SKILL.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) to eliminate generic AI design tropes, then spawns an isolated visual auditor subagent to inspect actual Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports before calling the work done.
+
+### 4. Fresh-Eyed Audits Without Bias (`/audit`)
+After you and an agent have been working together in a chat session for an hour, both of you carry context bias. You start overlooking small oversights.
+
+[`/audit`](./audit/SKILL.md) solves this by spawning an isolated subagent with clean context. The auditor reads `audit/AUDITOR-INSTRUCTIONS.md`, cross-checks the git diff directly against the `REQ-XXX` requirements in the SRS, and actively searches for real production scaling bottlenecks—like N+1 queries in loops, unindexed table scans, and race conditions—before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
+
+---
+
+## What This Looks Like in Practice
+
+Because the requirements and runbooks live on disk as context capsules, your daily prompts do not need to be long or complicated. 
+
+Here is an example of what a high-leverage prompt looks like when starting work on a real feature:
+
+```text
+Check these files:
+/home/user/projects/my-app/README.md
+/home/user/projects/my-app/docs/prd/20261024_duty_scheduling.md
+/home/user/projects/my-app/docs/srs/20261024_user_management.md
+
+We will create an implementation plan and implement this feature based on these PRD and SRS documents (README.md is the project runbook). Let's align first via /align and /plans
+```
+
+Notice what happens here:
+1. The agent gets 100% of the operational context, business outcomes, and technical contracts through clean file pointers.
+2. The agent is explicitly restrained by the closing instruction: *"Let's align first"*. It cannot rush ahead or start coding; it must verify its understanding and sequence the plan with you first.
+
+---
+
+## The Skills at a Glance
+
+### Thinking & Alignment (The Center)
+* **`align`**: The core heartbeat. Calibrates mental models, tests edge cases, and lays out trade-offs before building.
+* **`research`**: Grounds technical investigations in actual dependencies and authoritative documentation rather than static model memory.
+
+### Scope Boundaries & Architecture
+* **`prd`**: Defines the problem space, user outcomes, and explicit non-goals in `docs/prd/`.
+* **`srs`**: Establishes testable technical contracts with unique `REQ-[MODULE]-[INDEX]` IDs in `docs/srs/`.
+* **`adr`**: Captures immutable Architecture Decision Records with evaluated trade-offs in `docs/decisions/`.
+* **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
+
+### Execution & Verification
+* **`plans`**: Maps requirements into commit-driven TDD roadmaps in `docs/plan/` (1 scenario = 2 commits).
+* **`implement`**: Executes plans phase by phase with separate test and feature commits and real-time progress tracking.
+
+### Quality & Visual Review
+* **`audit`**: Spawns an independent subagent to review diffs against specs, engineering rules, and database scaling bottlenecks.
+* **`design`**: Enforces brand grounding (`brand.md`) and verifies rendered pixels via dual-viewport visual screenshot audits.
+
+### Tracking & Documentation
+* **`issue`**: Converts bugs and architectural gaps into problem-first tracking issues with stable symbol pointers.
+* **`document`**: Maintains a clean, modular technical documentation tree cataloged in `docs/README.md`.
+* **`report`**: Generates standalone console-themed HTML reports with Chart.js and Mermaid diagrams in `docs/report/`.
+
+---
 
 ## Installation
 
-Install all skills in this repository:
+You can install all skills in this repository into your project using `skills.sh`:
 
 ```bash
 npx skills add dimsedra/skills
 ```
 
-Or install a specific skill:
+Or install individual skills as you need them:
 
 ```bash
-npx skills add dimsedra/skills --skill adr
 npx skills add dimsedra/skills --skill align
+npx skills add dimsedra/skills --skill prd
+npx skills add dimsedra/skills --skill srs
+npx skills add dimsedra/skills --skill plans
+npx skills add dimsedra/skills --skill implement
 npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill design
-npx skills add dimsedra/skills --skill document
-npx skills add dimsedra/skills --skill implement
-npx skills add dimsedra/skills --skill issue
-npx skills add dimsedra/skills --skill plans
-npx skills add dimsedra/skills --skill prd
-npx skills add dimsedra/skills --skill report
-npx skills add dimsedra/skills --skill research
-npx skills add dimsedra/skills --skill rfc
-npx skills add dimsedra/skills --skill srs
 ```
 
-## Available Skills
-
-### `adr`
-Captures and maintains Architecture Decision Records (ADRs) with context, evaluated trade-offs, consequences, and immutable lifecycle status in `docs/decisions/`.
-
-### `align`
-Ensures the AI agent genuinely understands user intent, architecture, and requirements before executing, eliminating guesswork through explicit verification.
-
-### `audit`
-Enforces uncompromising, production-grade Pull/Merge Request reviews via neutral subagents with specification and plan conformance, performance scalability analysis, TDD rigor, unhappy path hunting, and explicit mergeability verdicts.
-
-### `design`
-Enforces restrained aesthetics, brand-centered identity, visual comfort, and zero component clutter when designing or building front-end user interfaces.
-
-### `document`
-Transforms design discussions, architectural models, decisions, and technical workflows into clean, modular, and traceable markdown documents inside `docs/`.
-
-### `implement`
-Executes implementation plans phase-by-phase from `docs/plan/` with strict TDD cycles (Red-Green-Refactor), separate test and feature commits, automated verification, and real-time audit trail tracking.
-
-### `issue`
-Converts debugging sessions, bug investigations, and architectural discussions into clean, durable tracking issues with problem-first framing and stable symbol pointers.
-
-### `plans`
-Translates approved PRD user outcomes and SRS technical specifications into structured, commit-driven implementation roadmaps organized by behavioral TDD scenarios with real-time progress tracking.
-
-### `prd`
-Defines the problem space, target outcomes, scope boundaries, and user requirements before building, leaving technical implementation details flexible for engineering.
-
-### `report`
-Generates standalone, markdown-like HTML reports in `docs/report/` with console typography, deep black theme, Mermaid diagrams, Chart.js visualizations, and modular layout components.
-
-### `research`
-Conducts outward-facing technical research grounded in authoritative documentation, installed dependencies, and proven real-world codebases rather than static training data.
-
-### `rfc`
-Proposes significant engineering initiatives, drives technical consensus, and aligns cross-functional stakeholders through structured, review-driven Request for Comments (RFC) documents in `docs/rfc/`.
-
-### `srs`
-Translates high-level PRD needs into unambiguous, testable, and traceable Software Requirements Specifications (SRS/SRD) with unique requirement identifiers (`REQ-[MODULE]-[INDEX]`).
-
-## Structure
-
-```text
-skills/
-├── adr/
-│   ├── SKILL.md
-│   └── README.md
-├── align/
-│   ├── SKILL.md
-│   └── README.md
-├── audit/
-│   ├── SKILL.md
-│   ├── AUDITOR-INSTRUCTIONS.md
-│   └── README.md
-├── design/
-│   ├── SKILL.md
-│   ├── UI-AUDITOR-INSTRUCTIONS.md
-│   └── README.md
-├── document/
-│   ├── SKILL.md
-│   └── README.md
-├── implement/
-│   ├── SKILL.md
-│   └── README.md
-├── issue/
-│   ├── SKILL.md
-│   └── README.md
-├── plans/
-│   ├── SKILL.md
-│   └── README.md
-├── prd/
-│   ├── SKILL.md
-│   └── README.md
-├── report/
-│   ├── SKILL.md
-│   ├── REPORT-TEMPLATE.html
-│   ├── report.css
-│   └── README.md
-├── research/
-│   ├── SKILL.md
-│   └── README.md
-├── rfc/
-│   ├── SKILL.md
-│   └── README.md
-└── srs/
-    ├── SKILL.md
-    └── README.md
-```
+---
 
 ## License
 
