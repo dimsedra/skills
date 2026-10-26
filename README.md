@@ -74,7 +74,10 @@ We do not write brittle unit tests for CSS layout or styling. Instead, [`/design
 ### 4. Fresh-Eyed Audits Without Bias (`/audit`)
 After you and an agent have been working together in a chat session for an hour, both of you carry context bias. You start overlooking small oversights.
 
-[`/audit`](./audit/SKILL.md) solves this by spawning an isolated subagent with clean context. The auditor reads `audit/AUDITOR-INSTRUCTIONS.md`, cross-checks the git diff directly against the `REQ-XXX` requirements in the SRS, and actively searches for real production scaling bottlenecks (like N+1 queries in loops, unindexed table scans, and race conditions) before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
+[`/audit`](./audit/SKILL.md) solves this by spawning isolated subagents with clean context across three focused stages—either sequentially or selectively on demand:
+1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against the PRD, SRS (`REQ-XXX`), ADRs, and plan to catch missing requirements or unapproved scope creep.
+2. **`Resilience Auditor`** (`audit/RESILIENCE-AUDITOR.md`): Hunts for unhandled edge cases, broken invariants, race conditions, security flaws, and scaling bottlenecks like N+1 queries.
+3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to our engineering rules and public-API TDD discipline before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
 
 ---
 

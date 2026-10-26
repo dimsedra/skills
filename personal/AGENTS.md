@@ -61,6 +61,7 @@ Write code that I can 100% defend, easily understand, and completely own. I must
 
 - **Write boring, obvious code**: Avoid complex regexes, bitwise hacks, nested ternary operators, or obscure language features. Write code as if I will be debugging it at 2:00 AM during an outage.
 - **Flatten control flow**: Use guard clauses (early returns) at the top of functions to handle edge cases and errors. Keep the happy path unindented at the main level of the function. Never nest blocks more than 2 levels deep.
+- **Eliminate special cases by rethinking the core model**: When fixing a bug or handling a newly discovered edge case, treat it as if it were known from day one. Rethink the underlying data representation or universal logic so the case is handled naturally by the main flow, rather than bolting on additive special-case `if` patches (symptom patching).
 - **Eliminate boolean traps**: Do NOT use boolean flags in function signatures (e.g., `processUser(user, true, false)`). Pass a named options object or split it into distinct, explicitly named functions.
 - **Name things explicitly**: Name variables after what data they hold and functions after what they actually do. Avoid vague, overlapping names (e.g., `data`, `info`, `handler`, `manager`, `temp`) and overly clever jargon.
 - **Comment the "Why", never the "What"**: Do NOT write comments that narrate what the code is doing. Write comments only to explain why a non-obvious decision, trade-off, or workaround was necessary.
