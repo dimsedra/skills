@@ -27,8 +27,8 @@ audit/
 
 Enforces strict production-grade constraints when auditing code:
 - **Zero-Bias Subagent Isolation**: Primary agent dispatches clean, isolated subagent auditors to eliminate confirmation bias.
-- **Flexible & Sequential Execution**: Can run all three stages sequentially (Spec -> Resilience -> Quality) after a plan finishes, or invoke any individual auditor on demand.
-- **Strictly Scoped Bounded Reading**: Each subagent reads only the files required for its specific domain so context never gets diluted or scattered.
+- **Sequential Resolve-Before-Advancing Gates**: Runs stages one by one (Spec -> Resilience -> Quality), resolving all findings in the current stage before advancing to the next, or invokes any individual auditor on demand.
+- **Full-Path Grounded Context**: Requires passing the resolved full path to the auditor instruction file, the exact `git diff` command, and full paths to relevant `docs/` specifications and plans at every stage.
 - **Evidence-Backed Bug Claims**: Banned from making speculative "ghost bug" claims. Every reported defect must include exact code locations, concrete reproducible trigger scenarios, and system impact.
 - **Calibrated Verdicts**: Clear criteria separating `BLOCKED` (spec drift, crashes, security flaws, fatal scaling bottlenecks, engineering rule violations, or test tampering) from `NEEDS POLISH` and `CLEAN & MERGEABLE`.
 

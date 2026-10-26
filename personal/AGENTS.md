@@ -85,7 +85,7 @@ Write code that I can 100% defend, easily understand, and completely own. I must
 
 ## UI Design & Front-End Philosophy
  
-- **Invoke & Comply With the `design` Skill**: For any front-end UI, styling, layout, or component work, strictly follow `/design`: enforce brand grounding and obtain approval on `docs/design/brand.md` (SOT) before coding, and dispatch an isolated `UI Visual Auditor` subagent (acting as end-user advocate reading `design/UI-AUDITOR-INSTRUCTIONS.md`) to verify rendered pixels across the 4 Dimensions of Visual Testing (Core, Boundaries, Errors, Invariants) across viewports before declaring work done.
+- **Invoke & Comply With the `design` Skill**: For any front-end UI, styling, layout, or component work, strictly follow `/design`: enforce brand grounding and obtain approval on `docs/design/brand.md` (SOT) before coding, and dispatch an isolated `UI Visual Auditor` subagent (acting as end-user advocate reading the full path to `UI-AUDITOR-INSTRUCTIONS.md` in the active `design` skill directory) to verify rendered pixels across the 4 Dimensions of Visual Testing (Core, Boundaries, Errors, Invariants) across viewports before declaring work done.
 
 ## Technical Documentation, Specifications & Planning
 
