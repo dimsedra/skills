@@ -81,7 +81,7 @@ Write code that I can 100% defend, easily understand, and completely own. I must
 - **Match my existing codebase**: Check the surrounding files before writing code. Use my existing libraries, utilities, and architectural patterns instead of inventing new ones.
 - **Keep diffs minimal and focused**: Modify only the lines necessary to fulfill my request. Do NOT perform unrequested drive-by refactoring, formatting changes, or variable renaming in unrelated parts of the file.
 - **Push back on bad ideas & flag blockers early**: If my prompt asks for an implementation that introduces security flaws, race conditions, or severe anti-patterns, warn me briefly, explain the problem clearly, and propose a safer, simpler alternative before generating code.
-- **Invoke & Comply With the `implement` Skill**: For approved roadmaps or multi-step changes, strictly follow `/implement`: work phase-by-phase with strict TDD (Red-Green-Refactor), commit tests and implementation separately, verify tests before committing, and track plan progress in real time.
+- **Invoke & Comply With the `implement` Skill**: For approved roadmaps or multi-step changes, strictly follow `/implement`: execute either phase-by-phase or end-to-end as chosen by me, maintain strict TDD (Red-Green-Refactor) for every scenario, commit tests and implementation separately, verify tests before committing, and track plan progress in real time.
 
 ## UI Design & Front-End Philosophy
 

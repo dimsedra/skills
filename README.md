@@ -64,7 +64,7 @@ When it is time to build, we do not let the agent write hundreds of lines in one
 * **Task A (Red)**: Write a failing public-API test, verify that it fails in the terminal, and commit it as `test(...)`.
 * **Task B (Green)**: Write only the minimal implementation needed to pass the test, verify that it passes, and commit it as `feat(...)`.
 
-[`/implement`](./implement/SKILL.md) records those commit hashes directly into the plan checklist in real time. Because the agent pauses at each milestone for human confirmation, you stay in control of the pace and can inspect every isolated step.
+[`/implement`](./implement/SKILL.md) records those commit hashes directly into the plan checklist in real time after every commit, and lets you choose whether to pause at each phase milestone for confirmation or run the entire plan continuously to completion before handing off to `/audit`.
 
 ### 3. Verifying Real Pixels Instead of Guessing (`/design`)
 Passing backend tests only proves that server logic runs; it says nothing about whether a user interface feels comfortable or distinct. 
@@ -116,7 +116,7 @@ Notice what happens here:
 
 ### Execution & Verification
 * **`plans`**: Maps requirements into commit-driven TDD roadmaps in `docs/plan/` (1 scenario = 2 commits).
-* **`implement`**: Executes plans phase by phase with separate test and feature commits and real-time progress tracking.
+* **`implement`**: Executes plans either phase by phase or end to end with separate test and feature commits and real-time progress tracking.
 
 ### Quality & Visual Review
 * **`audit`**: Spawns an independent subagent to review diffs against specs, engineering rules, and database scaling bottlenecks.

@@ -70,4 +70,4 @@ Explain the specific behavior and mechanics being built here, the testing dimens
   Verify: `npm test path/to/test.ts` (expected to pass)
 ```
 
-Once you create or update the plan, add or update its entry in `docs/README.md` and walk me through the phases and scenario coverage in chat.
+Once you create or update the plan, add or update its entry in `docs/README.md`, walk me through the phases and scenario coverage in chat, and ask if I want to execute it via `/implement` phase by phase or all the way through to completion.
