@@ -13,22 +13,25 @@ If a parent PRD (`docs/prd/YYYYMMDD_<feature>.md`) or SRS (`docs/srs/YYYYMMDD_<m
 
 If the order of phases, migration steps, or technical trade-offs is still open to interpretation, do not guess—pause and invoke `/align` first so we can weigh 2 or 3 sequencing options and agree on the approach before you write the plan.
 
-## Designing Behavioral TDD Scenarios
+## Designing Scenarios and Tasks: Logic vs UI Design
 
-Follow our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config/opencode/AGENTS.md`) when breaking the work down into scenarios:
+Follow our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config/opencode/AGENTS.md`) when breaking the work down:
 
-- Frame tests around observable behavior through the public API. Never plan unit tests for frontend UI rendering, layout, or styling, and never plan brittle tests that mock internal collaborators or just check that an internal method was called.
-- Make sure the planned scenarios cover all 4 dimensions: normal happy paths, boundaries and edge cases (empty inputs, limits, off-by-one conditions), error paths (validation rejections, timeouts, unauthorized access), and core business invariants.
-- Order scenarios from the most foundational and design-revealing behaviors first (core domain rules and main contracts) down to peripheral edge cases and error handling. Write scenario titles as clear behavioral statements, such as "rejects order when inventory is insufficient."
+Do not leave phases or scenarios standing as bare headings and checkboxes without context. Give the plan a brief overview of our overall approach, explain the goal and architectural boundary of each phase, and include a short paragraph under each scenario or task explaining what is being built, how it connects to the codebase, and which requirement (`REQ-XXX`, if an SRS exists) it fulfills.
 
-Do not leave phases or scenarios standing as bare headings and checkboxes without context. Give the plan a brief overview of our overall approach, explain the goal and architectural boundary of each phase, and include a short paragraph under each scenario explaining what behavior is being proven, how it connects to the codebase, and which requirement (`REQ-XXX`, if an SRS exists) it fulfills.
+Distinguish clearly between logic tasks and UI design tasks:
 
-To keep our steps small and commits clean, break every behavioral scenario into two separate tasks (1 scenario = 2 commits):
+1. **Logic & Backend Scenarios (Strict TDD)**:
+   - For domain rules, calculations, API contracts, state management, or data transformations, frame tests around observable behavior through the public API (never mock internal collaborators or check that an internal method was called).
+   - Cover 4 dimensions: normal happy paths, boundaries and edge cases (empty inputs, limits, off-by-one conditions), error paths (validation rejections, timeouts, unauthorized access), and core business invariants.
+   - Break every logic scenario into two separate tasks (1 scenario = 2 commits):
+     - Task `a` (Red step): Write a failing public-API test, verify that the test runner fails as expected, and commit as `test(<scope>): add failing test for <scenario>`.
+     - Task `b` (Green step): Write the minimal code needed to pass the test, verify that the suite turns green, and commit as `feat(<scope>): implement minimal logic for <scenario>`.
 
-1. Task `a` (the Red step): Write a failing public-API test for the scenario, verify that running the test command fails as expected, and commit it as `test(<scope>): add failing test for <scenario>`.
-2. Task `b` (the Green step): Write the minimal implementation code needed to pass the test, verify that the test suite turns green, and commit it as `feat(<scope>): implement minimal logic for <scenario>`.
-
-For tasks that build or modify frontend UI, views, layout, or styling, never use vague verification criteria like "build succeeds." Specify that verification requires running the `/design` isolated `UI Visual Auditor` subagent against mobile (`360x640`) and desktop (`1280x800`) Playwright screenshots until it returns `PASS & CERTIFIED`.
+2. **UI & Design Tasks (Visual Verification, No TDD)**:
+   - For frontend markup, layouts, component appearance, and styling, do NOT write unit tests (per Directive #5, never write unit tests for UI layout, styling, or rendering).
+   - UI design tasks do not use a Red/Green TDD pair. Plan them as single direct implementation tasks (e.g. `feat(ui): ...` or `style(...)`).
+   - The verification criteria must be explicit: verify that the build/typecheck succeeds, followed by running the `/design` isolated `UI Visual Auditor` subagent against mobile (`360x640`) and desktop (`1280x800`) Playwright screenshots until it returns `PASS & CERTIFIED`. (If a UI component contains non-trivial business logic or state calculation, isolate and TDD that logic function separately, while keeping the visual markup/styling verified visually).
 
 ## File Placement, Lifecycle, and Format
 
@@ -58,7 +61,7 @@ Briefly explain the overall implementation strategy, how these changes fit into 
 ## Phase 1: [Milestone Name]
 Explain what this phase accomplishes, which subsystem or boundary it touches, and what foundation it lays for the next phase.
 
-### Scenario 1.1: [Behavioral description, e.g. Rejects order when inventory is insufficient]
+### Scenario 1.1: [Logic scenario description, e.g. Rejects order when inventory is insufficient]
 Explain the specific behavior and mechanics being built here, the testing dimension it covers (Normal Path, Boundary, Error Path, or Core Invariant), any linked requirement (`REQ-XXX`), and the files involved (`tests/...`, `src/...`).
 
 - [ ] Task 1.1a (Red): Write failing test for [behavior]
@@ -68,6 +71,13 @@ Explain the specific behavior and mechanics being built here, the testing dimens
 - [ ] Task 1.1b (Green): Implement minimal logic for [behavior]
   Commit: `feat(scope): implement minimal logic for [behavior]`
   Verify: `npm test path/to/test.ts` (expected to pass)
+
+### Task 1.2: [UI / Design task description, e.g. Implement responsive checkout summary component]
+Explain the UI component, layout, or styling being implemented, how it reflects `docs/design/brand.md`, and target viewports. Note that UI tasks are verified visually without TDD unit tests.
+
+- [ ] Task 1.2: Implement [component/layout/styling]
+  Commit: `feat(ui): implement [component/layout description]`
+  Verify: Build/typecheck succeeds, and `/design` visual audit via `UI Visual Auditor` subagent returns PASS & CERTIFIED across mobile (360px) and desktop (1280px) Playwright screenshots.
 ```
 
 Once you create or update the plan, add or update its entry in `docs/README.md`, walk me through the phases and scenario coverage in chat, and ask if I want to execute it via `/implement` phase by phase or all the way through to completion.
