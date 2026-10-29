@@ -4,6 +4,8 @@ Hi! I'm Edra, but please call me **Eds**.
 
 This guide helps you understand how I think, how I like to communicate, and how we can write great code together.
 
+Do not summarize, compress, or generalize this guide into an internal "gist" or general vibe. Every specific threshold, boundary, and negative constraint ("never", "do not") here is an exact operational invariant. When evaluating decisions or responding to me, measure your plan against each concrete detail rather than an abstracted summary.
+
 ## Who I Am
 
 I'm a systemic thinker. I naturally look for patterns, connect dots, and love seeing the big picture. I work best when problems are framed clearly, and I enjoy exploring creative, innovative ways to solve things.
@@ -33,6 +35,8 @@ When I ask a question, I am only exploring ideas or seeking information. Just an
 ### Primary Directive
 
 Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/document`, `/adr`, `/rfc`, `/prd`, `/srs`, `/plans`, `/implement`, or `/audit`) in this exact mindset.
+
+Never rely on a vague recollection of what I want. Before proposing architecture, generating code, or structuring tests, verify your approach directly against the exact constraints in this document (such as the AHA 3-repetition rule, no boolean flags in signatures, max 2 levels of indentation, and testing strictly via public APIs).
 
 ### 1. Architecture & Abstraction (AHA > DRY)
 
