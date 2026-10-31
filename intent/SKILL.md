@@ -1,65 +1,48 @@
 ---
 name: intent
-description: Use when capturing, distilling, or refining a documented source of alignment (an Intent document) that records our conversation, human narrative, codebase reality, guiding principles, and boundaries before technical specification.
+description: Use when capturing user goals, intentions, rationale, and boundaries (what they want and what they do not want) from discussion into a clear, flexible record of intent on disk.
 ---
 
 # Intent
 
-When I ask you to draft or refine an Intent document, your goal is not to produce a bureaucratic product requirements document. Your goal is to **crystallize our alignment conversation into a shared, permanent record of intent on disk**.
+When I ask you to write or refine an Intent document, your goal is stupidly simple: **write down what I want, why I want it, and what we should stay away from**, so neither of us forgets or drifts.
 
-Conversations in chat evaporate, and models suffer from context drift over time. An Intent document freezes the shared mental model (how both of us picture the system working) so neither of us forgets why we made certain choices, what human experience we are trying to create, and what boundaries we agreed to respect.
+Conversations in chat evaporate over time. An Intent document is simply our written source of truth on disk (`docs/intent/`) so both of us stay anchored in the same goal.
 
-## Ground in the Alignment Dialogue First
+## Keep It Simple and Fluid (No Rigid Templates)
 
-An Intent document is born out of real conversation (typically starting in `/align`). It should reflect the authentic back-and-forth between us, not a generic template filled with corporate filler.
+Do not force the document into rigid corporate sections or artificial "pillars". There is no mandatory template here. Your job is to listen to what I said, inspect relevant code if needed to understand the context, and write it down naturally.
 
-Before writing or refining an Intent document:
-- Pull directly from our discussion: the raw intuition, the frustration with the current state, and the core experience I want to achieve.
-- Ground in codebase reality: inspect the actual files, functions, and data structures so our evaluation of the current system is anchored in facts, not guesses.
-- Never guess or silently invent product intent on my behalf. If there are unresolved product trade-offs, open scope questions, or competing directions, pause and invoke `/align` first so we settle them together.
+Depending on what we actually discussed, an Intent document simply captures whatever is relevant:
+- **The Goal**: What am I trying to achieve, or what should the user experience feel like?
+- **The Rationale**: Why are we doing this? What is frustrating, broken, or missing in the current system?
+- **What We Want vs What We Do NOT Want**: What are the boundaries? What traps, rabbit holes, or out-of-scope ideas did we explicitly agree to avoid?
+- **Key Invariants or Guiding Thoughts**: Any rules of thumb, mental models, or non-negotiables I mentioned (such as "narrative first, technical details optional").
 
-## The Core Perspective: Story, Reality, and Principles
+Not everything has to be present in every document. If a feature only has a clear goal and a list of things not to do, just write that. Keep it concise, natural, and readable in under 30 seconds.
 
-Unlike traditional requirements that jump straight into sterile rules ("The system shall..."), an Intent document must be readable in under 30 seconds and tell the story of the change across five clear pillars:
+## Ground in What Was Actually Said
 
-1. **The Origin & Human Narrative**: Start with the human perspective. What triggered this work? What does the user actually experience or feel? Frame the desired outcome as a natural narrative that anyone can digest without technical jargon.
-2. **Current Reality & The Gap**: Grounded directly in our codebase. How does the system work today? What architectural patterns or data structures are currently in place? What primitives already exist, and why do they fall short of our intended narrative?
-3. **Guiding Principles**: The non-negotiable philosophical anchors and mental models we settled on during discussion (for example: "the reader primarily consumes from the narrative, while technical details remain strictly optional").
-4. **Settled Intent & Outcomes**: The concrete behavioral shifts we agree to build toward. Focus on observable outcomes and system responsibilities ("why" and "what"), leaving internal implementation mechanics, database schemas, and micro-contracts to downstream technical specs.
-5. **Guardrails & Non-Goals**: Explicit boundaries protecting us from scope creep. Note rabbit holes we discussed and rejected, features deferred for later, and things the system deliberately will not do.
+Never invent intentions, scope, or product rules on my behalf.
+- If something is clear from our conversation, write it plainly.
+- If you are unsure what I want or senses conflicting goals, do not guess—pause and calibrate with me in `/align` first.
 
-## File Placement, Lifecycle, and Format
+## File Placement and Format
 
-Always tell me the target file path before creating or updating an Intent document. Save files at `docs/intent/YYYYMMDD_<feature_slug>.md` in snake_case.
+Always tell me the target file path before creating or updating an Intent document. Save files at `docs/intent/YYYYMMDD_<slug>.md` in snake_case.
 
-If we revise the intent on a later calendar date, rename the file using `git mv` to match the new date, update `last_updated` in the frontmatter, and update references in `docs/README.md` as well as any downstream technical specs or plans.
-
-Structure the Intent document with clean YAML frontmatter and readable sections:
+Keep the structure lightweight and natural:
 
 ```markdown
 ---
-title: "Intent: [Feature or Initiative Name]"
+title: "Intent: [Feature or Topic Name]"
 type: intent
-status: Settled
 last_updated: YYYY-MM-DD
 ---
 
-# Intent: [Feature or Initiative Name]
+# Intent: [Feature or Topic Name]
 
-## Origin & Human Narrative
-Explain the spark behind this initiative and the human experience we want to create. Tell the story of what a user or developer encounters, written in natural, chronological language so the intent is immediately obvious to anyone reading it cold.
-
-## Current Reality & The Gap
-Explain how the system currently behaves, referencing actual files, data structures, or workflows. Call out what pieces already exist in our engine and what is missing or broken that prevents the intended narrative from happening.
-
-## Guiding Principles
-Document the non-negotiable mental models, philosophical rules, or architectural anchors we agreed on during our alignment session. These serve as our decision filter when evaluating technical trade-offs later.
-
-## Settled Intent & Target Outcomes
-Describe the concrete capabilities and shifts in behavior that fulfill this intent. Focus on observable outcomes and user impact, keeping implementation details flexible for technical specification.
-
-## Guardrails & Non-Goals
-Clearly state what is out of scope. Call out traps, rabbit holes, or adjacent features we explicitly decided not to build during our discussion to prevent scope creep.
+[Write the goal, intention, rationale, and boundaries naturally in plain paragraphs or lightweight bullets based on our discussion. Adapt the structure to whatever best represents the intent without forcing rigid headings.]
 ```
 
-Once you create or update the file, catalog it in `docs/README.md` and give me a brief summary in chat focusing on the settled mental model and any remaining open questions.
+Once you write or update the file, catalog it in `docs/README.md` and confirm with me in chat so I can verify: *"Yes, this is truly what I want."*

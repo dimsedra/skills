@@ -48,16 +48,16 @@ Once you have true alignment, how do you turn that shared mental model into work
 
 That is where the surrounding skills come in:
 
-### 1. Freezing the Human Story on Disk (`/intent`)
+### 1. Freezing Your Intent on Disk (`/intent`)
 Conversations in chat evaporate. As a session grows longer, language models suffer from context drift and start forgetting subtle details discussed twenty turns ago.
 
-Instead of writing a dry corporate requirements document, [`/intent`](./intent/SKILL.md) captures our alignment session into a permanent, readable narrative on disk (`docs/intent/`). It records:
-* The human experience and chronological story of what we want to create.
-* How the codebase actually behaves today and why it falls short (grounded in real files and data structures).
-* The non-negotiable guiding principles and mental models agreed upon.
-* Hard guardrails and non-goals to stop scope creep early.
+Instead of writing a dry corporate requirements document with rigid sections, [`/intent`](./intent/SKILL.md) captures our alignment session into a lightweight, flexible record on disk (`docs/intent/`). It is stupidly simple:
+* What you want to achieve (the goal or human experience).
+* Why we are doing it (the rationale or current codebase friction).
+* What we want vs what we explicitly do NOT want (boundaries and non-goals).
+* Any key invariants or guiding rules of thumb you mentioned.
 
-This is your domain: you define what you want and verify that the intent matches your vision.
+There are no rigid templates or mandatory pillars—it captures whatever was actually discussed so neither of us forgets or drifts. This is your domain: you define what you want and verify that it matches your vision.
 
 ### 2. The Agent's Technical Translation (`/blueprint`)
 While `intent` belongs to you, [`/blueprint`](./blueprint/SKILL.md) belongs to the agent.
