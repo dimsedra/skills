@@ -34,7 +34,7 @@ When I ask a question, I am only exploring ideas or seeking information. Just an
 
 ### Primary Directive
 
-Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/document`, `/adr`, `/rfc`, `/prd`, `/srs`, `/plans`, `/implement`, or `/audit`) in this exact mindset.
+Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/document`, `/adr`, `/rfc`, `/intent`, `/blueprint`, `/proof`, or `/audit`) in this exact mindset.
 
 Never rely on a vague recollection of what I want. Before proposing architecture, generating code, or structuring tests, verify your approach directly against the exact constraints in this document (such as the AHA 3-repetition rule, no boolean flags in signatures, max 2 levels of indentation, and testing strictly via public APIs).
 
@@ -74,7 +74,7 @@ Structure and name tests around user or business scenarios (Given / When / Then,
 
 Only start writing or editing code when I explicitly ask you to build or change something, and make progress in small, bite-sized increments rather than huge code changes all at once. Check the surrounding files before writing code so you match my existing libraries, utilities, and architectural patterns instead of inventing new ones. Keep diffs minimal and focused by modifying only the lines necessary to fulfill my request—do not perform unrequested drive-by refactoring, formatting changes, or variable renaming in unrelated parts of the file.
 
-If my prompt asks for an implementation that introduces security flaws, race conditions, or severe anti-patterns, push back early: warn me briefly, explain the problem clearly, and propose a safer, simpler alternative before generating code. For approved roadmaps or multi-step changes, strictly invoke and follow `/implement`: execute either phase-by-phase or end-to-end as chosen by me, maintain strict TDD (Red-Green-Refactor) for every scenario, commit tests and implementation separately, verify tests before committing, and track plan progress in real time.
+If my prompt asks for an implementation that introduces security flaws, race conditions, or severe anti-patterns, push back early: warn me briefly, explain the problem clearly, and propose a safer, simpler alternative before generating code. For approved blueprints or multi-step changes, build against the Blueprint contracts, verify each capability according to its agreed verification strategy, and prove completion via `/proof` with radical transparency.
 
 ## UI Design & Front-End Philosophy
 
@@ -82,7 +82,7 @@ For any front-end UI, styling, layout, or component work, strictly invoke and fo
 
 ## Technical Documentation, Specifications & Planning
 
-When drafting or updating technical documentation and specifications, strictly invoke and follow the matching skill: `document` for general architecture, concepts, guides, or references; `adr` (`/adr`) for Architectural Decision Records; `rfc` (`/rfc`) for Technical Proposals and Requests for Comments; `prd` (`/prd`) for Product Requirements Documents; `srs` (`/srs`) for Software Requirements Specifications; and `plans` (`/plans`) for commit-driven implementation roadmaps and progress tracking. Never make unilateral assumptions on unguided high-level decisions—invoke `/align` to calibrate with me before drafting. All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
+When drafting or updating technical documentation and specifications, strictly invoke and follow the matching skill: `document` for general architecture, concepts, guides, or references; `adr` (`/adr`) for Architectural Decision Records; `rfc` (`/rfc`) for Technical Proposals and Requests for Comments; `intent` (`/intent`) for documenting shared alignment, human narrative, and product intent; and `blueprint` (`/blueprint`) for technical architecture, deep modules, and public API contracts. Never make unilateral assumptions on unguided high-level decisions—invoke `/align` to calibrate with me before drafting. All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
 
 Respect how `docs/` is tracked in version control:
 - If `docs/` is in `.gitignore` (or otherwise excluded from VCS), treat that as intentional. Do not remove it from `.gitignore`, change ignore rules to track it, or use `git add -f`.

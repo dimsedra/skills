@@ -44,40 +44,55 @@ We stay in alignment mode across turns until our mental models genuinely meet. E
 
 ## How the System Works Around That Center
 
-Once you have true alignment, how do you make sure the agent does not lose it over a long coding session? 
+Once you have true alignment, how do you turn that shared mental model into working, defendable software without bureaucratic overhead or context drift?
 
 That is where the surrounding skills come in:
 
-### 1. Freezing the Boundaries on Disk (`/prd` & `/srs`)
-Conversations in chat evaporate. As a session grows longer, language models suffer from context drift and start forgetting subtle details discussed twenty turns ago. 
+### 1. Freezing the Human Story on Disk (`/intent`)
+Conversations in chat evaporate. As a session grows longer, language models suffer from context drift and start forgetting subtle details discussed twenty turns ago.
 
-We freeze our alignment into simple markdown files on disk:
-* [`/prd`](./prd/SKILL.md) captures the problem space, target user outcomes, and hard boundaries around what is explicitly **out of scope** (the non-goals).
-* [`/srs`](./srs/SKILL.md) translates those outcomes into unambiguous technical contracts, giving every single capability a permanent identifier (`REQ-[MODULE]-[INDEX]`).
+Instead of writing a dry corporate requirements document, [`/intent`](./intent/SKILL.md) captures our alignment session into a permanent, readable narrative on disk (`docs/intent/`). It records:
+* The human experience and chronological story of what we want to create.
+* How the codebase actually behaves today and why it falls short (grounded in real files and data structures).
+* The non-negotiable guiding principles and mental models agreed upon.
+* Hard guardrails and non-goals to stop scope creep early.
 
-These files are not bureaucratic paperwork. They are **mechanical boundary fences**. They give the agent an uncorrupted source of truth to check against, preventing scope creep before a single line of code is written.
+This is your domain: you define what you want and verify that the intent matches your vision.
 
-### 2. Proving Work in Small Atomic Commits (`/plans` & `/implement`)
-When it is time to build, we do not let the agent write hundreds of lines in one pass. 
+### 2. The Agent's Technical Translation (`/blueprint`)
+While `intent` belongs to you, [`/blueprint`](./blueprint/SKILL.md) belongs to the agent.
 
-[`/plans`](./plans/SKILL.md) translates the SRS requirements into behavioral scenarios covering happy paths, boundaries, error paths, and core invariants. Crucially, every scenario is broken into a strict two-commit cadence (1 scenario = 2 commits):
-* **Task A (Red)**: Write a failing public-API test, verify that it fails in the terminal, and commit it as `test(...)`.
-* **Task B (Green)**: Write only the minimal implementation needed to pass the test, verify that it passes, and commit it as `feat(...)`.
+The agent inspects the codebase, applies our strict engineering directives (AHA over DRY, deep modules, locality of behavior, parse-don't-validate, fail-fast error handling, max 2 levels of indentation, and no boolean flags), and translates the intent into a concrete technical blueprint (`docs/blueprint/`):
+* Architecture and deep module boundaries.
+* Concrete public API contracts with unique identifiers (`BP-[MODULE]-[INDEX]`).
+* Fit-for-purpose verification strategies for each contract—avoiding dogmatic TDD when other verification methods (tests written after, manual live runs, contract checks, visual audits) are more appropriate.
 
-[`/implement`](./implement/SKILL.md) records those commit hashes directly into the plan checklist in real time after every commit, and lets you choose whether to pause at each phase milestone for confirmation or run the entire plan continuously to completion before handing off to `/audit`.
+The agent presents the Blueprint to you in chat: *"Here is how I grasp your intent based on codebase reality, technically. Here is how we can implement it, strictly applying our engineering directives. Here are the contracts, and the expected endpoint."* You review and approve it in under 30 seconds.
 
-### 3. Verifying Real Pixels Instead of Guessing (`/design`)
+### 3. Explaining by Proof in Conversation (`/proof`)
+Once implementation is complete, words are cheap. An agent saying "I am done" requires blind trust, which violates our primary rule: you must be able to 100% defend and own the code.
+
+[`/proof`](./proof/SKILL.md) is the author's demonstration ritual. **Its output is NOT a document—it is delivered directly through words and live evidence in the conversation.**
+
+The agent puts itself on the witness stand and answers: *"Did I really build what the Blueprint contracted, and can I prove it to Eds right now?"*
+* **Contract-by-Contract Proof**: Executes verification commands in the terminal and shows actual inputs, state changes, and returned data for each `BP-XXX` contract.
+* **Unhappy Paths**: Triggers edge cases and invalid inputs to prove the system fails fast with zero silent fallbacks (`?? 0`).
+* **Directives Self-Defense**: Defends the implementation against our engineering rules before you have to review it.
+* **Observable Demonstration**: Runs the actual feature against real sample data and displays unmocked output in chat.
+* **Radical Transparency Above All**: Calls out any unfinished contracts, deferred work, or unhandled edge cases in the open. Transparency is prized over false completion.
+
+### 4. Verifying Real Pixels Instead of Guessing (`/design`)
 Passing backend tests only proves that server logic runs; it says nothing about whether a user interface feels comfortable or distinct. 
 
 We do not write brittle unit tests for CSS layout or styling. Instead, [`/design`](./design/SKILL.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) to eliminate generic AI design tropes, then spawns an isolated visual auditor subagent to inspect actual Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports before calling the work done.
 
-### 4. Fresh-Eyed Audits Without Bias (`/audit`)
+### 5. Fresh-Eyed Audits Without Bias (`/audit`)
 After you and an agent have been working together in a chat session for an hour, both of you carry context bias. You start overlooking small oversights.
 
 [`/audit`](./audit/SKILL.md) solves this by spawning isolated subagents with clean context across three focused stages—either sequentially or selectively on demand:
-1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against the PRD, SRS (`REQ-XXX`), ADRs, and plan to catch missing requirements or unapproved scope creep.
+1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against Intent, Blueprint (`BP-XXX`), and ADRs to catch missing requirements or unapproved scope creep.
 2. **`Resilience Auditor`** (`audit/RESILIENCE-AUDITOR.md`): Hunts for unhandled edge cases, broken invariants, race conditions, security flaws, and scaling bottlenecks like N+1 queries.
-3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to our engineering rules and public-API TDD discipline before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
+3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to our engineering rules and verification discipline before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
 
 ---
 
@@ -90,15 +105,15 @@ Here is an example of what a high-leverage prompt looks like when starting work 
 ```text
 Check these files:
 /home/user/projects/my-app/README.md
-/home/user/projects/my-app/docs/prd/20261024_duty_scheduling.md
-/home/user/projects/my-app/docs/srs/20261024_user_management.md
+/home/user/projects/my-app/docs/intent/20261024_duty_scheduling.md
+/home/user/projects/my-app/docs/blueprint/20261024_duty_scheduler.md
 
-We will create an implementation plan and implement this feature based on these PRD and SRS documents (README.md is the project runbook). Let's align first via /align and /plans
+We will implement this feature based on this Intent and Blueprint (README.md is the project runbook). Let's align first via /align
 ```
 
 Notice what happens here:
-1. The agent gets 100% of the operational context, business outcomes, and technical contracts through clean file pointers.
-2. The agent is explicitly restrained by the closing instruction: *"Let's align first"*. It cannot rush ahead or start coding; it must verify its understanding and sequence the plan with you first.
+1. The agent gets 100% of the operational context, human outcomes, and technical contracts through clean file pointers.
+2. The agent is explicitly restrained by the closing instruction: *"Let's align first"*. It cannot rush ahead or start coding; it must verify its understanding with you first.
 
 ---
 
@@ -109,17 +124,14 @@ Notice what happens here:
 * **`research`**: Grounds technical investigations in actual dependencies and authoritative documentation rather than stale training data.
 
 ### Scope Boundaries & Architecture
-* **`prd`**: Defines the problem space, user outcomes, and explicit non-goals in `docs/prd/`.
-* **`srs`**: Establishes testable technical contracts with unique `REQ-[MODULE]-[INDEX]` IDs in `docs/srs/`.
+* **`intent`**: Captures human narrative, codebase reality, and explicit non-goals in `docs/intent/`.
+* **`blueprint`**: Establishes testable technical contracts with unique `BP-[MODULE]-[INDEX]` IDs in `docs/blueprint/`.
 * **`adr`**: Captures immutable Architecture Decision Records with evaluated trade-offs in `docs/decisions/`.
 * **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
 
-### Execution & Verification
-* **`plans`**: Maps requirements into commit-driven TDD roadmaps in `docs/plan/` (1 scenario = 2 commits).
-* **`implement`**: Executes plans either phase by phase or end to end with separate test and feature commits and real-time progress tracking.
-
-### Quality & Visual Review
-* **`audit`**: Spawns an independent subagent to review diffs against specs, engineering rules, and database scaling bottlenecks.
+### Verification & Demonstration
+* **`proof`**: The author's demonstration ritual—proving work in conversation through live commands, directives self-defense, and radical transparency on gaps.
+* **`audit`**: Spawns independent subagents to review diffs against Intent, Blueprint, and engineering rules.
 * **`design`**: Enforces brand grounding (`brand.md`) and verifies rendered pixels via dual-viewport visual screenshot audits.
 
 ### Tracking & Documentation
@@ -141,10 +153,9 @@ Or install individual skills as you need them:
 
 ```bash
 npx skills add dimsedra/skills --skill align
-npx skills add dimsedra/skills --skill prd
-npx skills add dimsedra/skills --skill srs
-npx skills add dimsedra/skills --skill plans
-npx skills add dimsedra/skills --skill implement
+npx skills add dimsedra/skills --skill intent
+npx skills add dimsedra/skills --skill blueprint
+npx skills add dimsedra/skills --skill proof
 npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill design
 ```
@@ -158,16 +169,15 @@ skills/
 ├── adr/          # Architecture Decision Records in docs/decisions/
 ├── align/        # Universal mental model calibration (The Center)
 ├── audit/        # Isolated subagent diff auditing & scaling checks
+├── blueprint/    # Technical architecture & public contracts in docs/blueprint/
 ├── design/       # Brand grounding (brand.md) & visual screenshot audit
 ├── document/     # Modular technical documentation in docs/
-├── implement/    # Phase-by-phase TDD execution with atomic commits
+├── intent/       # Human narrative, codebase reality & intent in docs/intent/
 ├── issue/        # Problem-first defect & gap tracking
-├── plans/        # Commit-driven implementation plans in docs/plan/
-├── prd/          # Problem space & MVP scope boundaries in docs/prd/
+├── proof/        # Author demonstration & defense ritual in conversation
 ├── report/       # Standalone console HTML reports in docs/report/
 ├── research/     # Outward-facing technical research on dependencies
-├── rfc/          # Engineering Requests for Comments in docs/rfc/
-└── srs/          # Technical requirement contracts (REQ-XXX) in docs/srs/
+└── rfc/          # Engineering Requests for Comments in docs/rfc/
 ```
 
 ---

@@ -69,7 +69,7 @@ First, make sure the UI is running on a dev server or preview URL, and use brows
 Next, spawn the `UI Visual Auditor` subagent. Because a subagent does not know where your skills are installed on disk, always resolve and pass full absolute paths—never relative paths like `design/UI-AUDITOR-INSTRUCTIONS.md`, and never paraphrase the auditor instructions in place of the file:
 
 - The full absolute path to `UI-AUDITOR-INSTRUCTIONS.md` inside the directory where this skill is located (for example, `/home/user/.gemini/config/skills/design/UI-AUDITOR-INSTRUCTIONS.md` or `/home/user/.config/opencode/skills/design/UI-AUDITOR-INSTRUCTIONS.md`), instructing the subagent to read it first.
-- The full absolute path to `docs/design/brand.md` (plus any relevant `docs/prd/`, `docs/srs/`, or `docs/plan/` files) as the brand and requirement reference.
+- The full absolute path to `docs/design/brand.md` (plus any relevant `docs/intent/` or `docs/blueprint/` files) as the brand and requirement reference.
 - The exact `git diff` command or commit range, the full absolute paths to the modified UI files and captured screenshots (or preview URL), and a short description of what we built or changed.
 
 If the subagent returns a `BLOCKED` verdict, fix the visual defects in code, take fresh screenshots, and re-run the subagent audit until it passes. Once it is certified, share the result and a clear summary with me in chat.

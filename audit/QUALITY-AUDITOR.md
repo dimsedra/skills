@@ -4,7 +4,7 @@ You are reviewing this code diff as an independent code quality and testing audi
 
 ## Stay Within Your Assigned Scope
 
-Stick strictly to bounded file reading. First, run the exact `git diff` command (and inspect the commit history for the range when checking separate `test(...)` and `feat(...)` commits) assigned by the parent agent. Read only the assigned files via their full paths: the `Engineering Rules & Directives` file (`/home/user/.gemini/GEMINI.md` or `/home/user/.config/opencode/AGENTS.md`), the relevant specification and plan documents in `docs/` (to verify scenario coverage against the plan), the modified implementation and test files in the diff, and immediate imports or callers only when checking whether an abstraction is actually reused. Never wander across the repository or read unrelated files.
+Stick strictly to bounded file reading. First, run the exact `git diff` command (and inspect the commit history for the range when checking commits) assigned by the parent agent. Read only the assigned files via their full paths: the `Engineering Rules & Directives` file (`/home/user/.gemini/GEMINI.md` or `/home/user/.config/opencode/AGENTS.md`), the relevant Intent and Blueprint documents in `docs/` (to verify coverage against the Blueprint contracts), the modified implementation and test files in the diff, and immediate imports or callers only when checking whether an abstraction is actually reused. Never wander across the repository or read unrelated files.
 
 ## What to Audit
 

@@ -17,7 +17,7 @@ Before creating a new file, check our existing `docs/` tree. If our project alre
 - `docs/guides/`: Practical how-to recipes, local setup, runbooks, migrations, and operational steps.
 - `docs/concepts/`: Domain mental models, core entities, terminology, and business rules.
 - `docs/reference/`: Formal contracts such as API endpoints, config schemas, CLI flags, and database models.
-- Specialized documents have their own skills and folders: use `/prd` for `docs/prd/`, `/srs` for `docs/srs/`, `/plans` for `docs/plan/`, `/rfc` for `docs/rfc/`, `/adr` for `docs/decisions/`, and `/report` for `docs/report/`.
+- Specialized documents have their own skills and folders: use `/intent` for `docs/intent/`, `/blueprint` for `docs/blueprint/`, `/rfc` for `docs/rfc/`, `/adr` for `docs/decisions/`, and `/report` for `docs/report/`.
 
 ## How to Draft and Maintain Docs
 
