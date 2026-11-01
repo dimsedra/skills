@@ -1,52 +1,45 @@
 ---
 name: blueprint
-description: Use when translating an approved Intent document into a concrete, defendable technical blueprint (system architecture, domain boundaries, data contracts, and public APIs) that complies with our engineering directives.
+description: Use when translating an approved Intent document into a technical blueprint (module boundaries, contracts, and how each will be verified) that the implementing agent follows together with the Intent.
 ---
 
 # Blueprint
 
-When I ask you to draft or refine a Blueprint, your job is to translate our agreed Intent (`docs/intent/`) into an executable, defendable technical blueprint that we can build against without guesswork.
+When I ask you to draft or refine a Blueprint, your job is to translate an approved Intent (`docs/intent/`) into a technical spec that an agent can implement without guessing. The Intent says what I want and why. The Blueprint says how we will build it. The implementing agent reads both, so the Blueprint does not restate the Intent. It points back to it.
 
-While `intent` is my domain to define what I want and verify the human outcome, `blueprint` is your domain as the agent. You write it, you follow it during implementation, and you present it to me in clear technical language so I can trace, understand, and 100% defend every technical decision in a peer code review in under 30 seconds.
+The Intent is my domain. The Blueprint is yours: you write it, you follow it while implementing, and you keep it true when reality changes.
 
-## The Mental Dialogue
+## Start From the Intent
 
-Whenever you present a Blueprint to me, frame it around this natural dialogue:
-- *"Here is how I grasp your intent based on codebase reality, technically."*
-- *"Here is how we can implement it, strictly applying our engineering directives."*
-- *"Here are the interfaces, contracts, and the expected endpoint."*
+Read the Intent first and treat it as the source of truth. Every contract you write must serve a specific part of it: a goal, a boundary, or an invariant. If you cannot point to the part of the Intent a contract serves, it is probably scope creep, so either drop it or raise it with me.
 
-## Ground in Codebase Reality First
+Carry the Intent's non-goals forward explicitly. They tell the implementing agent what not to build, and they are easy to lose once the work turns technical.
 
-Never invent architecture in a vacuum or rely on abstract assumptions. Before writing a single line of the Blueprint:
-- Inspect the actual codebase: read the existing files, types, and workflows in the areas we are touching.
-- Evaluate domain boundaries: determine whether the Intent maps cleanly to a single cohesive module or if it crosses distinct lifecycles (such as separating public user workflows from background tasks) that warrant separate blueprints.
-- If the domain boundaries or technical trade-offs are ambiguous, pause and invoke `/align` with me first so we agree on the decomposition before you write.
+Before presenting, check coverage in both directions: every contract traces back to the Intent, and every goal in the Intent is covered by at least one contract or is openly marked as not covered yet, with the reason. If the Intent is silent or ambiguous on something the design needs, do not fill the gap with your own assumption. Bring it to me through `/align`.
 
-## Enforce Our Engineering Directives
+## Ground in the Codebase
 
-The Blueprint is the gatekeeper of our engineering rules. Every design decision in the document must explicitly reflect our core directives:
+Read the actual code in the areas we are touching before designing anything: existing files, types, data flows, and patterns. Design against what exists, and follow established patterns rather than inventing new ones.
 
-1. **AHA > DRY (Avoid Premature Abstraction)**:
-   Do not extract shared helpers, base classes, or generic interfaces unless a pattern is already repeated at least 3 times in our codebase. Solve only our immediate problem (YAGNI). Do not introduce unnecessary interfaces or abstract classes when there is only one implementation.
-2. **Deep Modules & Locality of Behavior**:
-   Keep code that changes together in the same file or directory. Design deep modules with simple, minimal public signatures (few parameters, explicit return types) that encapsulate substantial logic inside.
-3. **Parse, Don't Validate**:
-   Define strict validation schemas at entry boundaries (APIs, user input, environment variables). Once data crosses into core domain logic, trust the types.
-4. **Fail Fast and Loud**:
-   No silent fallbacks (such as `?? 0` or empty catch blocks) that swallow bugs. Specify descriptive errors and explicit failure payloads for every unhappy path.
-5. **Boring & Readable**:
-   No boolean flags in function signatures (use named option objects or distinct functions). Keep control flow flat using guard clauses (early returns) with a maximum of 2 levels of indentation.
-6. **Pragmatic Verification (Fit-for-Purpose, Not Dogmatic TDD)**:
-   Avoid dogmatically forcing everything into TDD. Use automated behavioral tests through public APIs when the correct behavior is known upfront, can be verified automatically, and will live long enough to be maintained. For exploratory logic, glue code, or UI, specify the appropriate verification method (tests written after, manual live runs, contract checks, or visual review) that will be demonstrated in `/proof`. Never mock internal collaborators or expose private state for tests.
+Check whether the Intent maps to one cohesive module or crosses separate lifecycles (for example a user-facing flow and a background job) that deserve separate Blueprints. If the split is not obvious, align with me before writing.
 
-## File Placement, Lifecycle, and Format
+## Apply the Engineering Rules Where Design Decides Them
 
-Always tell me the target file path before creating or updating a Blueprint. Save each Blueprint at `docs/blueprint/YYYYMMDD_<module_slug>.md` in snake_case.
+Apply the engineering rules from my global instructions (such as `AGENTS.md` or `GEMINI.md`). Read them from that source instead of relying on a summary.
 
-If we revise a Blueprint on a later calendar date, rename the file using `git mv` to match the new date, update `last_updated` in the frontmatter, and update references in `docs/README.md`.
+A Blueprint can only honor the rules that are decided at design time: where module boundaries sit, how much each public interface exposes, where untrusted data gets parsed, how failures surface, what gets abstracted and what stays duplicated, and how each capability gets verified. Make those decisions explicit in the contracts. Rules that only exist in written code, such as formatting, nesting depth, or naming, are checked during implementation, `/proof`, and `/audit`, so do not make claims about them here.
 
-Structure the Blueprint with consistent YAML frontmatter and clear sections:
+Pick the verification method that fits each contract instead of defaulting to test-first for everything. Automated tests through the public interface fit behavior that is known upfront and will live long enough to be maintained. Glue code, exploratory logic, and UI may be better served by tests written after, a live run, or a visual check. Whatever you pick is what you will demonstrate in `/proof`.
+
+## When Reality Disagrees With the Blueprint
+
+The Blueprint is written before the code, so implementation will sometimes show that a contract does not hold. When that happens, do not quietly work around it. Stop, explain what you found and why the contract no longer fits, and align with me on the change. Update the Blueprint first, then continue building, so the document and the code never drift apart. If the change also contradicts the Intent, the Intent needs my decision before anything else.
+
+## File Placement and Format
+
+Tell me the target path before creating or updating a Blueprint. Save it at `docs/blueprint/YYYYMMDD_<module_slug>.md` in snake_case, where the date is the day it was created. When you revise it later, keep the filename and update `last_updated`, so links to it stay stable.
+
+Contracts and non-goals are required, because the implementing agent, `/proof`, and `/audit` all rely on them. Every other section is optional. Include it only when it helps the implementing agent build correctly.
 
 ```markdown
 ---
@@ -59,24 +52,29 @@ last_updated: YYYY-MM-DD
 
 # Blueprint: [Module or Subsystem Name]
 
-## Codebase Context & Reality Check
-Explain how the relevant parts of the codebase operate today, citing actual files, existing data flows, and current limitations. Clearly articulate the technical gap between today's implementation and the target Intent.
+[A short paragraph on how this design serves the Intent, in technical terms.]
 
-## System Architecture & Domain Boundaries
-Explain the module boundaries, execution flow, and component relationships. Demonstrate Locality of Behavior (keeping related logic together) and explain why this architecture avoids premature abstraction. Include a Mermaid diagram when it clarifies data flow.
+## Current Code (optional)
+How the relevant code works today and the gap between it and the Intent, citing real files.
 
-## Public API & Interface Contracts
-Define the public entry points, functions, and communication contracts. Give each concrete capability a clean identifier in the format `BP-[MODULE]-[INDEX]` (such as `BP-AUTH-001`). For each contract, specify:
-- Inputs and preconditions (including schema parsing at the boundary)
-- State mutations and execution behavior
-- Returned outcomes and status codes
-- Unhappy paths (error triggers, status codes, and error payloads)
+## Design (optional)
+Module boundaries, execution flow, and why things live where they do. Add a diagram only if it makes the flow clearer.
 
-## Data Representation & Storage
-Define the internal domain models, state containers, schemas, and persistence rules. Ensure core models rely on trusted, parsed data rather than defensive null checks.
+## Contracts
 
-## Directives Compliance & Verification Strategy
-Briefly explain how this technical design satisfies our engineering directives (such as max 2 levels of indentation, no boolean flags, and deep modules). For each `BP-XXX` contract, state its specific verification strategy—whether automated public-API test, test written after, manual live demonstration, or visual audit—which you will prove to me during `/proof`.
+### BP-[MODULE]-001: [Capability name]
+- Serves: [the goal, boundary, or invariant in the Intent]
+- Input: [what comes in, and where it gets parsed]
+- Behavior: [what happens, including state changes]
+- Output: [what comes back]
+- Failure: [what can go wrong and how it surfaces]
+- Verification: [how this will be proven in /proof]
+
+## Non-Goals
+What the implementing agent must not build, carried from the Intent, plus any technical non-goals we agreed on.
+
+## Not Covered Yet (optional)
+Intent goals this Blueprint does not address yet, and why.
 ```
 
-Once you create or update the file, catalog it in `docs/README.md` and present the Blueprint to me in chat using the dialogue framing: summarize your technical grasp of the intent, how our engineering rules are upheld, and the concrete endpoint we are building toward.
+Once it is written, catalog it in `docs/README.md` and present it to me in chat: how you understood the Intent technically, the key design decisions and why, and which part of the Intent each contract covers. Wait for my approval before implementation starts, then set `status` to `Approved`.

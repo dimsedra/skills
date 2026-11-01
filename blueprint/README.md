@@ -1,6 +1,6 @@
 # Blueprint Skill
 
-Translates an approved Intent document into a concrete, defendable technical blueprint (system architecture, deep modules, public API contracts, and fit-for-purpose verification strategies) that complies with our engineering directives.
+Translates an approved Intent document into a technical blueprint (module boundaries, contracts, and how each will be verified) that the implementing agent follows together with the Intent.
 
 ## Install
 
@@ -10,11 +10,13 @@ npx skills add dimsedra/skills --skill blueprint
 
 ## Features
 
-- **Agent-Authored Technical Translation**: The agent inspects the code, applies engineering directives, and drafts the technical schematic for the builder to review.
-- **Engineering Directives Enforcement**: Actively bakes in AHA over DRY, deep modules, locality of behavior, parse-don't-validate, fail-fast error handling, max 2 levels of indentation, and zero boolean flags.
-- **Traceable Public Contracts**: Defines public entry points with explicit `BP-[MODULE]-[INDEX]` identifiers covering preconditions, mutations, outputs, and failure modes.
-- **Pragmatic Verification Strategy**: Avoids dogmatic TDD; assigns fit-for-purpose verification methods (automated public test, tests after, manual live run, visual audit) for each contract.
-- **Chronological Indexing**: Saves records to `docs/blueprint/YYYYMMDD_<slug>.md` and catalogs them in `docs/README.md`.
+- **Intent-First Traceability**: Every contract names the part of the Intent it serves, with a two-way coverage check so nothing is invented and nothing is missed.
+- **Non-Goals Carried Forward**: The Intent's boundaries become a required section, so the implementing agent knows what not to build.
+- **Your Rules, Applied at Design Time**: Reads the engineering rules from the user's global instructions instead of a copy, and applies only the ones a design can actually decide (boundaries, parsing, failure surfaces, abstraction, verification).
+- **Traceable Contracts**: Each capability gets a `BP-[MODULE]-[INDEX]` identifier covering input, behavior, output, failure, and verification, which `/proof` and `/audit` refer back to.
+- **Pragmatic Verification**: Picks a fit-for-purpose verification method per contract instead of defaulting to test-first.
+- **Stays True During Implementation**: When reality breaks a contract, the agent stops, aligns, and updates the Blueprint before continuing.
+- **Lean Template**: Only contracts and non-goals are required. Other sections appear when they help.
 
 ## Usage
 

@@ -61,12 +61,14 @@ There are no rigid templates or mandatory pillars—it captures whatever was act
 ### 2. The Agent's Technical Translation (`/blueprint`)
 While `intent` belongs to you, [`/blueprint`](./blueprint/SKILL.md) belongs to the agent.
 
-The agent inspects the codebase, applies our strict engineering directives (AHA over DRY, deep modules, locality of behavior, parse-don't-validate, fail-fast error handling, max 2 levels of indentation, and no boolean flags), and translates the intent into a concrete technical blueprint (`docs/blueprint/`):
-* Architecture and deep module boundaries.
-* Concrete public API contracts with unique identifiers (`BP-[MODULE]-[INDEX]`).
-* Fit-for-purpose verification strategies for each contract—avoiding dogmatic TDD when other verification methods (tests written after, manual live runs, contract checks, visual audits) are more appropriate.
+The agent reads the approved intent, inspects the codebase, applies the engineering rules from your global instructions where design decides them, and translates the intent into a technical blueprint (`docs/blueprint/`) that the implementing agent follows together with the intent:
+* Contracts with unique identifiers (`BP-[MODULE]-[INDEX]`), each naming the part of the intent it serves.
+* The intent's non-goals carried forward, so the implementing agent knows what not to build.
+* Fit-for-purpose verification strategies for each contract, avoiding dogmatic TDD when other verification methods (tests written after, manual live runs, visual checks) are more appropriate.
 
-The agent presents the Blueprint to you in chat: *"Here is how I grasp your intent based on codebase reality, technically. Here is how we can implement it, strictly applying our engineering directives. Here are the contracts, and the expected endpoint."* You review and approve it in under 30 seconds.
+If implementation later shows a contract does not hold, the agent stops, aligns with you, and updates the blueprint before continuing, so the document and the code never drift apart.
+
+The agent presents the Blueprint to you in chat: how it understood your intent technically, the key design decisions and why, and which part of the intent each contract covers. You review and approve it in under 30 seconds.
 
 ### 3. Explaining by Proof in Conversation (`/proof`)
 Once implementation is complete, words are cheap. An agent saying "I am done" requires blind trust, which violates our primary rule: you must be able to 100% defend and own the code.
@@ -124,7 +126,7 @@ Notice what happens here:
 
 ### Scope Boundaries & Architecture
 * **`intent`**: Captures human narrative, codebase reality, and explicit non-goals in `docs/intent/`.
-* **`blueprint`**: Establishes testable technical contracts with unique `BP-[MODULE]-[INDEX]` IDs in `docs/blueprint/`.
+* **`blueprint`**: Translates intent into technical contracts with unique `BP-[MODULE]-[INDEX]` IDs, each traced back to the intent, in `docs/blueprint/`.
 * **`adr`**: Captures immutable Architecture Decision Records with evaluated trade-offs in `docs/decisions/`.
 * **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
 
