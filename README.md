@@ -32,13 +32,12 @@ Whenever we discuss, design, debug, or build, `align` is our universal calibrati
 
 It can be invoked at any point: at the start of an idea, in the middle of a thorny debugging session, during architectural exploration, or whenever either of us senses drift or ambiguity.
 
-Alignment is a collaborative thinking session, not a mechanical questionnaire. Asking questions, weighing trade-offs, or inspecting code are merely tools to reach a shared understanding:
-* **Playback (Mirroring)**: The agent states its current mental model in plain terms: *"Here is how I currently understand what you want and how the system behaves... does this match your picture?"*
-* **Surfacing Hidden Gaps**: The agent calls out edge cases, unstated assumptions, or pattern conflicts that might have been overlooked.
-* **Weighing Concrete Trade-offs**: When multiple viable technical paths exist, the agent lays out 2 or 3 realistic options with their practical trade-offs (complexity, maintenance cost, cognitive load) so we decide together.
-* **Grounding in Codebase Reality**: When discussing how something currently works, the agent inspects actual runtime code so discussion is anchored in facts, not guesswork.
+Alignment comes in different shapes, and most of the time it only needs the simplest one. Doing everything at once (playing back, critiquing, listing options, reading code) makes a quick check heavier than it needs to be. So `align` works as a router: one entry point that picks a single route and loads only that route's instructions:
+* **Understand** (default): The agent plays back its understanding in plain terms: *"Here is how I currently understand what you want... does this match your picture?"* It corrects until it matches, and does nothing more.
+* **Decide**: When there is a real fork, the agent lays out 2 or 3 realistic options with their practical trade-offs (complexity, maintenance cost, cognitive load) so we decide together.
+* **Challenge**: When asked to stress-test an idea, or when the agent sees a concrete problem, it brings the few concerns that matter most, ordered by impact.
 
-We stay in alignment mode across turns until our mental models genuinely meet. Every other skill in this repository is designed to fall back to `align`. The moment a specification is ambiguous, the moment a test plan reveals an unexpected edge case, or the moment an architectural trade-off emerges, the agent is instructed to stop and say: *"Let's align on this first."*
+The agent states which route it is taking in one line so you can redirect it, and it can switch routes as the conversation changes shape. Every other skill in this repository is designed to fall back to `align`. The moment a specification is ambiguous, the moment a test plan reveals an unexpected edge case, or the moment an architectural trade-off emerges, the agent is instructed to stop and say: *"Let's align on this first."*
 
 ---
 
@@ -120,7 +119,7 @@ Notice what happens here:
 ## The Skills at a Glance
 
 ### Thinking & Alignment (The Center)
-* **`align`**: The core heartbeat. A universal calibration tool to mirror mental models, surface hidden assumptions, and make sure both parties are in the exact same boat before or during any technical work.
+* **`align`**: The core heartbeat. A router that picks the simplest kind of alignment the moment needs (understand, decide, or challenge) so both parties are in the exact same boat before or during any technical work.
 * **`research`**: Grounds technical investigations in actual dependencies and authoritative documentation rather than stale training data.
 
 ### Scope Boundaries & Architecture
@@ -169,7 +168,7 @@ npx skills add dimsedra/skills --skill design
 ```text
 skills/
 ├── adr/          # Architecture Decision Records in docs/decisions/
-├── align/        # Universal mental model calibration (The Center)
+├── align/        # Alignment router: understand, decide, challenge (The Center)
 ├── audit/        # Isolated subagent diff auditing & scaling checks
 ├── blueprint/    # Technical architecture & public contracts in docs/blueprint/
 ├── design/       # Brand grounding (brand.md) & visual screenshot audit

@@ -1,6 +1,6 @@
 # Align Skill
 
-Ensures the AI agent genuinely understands the codebase, architecture, and user's intent before moving forward, and acts as an active thinking partner when iterating on ideas and specifications.
+Makes sure the AI agent and the user share the same understanding before or during any technical work. Acts as a router: one `/align` entry point that picks the simplest kind of alignment the moment needs, instead of doing everything at once.
 
 ## Install
 
@@ -8,11 +8,24 @@ Ensures the AI agent genuinely understands the codebase, architecture, and user'
 npx skills add dimsedra/skills --skill align
 ```
 
+## Routes
+
+- **Understand** (`UNDERSTAND.md`, default): The agent plays back what it thinks you mean and corrects until it matches. No options, critique, or code reading unless the understanding depends on it.
+- **Decide** (`DECIDE.md`): For real forks. Lays out 2 or 3 options with practical trade-offs so the choice is made together, not silently by the agent.
+- **Challenge** (`CHALLENGE.md`): Stress-tests an idea, plan, or assumption and brings the few concerns that matter most, ordered by impact.
+
 ## Features
 
-- **Certainty Over Guesswork**: Eliminates blind assumptions and speculative implementation.
-- **Codebase & Architecture Onboarding**: Explores systems to build an accurate mental model and shared intuition.
-- **Active Thinking Partner**: Collaboratively iterates, shapes, and stress-tests nascent ideas, requirements, and specifications (`/intent`, `/blueprint`).
-- **Agent Self-Verification**: Challenges the agent to prove its understanding and lay out its mental model.
-- **Clarity Confirmation**: Verifies alignment with focused, plain confirmation questions.
-- **Collaborative Green Light**: Ensures both user and agent are in the exact same boat before executing.
+- **Simple by Default**: Most alignment only needs a quick playback, so that is the default route.
+- **Only Loads What Is Needed**: Route instructions live in separate files and are read only when that route is taken, so the agent does not over-apply tools it was not asked to use.
+- **Visible Routing**: The agent states which route it is taking in one line, so you can redirect it immediately.
+- **Switchable Mid-Conversation**: Moves between routes as the discussion changes shape.
+- **Collaborative Green Light**: Never jumps ahead to execution until you confirm.
+
+## Usage
+
+```text
+/align
+/align decide
+/align challenge
+```

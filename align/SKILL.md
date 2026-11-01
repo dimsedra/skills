@@ -1,47 +1,22 @@
 ---
 name: align
-description: Use whenever the user invokes /align, or whenever we need to calibrate intuition, verify shared mental models, test assumptions, and ensure both parties are on the exact same page before or during any technical work.
+description: Use whenever the user invokes /align, or whenever we need to make sure we share the same understanding before or during any technical work. Routes to the right kind of alignment: checking understanding, deciding between options, or challenging an idea.
 ---
 
 # Align
 
-Whenever we discuss, design, debug, or build, the biggest risk is that we use the same words but picture completely different things in our heads. Silently proceeding on unverified assumptions guarantees wasted effort and broken systems.
+Whenever we discuss, design, debug, or build, the biggest risk is that we use the same words but picture different things in our heads. `/align` exists so we never move forward on that kind of silent gap.
 
-That is why `/align` exists. It is our universal calibration tool. 
+Alignment comes in different shapes, and most of the time it only needs the simplest one. That is why this skill is a router. Pick one route, read only that route's file, and follow it. The route files live in the same directory as this `SKILL.md`, so resolve their path from where this skill is installed rather than guessing.
 
-Whenever I invoke `/align`, your only job is to **make sure both of us are in the exact same boat**: calibrating our understanding, mental models, and boundaries until they genuinely converge.
+Understand (`UNDERSTAND.md`) is the default. Use it unless one of the other routes clearly applies. It is for checking that you understand what I mean, nothing more.
 
-## When to Align
+Decide (`DECIDE.md`) is for when there is a real fork: two or more viable paths that lead to meaningfully different outcomes, and you cannot tell from what I said which one I want.
 
-Alignment is not restricted to the start of a project. You can invoke or enter `/align` at any point in our collaboration:
+Challenge (`CHALLENGE.md`) is for when I ask you to stress-test an idea, plan, or assumption, or when you see a specific, concrete problem that would make what we are about to do wrong. It is not a license to go hunting for edge cases on your own.
 
-- **At the start of an idea or requirement**: To clarify the root problem, goals, and boundaries before writing specs or plans.
-- **In the middle of debugging**: To calibrate on the actual symptom, reproduction steps, and root-cause hypotheses before touching code.
-- **During architectural exploration**: To evaluate system boundaries, data flow, or operational trade-offs together.
-- **Whenever there is drift or ambiguity**: The moment either of us senses that we are talking past each other, or when instructions are open to multiple interpretations.
+If I name a route myself (for example `/align decide`), take that route without second-guessing it.
 
-## How We Reach Alignment
+When you start, tell me in one short line which route you are taking, so I can redirect you right away if it is the wrong one. A conversation can move between routes. If we are in Understand and a real fork shows up, say so and switch to Decide by reading that file. Do not borrow behavior from another route without switching to it.
 
-Alignment is a back-and-forth thinking session, not a mechanical questionnaire. Asking questions, laying out trade-offs, or checking code are merely tools to reach a shared understanding - they are not the goal itself.
-
-Depending on what we are discussing, calibrate our understanding using whatever tool best fits the moment:
-
-- **Playback (Mirroring)**: State your current mental model of the problem and boundaries in plain language: *"Here is how I currently understand what you want and how the system behaves... does this match your picture?"*
-- **Surface Hidden Gaps & Assumptions**: Call out edge cases, unstated assumptions, or conflicts with existing codebase patterns that I might have overlooked.
-- **Weigh Concrete Trade-offs**: When multiple viable technical paths exist, do not guess on my behalf. Lay out 2 or 3 realistic options with their practical trade-offs (complexity, maintenance cost, cognitive load) so we can pick a direction together.
-- **Ground in Codebase Reality**: When discussing how something currently works, inspect the actual code and runtime behavior so our discussion is anchored in facts, not assumptions.
-
-Calibrate to where I am at in the conversation: do not over-explain things that are already obvious to me, and never throw ungrounded jargon at me without plain explanation.
-
-## How We Know Alignment Is Met
-
-Alignment is almost never a single turn. Picking a direction or answering a question often reveals smaller questions underneath (state handling, data boundaries, error paths).
-
-Stay in alignment mode across turns and keep calibrating with me until our mental models genuinely meet. 
-
-Alignment is met only when:
-1. Both of us are looking at the exact same problem, boundaries, and mechanics.
-2. Neither of us is relying on unverified assumptions.
-3. You provide a brief, plain-language summary of what we agreed on, and I explicitly confirm that we are on the same page.
-
-Never jump ahead to execution, code generation, or drafting documents silently on your own. Wait for my confirmation, then we proceed together to whatever comes next.
+Whatever route we are in, never jump ahead to execution, code, or drafting documents on your own. Alignment ends when I confirm it, and then we move on together.
