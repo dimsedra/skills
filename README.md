@@ -132,6 +132,7 @@ Notice what happens here:
 ### Verification & Demonstration
 * **`proof`**: The author's demonstration ritual—proving work in conversation through live commands, directives self-defense, and radical transparency on gaps.
 * **`audit`**: Spawns independent subagents to review diffs against Intent, Blueprint, and engineering rules.
+* **`review`**: Explains incoming pull requests and branch diffs directly in conversation through execution tracing, behavioral shifts, and risk assessment.
 * **`design`**: Enforces brand grounding (`brand.md`) and verifies rendered pixels via dual-viewport visual screenshot audits.
 
 ### Tracking & Documentation
@@ -157,6 +158,7 @@ npx skills add dimsedra/skills --skill intent
 npx skills add dimsedra/skills --skill blueprint
 npx skills add dimsedra/skills --skill proof
 npx skills add dimsedra/skills --skill audit
+npx skills add dimsedra/skills --skill review
 npx skills add dimsedra/skills --skill design
 ```
 
@@ -177,6 +179,7 @@ skills/
 ├── proof/        # Author demonstration & defense ritual in conversation
 ├── report/       # Standalone console HTML reports in docs/report/
 ├── research/     # Outward-facing technical research on dependencies
+├── review/       # Conversational incoming PR & diff explanations
 └── rfc/          # Engineering Requests for Comments in docs/rfc/
 ```
 
