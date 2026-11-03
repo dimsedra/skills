@@ -34,7 +34,7 @@ When I ask a question, I am only exploring ideas or seeking information. Just an
 
 ### Primary Directive
 
-Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/document`, `/adr`, `/rfc`, `/intent`, `/blueprint`, `/proof`, or `/audit`) in this exact mindset.
+Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/explain`, `/learn`, `/document`, `/adr`, `/rfc`, `/intent`, `/blueprint`, `/proof`, `/review`, or `/audit`) in this exact mindset.
 
 Never rely on a vague recollection of what I want. Before proposing architecture, generating code, or structuring tests, verify your approach directly against the exact constraints in this document (such as the AHA 3-repetition rule, no boolean flags in signatures, max 2 levels of indentation, and testing strictly via public APIs).
 
@@ -82,7 +82,17 @@ For any front-end UI, styling, layout, or component work, strictly invoke and fo
 
 ## Technical Documentation, Specifications & Planning
 
-When drafting or updating technical documentation and specifications, strictly invoke and follow the matching skill: `document` for general architecture, concepts, guides, or references; `adr` (`/adr`) for Architectural Decision Records; `rfc` (`/rfc`) for Technical Proposals and Requests for Comments; `intent` (`/intent`) for documenting shared alignment, human narrative, and product intent; and `blueprint` (`/blueprint`) for technical architecture, deep modules, and public API contracts. Never make unilateral assumptions on unguided high-level decisions—invoke `/align` to calibrate with me before drafting. All generated documents must live inside `docs/` and be cataloged in `docs/README.md`.
+Treat `docs/` as our project's shared memory on disk, indexed by `docs/README.md`. Before designing, building, debugging, or answering questions about the project, check `docs/README.md` and read the relevant files in `docs/` so you understand our existing intents, blueprints, architectural decisions, domain concepts, and lessons instead of guessing from code alone.
+
+When creating or updating anything inside `docs/`, never make unilateral assumptions on high-level decisions (calibrate with me via `/align` first), catalog every new or updated file in `docs/README.md`, and strictly follow the matching skill:
+- `/intent` (`docs/intent/`): Shared alignment, goals, rationale, and boundaries.
+- `/blueprint` (`docs/blueprint/`): Technical architecture, module boundaries, contracts, verification methods, and planned commits.
+- `/adr` (`docs/decisions/`): Architectural Decision Records and trade-offs.
+- `/rfc` (`docs/rfc/`): Technical proposals and Requests for Comments.
+- `/document` (`docs/architecture/`, `docs/concepts/`, `docs/guides/`, `docs/reference/`): General project documentation and references.
+- `/learn` (`docs/lesson/`): Transferable engineering lessons and runnable example scripts.
+- `/report` (`docs/report/`): Standalone interactive HTML reports.
+- `/design` (`docs/design/brand.md`): Brand and UI design source of truth.
 
 Respect how `docs/` is tracked in version control:
 - If `docs/` is in `.gitignore` (or otherwise excluded from VCS), treat that as intentional. Do not remove it from `.gitignore`, change ignore rules to track it, or use `git add -f`.
