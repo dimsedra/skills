@@ -1,6 +1,6 @@
 ---
 name: setup
-description: "MANDATORY prerequisite that must never be skipped. Invoke whenever the user runs /setup, or automatically before running any other skill (/align, /intent, /blueprint, /method, /proof, /audit, /document, /learn, /explain, /report, /adr, /rfc, /review, /issue) if the user's AGENTS.md, CLAUDE.md, or GEMINI.md is missing the 'Engineering Rules & Directives' section."
+description: "MANDATORY prerequisite that must never be skipped. Invoke whenever the user runs /setup, or automatically before running any other skill (/align, /intent, /blueprint, /method, /ship, /proof, /audit, /document, /learn, /explain, /report, /adr, /rfc, /review, /issue) if the user's AGENTS.md, CLAUDE.md, or GEMINI.md is missing the 'Engineering Rules & Directives' section."
 ---
 
 # Setup
@@ -30,7 +30,7 @@ Once I confirm the scope and target file(s):
 
 ### Primary Directive
 
-Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/explain`, `/learn`, `/document`, `/adr`, `/rfc`, `/intent`, `/blueprint`, `/method`, `/proof`, `/review`, or `/audit`) in this exact mindset.
+Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/explain`, `/learn`, `/document`, `/adr`, `/rfc`, `/intent`, `/blueprint`, `/method`, `/ship`, `/proof`, `/review`, or `/audit`) in this exact mindset.
 
 Never rely on a vague recollection of what I want. Before proposing architecture, generating code, or structuring tests, verify your approach directly against the exact constraints in this document (such as the AHA 3-repetition rule, no boolean flags in signatures, max 2 levels of indentation, and testing strictly via public APIs).
 

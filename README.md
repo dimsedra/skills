@@ -136,6 +136,7 @@ Notice what happens here:
 * **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
 
 ### Verification & Demonstration
+* **`ship`**: End-to-end orchestrator that walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) and then runs an autonomous execution and self-healing loop (`/method` per contract -> `/audit` subagent loop) until landing at `/proof`.
 * **`method`**: Router that guides contract implementation and verification across `TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, and `visual testing` (including brand grounding in `docs/design/brand.md` and dual-viewport Playwright visual audits).
 * **`proof`**: Interactive verification review in conversation where the agent proves its work with real evidence, answers your questions against your intent, and owns up plainly when something was missed.
 * **`audit`**: Spawns independent subagents to review diffs against Intent, Blueprint, and engineering rules.
@@ -169,6 +170,7 @@ npx skills add dimsedra/skills --skill learn
 npx skills add dimsedra/skills --skill intent
 npx skills add dimsedra/skills --skill blueprint
 npx skills add dimsedra/skills --skill method
+npx skills add dimsedra/skills --skill ship
 npx skills add dimsedra/skills --skill proof
 npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill review
@@ -195,7 +197,8 @@ skills/
 ├── research/     # Outward-facing technical research on dependencies
 ├── review/       # Conversational incoming PR & diff explanations
 ├── rfc/          # Engineering Requests for Comments in docs/rfc/
-└── setup/        # Non-destructive installer for shared rules in AGENTS.md / CLAUDE.md / GEMINI.md
+├── setup/        # Non-destructive installer for shared rules in AGENTS.md / CLAUDE.md / GEMINI.md
+└── ship/         # End-to-end orchestrator & autonomous execution/audit loop
 ```
 
 ---
