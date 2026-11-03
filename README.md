@@ -142,6 +142,7 @@ Notice what happens here:
 * **`review`**: Explains incoming pull requests and branch diffs directly in conversation through execution tracing, behavioral shifts, and risk assessment.
 
 ### Tracking & Documentation
+* **`setup`**: Injects the shared engineering rules, UI verification rules, `docs/` conventions, and subagent boundaries into `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` at the project or global level without overwriting existing personal instructions.
 * **`issue`**: Converts bugs and architectural gaps into problem-first tracking issues with stable symbol pointers.
 * **`document`**: Maintains a clean, modular technical documentation tree cataloged in `docs/README.md`.
 * **`report`**: Generates standalone console-themed HTML reports with Chart.js and Mermaid diagrams in `docs/report/`.
@@ -156,9 +157,12 @@ You can install all skills in this repository into your project using `skills.sh
 npx skills add dimsedra/skills
 ```
 
+Then run `/setup` so your agent injects the shared engineering and `docs/` rules into your project or global `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`.
+
 Or install individual skills as you need them:
 
 ```bash
+npx skills add dimsedra/skills --skill setup
 npx skills add dimsedra/skills --skill align
 npx skills add dimsedra/skills --skill explain
 npx skills add dimsedra/skills --skill learn
@@ -190,7 +194,8 @@ skills/
 ├── report/       # Standalone console HTML reports in docs/report/
 ├── research/     # Outward-facing technical research on dependencies
 ├── review/       # Conversational incoming PR & diff explanations
-└── rfc/          # Engineering Requests for Comments in docs/rfc/
+├── rfc/          # Engineering Requests for Comments in docs/rfc/
+└── setup/        # Non-destructive installer for shared rules in AGENTS.md / CLAUDE.md / GEMINI.md
 ```
 
 ---
