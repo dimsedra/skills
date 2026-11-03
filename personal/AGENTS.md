@@ -34,7 +34,7 @@ When I ask a question, I am only exploring ideas or seeking information. Just an
 
 ### Primary Directive
 
-Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/explain`, `/learn`, `/document`, `/adr`, `/rfc`, `/intent`, `/blueprint`, `/proof`, `/review`, or `/audit`) in this exact mindset.
+Write code that I can 100% defend, easily understand, and completely own. I must be able to read, trace, and justify every line of code you generate during a strict peer code review in under 30 seconds. Prioritize cognitive simplicity, explicit execution flows, and ease of deletion over textbook dogma or cleverness. Anchor all skill invocations (such as `/align`, `/explain`, `/learn`, `/document`, `/adr`, `/rfc`, `/intent`, `/blueprint`, `/method`, `/proof`, `/review`, or `/audit`) in this exact mindset.
 
 Never rely on a vague recollection of what I want. Before proposing architecture, generating code, or structuring tests, verify your approach directly against the exact constraints in this document (such as the AHA 3-repetition rule, no boolean flags in signatures, max 2 levels of indentation, and testing strictly via public APIs).
 
@@ -64,7 +64,7 @@ Do not use boolean flags in function signatures (e.g., `processUser(user, true, 
 
 ### 5. Testing (Behavior-Driven via Public API)
 
-Write tests strictly against the module's public API (entry points, exported functions, HTTP endpoints, or domain contracts), never against implementation details. Do not create test cases for frontend UI files such as component rendering, layout, styling, or visual interaction (focus UI verification on the `/design` skill), and do not export or expose private functions or internal state just to test them. My tests must be resilient to refactoring and pass without modification if I completely rewrite the internal implementation of a module while keeping its external behavior identical.
+Write tests strictly against the module's public API (entry points, exported functions, HTTP endpoints, or domain contracts), never against implementation details. Do not create test cases for frontend UI files such as component rendering, layout, styling, or visual interaction (focus UI verification on `method/VISUAL_TESTING.md` via `/method`), and do not export or expose private functions or internal state just to test them. My tests must be resilient to refactoring and pass without modification if I completely rewrite the internal implementation of a module while keeping its external behavior identical.
 
 Minimize mocking by mocking only at architectural boundaries. Do not mock internal collaborators, private methods, or domain classes; use real instances for core domain logic and only mock or stub external I/O boundaries (such as third-party APIs, payment gateways, system clock, or network calls). Assert on outcomes—returned values, state mutations, or observable side effects—rather than brittle internal call sequences (e.g., `expect(internalHelper).toHaveBeenCalledWith(...)`), unless firing that specific external side effect is the core business requirement.
 
@@ -78,7 +78,7 @@ If my prompt asks for an implementation that introduces security flaws, race con
 
 ## UI Design & Front-End Philosophy
 
-For any front-end UI, styling, layout, or component work, strictly invoke and follow `/design`: enforce brand grounding and obtain approval on `docs/design/brand.md` (SOT) before coding, and dispatch an isolated `UI Visual Auditor` subagent (acting as an end-user advocate reading the full path to `UI-AUDITOR-INSTRUCTIONS.md` in the active `design` skill directory) to verify rendered pixels across the 4 Dimensions of Visual Testing (Core, Boundaries, Errors, Invariants) across viewports before declaring work done.
+For any front-end UI, styling, layout, or component work, strictly invoke and follow `/method` (`method/VISUAL_TESTING.md`): enforce brand grounding and obtain approval on `docs/design/brand.md` (SOT) before coding, and dispatch an isolated Visual QA subagent (reading the full path to `VISUAL_TESTING.md` in the active `method` skill directory) to walk through the user flows with Playwright and screenshots at every step across mobile and desktop viewports to evaluate UI/UX, brand adherence, and visual slop before declaring work done.
 
 ## Technical Documentation, Specifications & Planning
 
@@ -92,7 +92,7 @@ When creating or updating anything inside `docs/`, never make unilateral assumpt
 - `/document` (`docs/architecture/`, `docs/concepts/`, `docs/guides/`, `docs/reference/`): General project documentation and references.
 - `/learn` (`docs/lesson/`): Transferable engineering lessons and runnable example scripts.
 - `/report` (`docs/report/`): Standalone interactive HTML reports.
-- `/design` (`docs/design/brand.md`): Brand and UI design source of truth.
+- `/method` (`docs/design/brand.md` via `method/VISUAL_TESTING.md`): Brand and UI design source of truth.
 
 Respect how `docs/` is tracked in version control:
 - If `docs/` is in `.gitignore` (or otherwise excluded from VCS), treat that as intentional. Do not remove it from `.gitignore`, change ignore rules to track it, or use `git add -f`.

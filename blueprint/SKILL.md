@@ -29,7 +29,7 @@ Apply the engineering rules from my global instructions (such as `AGENTS.md` or 
 
 A Blueprint can only honor the rules that are decided at design time: where module boundaries sit, how much each public interface exposes, where untrusted data gets parsed, how failures surface, what gets abstracted and what stays duplicated, and how each capability gets verified. Make those decisions explicit in the contracts. Rules that only exist in written code, such as formatting, nesting depth, or naming, are checked during implementation, `/proof`, and `/audit`, so do not make claims about them here.
 
-Pick the `Method` that fits each contract instead of defaulting to test-first for everything: `TDD` when the behavior and boundaries are known upfront, `test-after` for glue code or exploratory logic, `visual testing` for UI, `design by contract` when strict boundary parsing and runtime invariants are the main concern, or `integration/e2e` when behavior crosses module or I/O boundaries. Pair the method with `Verification`: the concrete check you will actually run and show in `/proof`.
+Pick the `Method` that fits each contract by consulting the `/method` skill (`method/SKILL.md`) instead of defaulting to test-first for everything: `TDD` when the behavior and boundaries are known upfront, `characterization` when refactoring or migrating existing code while keeping external behavior identical, `test-after` for glue code or exploratory logic, `visual testing` for UI, `design by contract` when strict boundary parsing and runtime invariants are the main concern, or `integration/e2e` when behavior crosses module or I/O boundaries. During implementation, read and follow the matching route file in `method/` for each contract. Pair the method with `Verification`: the concrete check you will actually run and show in `/proof`.
 
 Plan the atomic `Commit` sequence for each contract (for example `test: ...` followed by `feat: ...`). During implementation, commit in those small increments as each step is completed rather than piling everything into one large commit at the end.
 
@@ -70,7 +70,7 @@ Module boundaries, execution flow, and why things live where they do. Add a diag
 - Behavior: [what happens, including state changes]
 - Output: [what comes back]
 - Failure: [what can go wrong and how it surfaces]
-- Method: [tdd, test-after, visual testing, design by contract, integration/e2e]
+- Method: [tdd, characterization, test-after, visual testing, design by contract, integration/e2e]
 - Verification: [the concrete check that will be proven in /proof]
 - Commit: [planned atomic commits, e.g. (test: ...), (feat: ...)]
 

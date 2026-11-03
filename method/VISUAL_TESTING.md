@@ -1,13 +1,12 @@
----
-name: design
-description: Use when creating, modifying, or reviewing front-end UI/UX, styling, components, or layout to enforce brand grounding before coding and visual slop audit after implementation.
----
+# Method: Visual Testing
 
-# Design
+Your job here is to build front-end user interfaces that genuinely fit my brand and serve my user, follow our engineering rules while coding, and verify the live interface by having an isolated subagent explore the user flow step by step with Playwright (MCP or CLI) and screenshots before calling the work done.
 
-When I ask you to design, build, or style a front-end interface, your goal is to build something that genuinely fits my brand and serves my user, follow our engineering rules while coding, and verify the actual rendered pixels through an isolated visual auditor subagent before calling the work done.
+## How to Plan in the Blueprint
 
-## Grounding in the Brand First (`docs/design/brand.md`)
+Use `visual testing` for any contract that creates or modifies front-end UI, styling, layout, or visual interaction. Never plan unit tests (such as DOM snapshot tests or component rendering assertions) for UI layout or styling. In the contract's `Verification`, specify the live preview URL or route, the user flows to walk through (including error, empty, and interactive states), and the viewports (`360x640` mobile and `1280x800` desktop) that the subagent will explore and screenshot.
+
+## 1. Grounding in the Brand First (`docs/design/brand.md`)
 
 Never jump straight into writing UI code if we do not have an approved brand Single Source of Truth at `docs/design/brand.md` that covers the work. If `docs/design/brand.md` is missing, outdated, or does not cover what we are building, or if the project is still too early to infer these details from the codebase, pause and invoke `/align` with me first.
 
@@ -48,7 +47,7 @@ Walk through our concrete choices for composition and layout hierarchy, which co
 List what is explicitly out of scope for this interface.
 ```
 
-## Coding the Interface & Avoiding Visual Slop
+## 2. Coding the Interface & Avoiding Visual Slop
 
 Keep the interface easy to read and navigate with a low cognitive barrier. Unless our approved `docs/design/brand.md` explicitly calls for them with a clear reason, avoid common AI design clichés:
 
@@ -60,16 +59,15 @@ Keep the interface easy to read and navigate with a low cognitive barrier. Unles
 
 When writing the front-end code, stick to our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config/opencode/AGENTS.md`): keep markup, styling, and UI logic co-located in deep component files, do not extract micro-components until a pattern repeats at least 3 times, keep control flow flat without boolean prop traps, and do not write unit tests for UI rendering, layout, or styling.
 
-## Visual QA via an Isolated Subagent
+## 3. Visual QA via Playwright & an Isolated Subagent
 
-Do not audit your own rendered UI in our main conversation thread, because inspecting your own work leads to confirmation bias and superficial checking. Instead, verify the UI by spawning an isolated `UI Visual Auditor` subagent.
+Do not verify your own rendered UI in our main conversation thread, because inspecting your own work leads to confirmation bias. Instead, make sure the app is running on a dev server or preview URL, then spawn an isolated Visual QA subagent to explore it like a new user. If no browser tool (Playwright MCP or CLI) is available in your environment, tell me plainly that the visual check could not run and fall back to a code review. Never pretend a visual check happened.
 
-First, make sure the UI is running on a dev server or preview URL, and use browser automation (Playwright MCP or CLI) to capture screenshots across at least a mobile viewport (`360x640`) and a desktop viewport (`1280x800`). Capture active interaction states too, such as open modals, expanded menus, or validation error states, rather than just a static initial load. If no browser tool is available in your environment, tell me plainly that the visual audit could not run and fall back to a code review—never pretend a visual audit happened.
+Give the subagent full absolute paths (never relative paths) to this `VISUAL_TESTING.md` file, `docs/design/brand.md`, the relevant Intent and Blueprint files, and the live preview URL.
 
-Next, spawn the `UI Visual Auditor` subagent. Because a subagent does not know where your skills are installed on disk, always resolve and pass full absolute paths—never relative paths like `design/UI-AUDITOR-INSTRUCTIONS.md`, and never paraphrase the auditor instructions in place of the file:
+The subagent's job is to walk through the user flows via the public interface using Playwright (MCP or CLI) across both mobile (`360x640`) and desktop (`1280x800`) viewports, taking a screenshot at every step of the flow (initial state, clicking, typing, opening modals or menus, and triggering empty, loading, or error states). Stick strictly to bounded file reading and never wander into unrelated backend files. From those step-by-step screenshots, the subagent answers two questions:
 
-- The full absolute path to `UI-AUDITOR-INSTRUCTIONS.md` inside the directory where this skill is located (for example, `/home/user/.gemini/config/skills/design/UI-AUDITOR-INSTRUCTIONS.md` or `/home/user/.config/opencode/skills/design/UI-AUDITOR-INSTRUCTIONS.md`), instructing the subagent to read it first.
-- The full absolute path to `docs/design/brand.md` (plus any relevant `docs/intent/` or `docs/blueprint/` files) as the brand and requirement reference.
-- The exact `git diff` command or commit range, the full absolute paths to the modified UI files and captured screenshots (or preview URL), and a short description of what we built or changed.
+1. Does the flow work cleanly at every step from a UI/UX perspective without clipped text, broken layouts, overlapping layers, or confusing transitions?
+2. Do the rendered pixels at every step follow `docs/design/brand.md` and avoid the visual slop listed in Section 2?
 
-If the subagent returns a `BLOCKED` verdict, fix the visual defects in code, take fresh screenshots, and re-run the subagent audit until it passes. Once it is certified, share the result and a clear summary with me in chat.
+If the subagent finds UX friction, layout breaks, or brand/slop violations in any screenshot, fix the code and have the subagent re-run the flow until every step holds up cleanly, then share the result and screenshots with me in chat.

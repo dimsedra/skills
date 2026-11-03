@@ -66,7 +66,7 @@ While `intent` belongs to you, [`/blueprint`](./blueprint/SKILL.md) belongs to t
 The agent reads the approved intent, inspects the codebase, applies the engineering rules from your global instructions where design decides them, and translates the intent into a technical blueprint (`docs/blueprint/`) that the implementing agent follows together with the intent:
 * Contracts with unique identifiers (`BP-[MODULE]-[INDEX]`), each naming the part of the intent it serves.
 * The intent's non-goals carried forward, so the implementing agent knows what not to build.
-* Fit-for-purpose `Method` (`TDD`, `test-after`, `visual testing`, `design by contract`, `integration/e2e`) paired with the concrete `Verification` check that will be demonstrated in `/proof`.
+* Fit-for-purpose `Method` (`TDD`, `characterization`, `test-after`, `visual testing`, `design by contract`, `integration/e2e`) selected and executed via [`/method`](./method/SKILL.md), paired with the concrete `Verification` check that will be demonstrated in `/proof`.
 * Planned atomic `Commit` sequences per contract (such as `test: ...`, `feat: ...`), so the agent commits incrementally as each step is finished instead of piling everything into one giant commit at the end.
 
 If implementation later shows a contract does not hold, the agent stops, aligns with you, and updates the blueprint before continuing, so the document and the code never drift apart.
@@ -85,10 +85,10 @@ If the agent cannot prove it, it must ask itself the first question again and ch
 * **Interactive Verification**: As you poke at specific parts, question choices, and hold the work up against your intent and rules, the agent backs up its answers with real evidence.
 * **Plain Honesty When Something Was Missed**: When you ask about a part the agent forgot, misunderstood, or has not tested yet, it does not get defensive, make excuses, or quietly edit files on its own. It owns up to it plainly (*"I missed that part"* or *"I haven't actually tested that yet"*) so both of you see the real state of the work.
 
-### 4. Verifying Real Pixels Instead of Guessing (`/design`)
-Passing backend tests only proves that server logic runs; it says nothing about whether a user interface feels comfortable or distinct.
+### 4. Executing the Right Method & Verifying Real Pixels (`/method`)
+A one-word method label in a Blueprint is not enough to keep implementation disciplined. [`/method`](./method/SKILL.md) acts as a router that directs the agent to the exact step-by-step workflow for each contract (`TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, or `visual testing`).
 
-We do not write brittle unit tests for CSS layout or styling. Instead, [`/design`](./design/SKILL.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) to eliminate generic AI design tropes, then spawns an isolated visual auditor subagent to inspect actual Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports before calling the work done.
+For front-end work (`visual testing`), we do not write brittle unit tests for CSS layout or styling. Instead, [`method/VISUAL_TESTING.md`](./method/VISUAL_TESTING.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) to eliminate generic AI design tropes, then spawns an isolated visual auditor subagent to inspect actual Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports before calling the work done.
 
 ### 5. Fresh-Eyed Audits Without Bias (`/audit`)
 After you and an agent have been working together in a chat session for an hour, both of you carry context bias. You start overlooking small oversights.
@@ -136,10 +136,10 @@ Notice what happens here:
 * **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
 
 ### Verification & Demonstration
+* **`method`**: Router that guides contract implementation and verification across `TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, and `visual testing` (including brand grounding in `docs/design/brand.md` and dual-viewport Playwright visual audits).
 * **`proof`**: Interactive verification review in conversation where the agent proves its work with real evidence, answers your questions against your intent, and owns up plainly when something was missed.
 * **`audit`**: Spawns independent subagents to review diffs against Intent, Blueprint, and engineering rules.
 * **`review`**: Explains incoming pull requests and branch diffs directly in conversation through execution tracing, behavioral shifts, and risk assessment.
-* **`design`**: Enforces brand grounding (`brand.md`) and verifies rendered pixels via dual-viewport visual screenshot audits.
 
 ### Tracking & Documentation
 * **`issue`**: Converts bugs and architectural gaps into problem-first tracking issues with stable symbol pointers.
@@ -164,10 +164,10 @@ npx skills add dimsedra/skills --skill explain
 npx skills add dimsedra/skills --skill learn
 npx skills add dimsedra/skills --skill intent
 npx skills add dimsedra/skills --skill blueprint
+npx skills add dimsedra/skills --skill method
 npx skills add dimsedra/skills --skill proof
 npx skills add dimsedra/skills --skill audit
 npx skills add dimsedra/skills --skill review
-npx skills add dimsedra/skills --skill design
 ```
 
 ---
@@ -180,12 +180,12 @@ skills/
 ├── align/        # Alignment router: understand, decide, challenge (The Center)
 ├── audit/        # Isolated subagent diff auditing & scaling checks
 ├── blueprint/    # Technical architecture, contracts & planned commits in docs/blueprint/
-├── design/       # Brand grounding (brand.md) & visual screenshot audit
 ├── document/     # Modular technical documentation in docs/
 ├── explain/      # User-tailored explanations of code, bugs & concepts
 ├── intent/       # Fluid user goals, rationale & boundaries in docs/intent/
 ├── issue/        # Problem-first defect & gap tracking
 ├── learn/        # Transferable cross-project lessons & runnable scripts in docs/lesson/
+├── method/       # Implementation & verification router (TDD, characterization, visual testing, etc.)
 ├── proof/        # Interactive verification & honesty check in conversation
 ├── report/       # Standalone console HTML reports in docs/report/
 ├── research/     # Outward-facing technical research on dependencies
