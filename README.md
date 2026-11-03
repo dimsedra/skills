@@ -2,109 +2,100 @@
 
 [![skills.sh](https://skills.sh/b/dimsedra/skills)](https://skills.sh/dimsedra/skills)
 
-A personal collection of modular, harness-agnostic skills for AI coding agents, built around a single conviction: **alignment must come before execution**.
+A collection of modular, harness-agnostic skills for AI coding agents that **makes your agent a significantly better listener, a more versatile engineer, and a cleaner collaborator in your own codebase.**
 
 ---
 
 ## Why This Exists
 
-If you have spent real time building software with AI coding agents, you have probably lived through this scenario:
+If you have spent real time building software with AI coding agents, you have probably hit one of two walls.
 
-You give the agent a prompt. You think you were clear. The agent sounds confident, replies enthusiastically, and immediately starts editing files. Ten minutes later, you are staring at 400 lines of code across seven different files that you cannot fully trace, do not completely understand, and definitely cannot defend in a peer code review.
+The first is **assumed intent**. You give the agent a prompt. You think you were clear. The agent sounds confident, replies enthusiastically, and immediately starts editing files. Ten minutes later, you are staring at 400 lines of code across seven different files that you cannot fully trace, do not completely understand, and definitely cannot defend in a peer code review. The code might run, but you do not truly own it. And when it breaks in production at 2:00 AM, the agent will not be the one on call: you will.
 
-The code might run, but you do not truly own it. And when it breaks in production at 2:00 AM, the agent will not be the one on call: you will.
+The second is **process bloat**. To stop agents from guessing, many workflows turn AI development into a heavyweight administrative process or a police interrogation: forcing one-size-fits-all dogma onto every task, spinning up a committee of specialist personas for a simple change, or requiring Git worktree gymnastics and duplicate dependency builds just to stay safe. That drains your momentum.
 
-The biggest failure mode in AI engineering is almost never basic syntax or lack of intelligence. It is **assumed intent**. We use the same words as the agent, but we picture completely different systems in our heads. When an agent silently assumes details and rushes to write code, the gap between what you wanted and what got built widens with every turn.
+Real engineering is collaborative and fluid. It adapts to your existing workflow rather than forcing you to adopt someone else's.
 
-I built this collection of skills to fix that specific problem.
-
----
-
-## The Core Principle: Alignment as the Center
-
-At the heart of this entire system is one skill: [`align`](./align/SKILL.md).
-
-`align` is not just another slash command in a toolbox. It is the gravitational center of how I work with an agent.
-
-The principle is simple: **we never let the agent guess**.
-
-Whenever we discuss, design, debug, or build, `align` is our universal calibration tool. Its only job is to **make sure both of us are in the exact same boat**: calibrating our understanding, mental models, and boundaries until they genuinely converge.
-
-It can be invoked at any point: at the start of an idea, in the middle of a thorny debugging session, during architectural exploration, or whenever either of us senses drift or ambiguity.
-
-Alignment comes in different shapes, and most of the time it only needs the simplest one. Doing everything at once (playing back, critiquing, listing options, reading code) makes a quick check heavier than it needs to be. So `align` works as a router: one entry point that picks a single route and loads only that route's instructions:
-* **Understand** (default): The agent plays back its understanding in plain terms: *"Here is how I currently understand what you want... does this match your picture?"* It corrects until it matches, and does nothing more.
-* **Decide**: When there is a real fork, the agent lays out 2 or 3 realistic options with their practical trade-offs (complexity, maintenance cost, cognitive load) so we decide together.
-* **Challenge**: When asked to stress-test an idea, or when the agent sees a concrete problem, it brings the few concerns that matter most, ordered by impact.
-
-The agent states which route it is taking in one line so you can redirect it, and it can switch routes as the conversation changes shape. Every other skill in this repository is designed to fall back to `align`. The moment a specification is ambiguous, the moment a test plan reveals an unexpected edge case, or the moment an architectural trade-off emerges, the agent is instructed to stop and say: *"Let's align on this first."*
-
-Beside `align` sit [`explain`](./explain/SKILL.md) and [`learn`](./learn/SKILL.md). While `align` makes sure the agent understands you, `explain` makes sure you genuinely understand the code, bug, or concept in front of you (reading your communication and cognitive framing rules from `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking how you want it broken down). And when you want to go beyond project-specific code so your own engineering foundation keeps growing, `learn` extracts durable, cross-project mental models, walks you through heavily commented runnable example scripts line by line alongside their output, and saves reproducible lesson playbooks (`docs/lesson/<topic_slug>/`) at the end of the session based on how the actual conversation unfolded.
+I built this collection of skills around a simpler conviction: **friction belongs in problem formulation, not in bureaucratic overhead.** It gives you shared understanding upfront, the right engineering technique for the task at hand, and empirical proof at the end, without leaving a mess in your repository.
 
 ---
 
-## How the System Works Around That Center
+## 1. A Significantly Better Listener
 
-Once you have true alignment, how do you turn that shared mental model into working, defendable software without bureaucratic overhead or context drift?
+The biggest failure mode in AI engineering is almost never syntax or raw intelligence. We use the same words as the agent, but we picture completely different systems in our heads.
 
-That is where the surrounding skills come in:
+At the center of this system is [`align`](./align/SKILL.md). It is not just another slash command in a toolbox; it is the gravitational center of how you and the agent work together. Its only job is to **make sure both of you are in the exact same boat** before a single file is touched.
 
-### 1. Freezing Your Intent on Disk (`/intent`)
-Conversations in chat evaporate. As a session grows longer, language models suffer from context drift and start forgetting subtle details discussed twenty turns ago.
+Alignment comes in different shapes, and most of the time it only needs the simplest one. Doing everything at once makes a quick check heavier than it needs to be, so `align` works as a lightweight router that picks one route and loads only that route's instructions:
+* **Understand** (default): The agent plays back its understanding in plain terms (what you want and how it pictures it working) and corrects until it matches your mental model. Nothing more.
+* **Decide**: When there is a real fork, the agent lays out 2 or 3 realistic options with their practical trade-offs (complexity, maintenance cost, cognitive load) so you decide together.
+* **Challenge**: When asked to stress-test an idea, or when the agent sees a concrete problem that would make the plan wrong, it brings the few concerns that matter most, ordered by impact.
 
-Instead of writing a dry corporate requirements document with rigid sections, [`/intent`](./intent/SKILL.md) captures our alignment session into a lightweight, flexible record on disk (`docs/intent/`). It is stupidly simple:
-* What you want to achieve (the goal or human experience).
-* Why we are doing it (the rationale or current codebase friction).
-* What we want vs what we explicitly do NOT want (boundaries and non-goals).
-* Any key invariants or guiding rules of thumb you mentioned.
+The agent tells you which route it is taking in one line so you can redirect it immediately, and every other skill in this repository is wired to fall back to `align` the moment a requirement is ambiguous or reality conflicts with a plan.
 
-There are no rigid templates or mandatory pillars: it captures whatever was actually discussed so neither of us forgets or drifts. This is your domain: you define what you want and verify that it matches your vision.
+When an alignment conversation is worth keeping so context never drifts across a long session, [`intent`](./intent/SKILL.md) freezes your goals, rationale, and explicit non-goals into a template-free record on disk (`docs/intent/`).
 
-### 2. The Agent's Technical Translation (`/blueprint`)
-While `intent` belongs to you, [`/blueprint`](./blueprint/SKILL.md) belongs to the agent.
+And because listening goes both ways, [`explain`](./explain/SKILL.md), [`learn`](./learn/SKILL.md), and [`research`](./research/SKILL.md) make sure *you* never lose your grip on the system:
+* **`explain`** breaks down code, bugs, or architecture in the exact way you think and learn (reading your communication preferences from `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking first).
+* **`learn`** goes beyond project-specific code to build durable, cross-project mental models through cause-and-effect mechanics, heavily commented runnable scripts, and reproducible lesson playbooks (`docs/lesson/`).
+* **`research`** grounds technical investigations in your actual dependency versions and authoritative external documentation rather than stale training data.
 
-The agent reads the approved intent, inspects the codebase, applies the engineering rules from your global instructions where design decides them, and translates the intent into a technical blueprint (`docs/blueprint/`) that the implementing agent follows together with the intent:
-* Contracts with unique identifiers (`BP-[MODULE]-[INDEX]`), each naming the part of the intent it serves.
-* The intent's non-goals carried forward, so the implementing agent knows what not to build.
-* Fit-for-purpose `Method` (`TDD`, `characterization`, `test-after`, `visual testing`, `design by contract`, `integration/e2e`) selected and executed via [`/method`](./method/SKILL.md), paired with the concrete `Verification` check that will be demonstrated in `/proof`.
-* Planned atomic `Commit` sequences per contract (such as `test: ...`, `feat: ...`), so the agent commits incrementally as each step is finished instead of piling everything into one giant commit at the end.
+---
 
-If implementation later shows a contract does not hold, the agent stops, aligns with you, and updates the blueprint before continuing, so the document and the code never drift apart.
+## 2. A More Versatile Engineer
 
-The agent presents the Blueprint to you in chat: how it understood your intent technically, the key design decisions and why, and which part of the intent each contract covers. You review and approve it in under 30 seconds.
+One-size-fits-all engineering rules fail on contact with real codebases. A strict rule that works for a brand-new domain module becomes a straitjacket when you are untangling untested legacy code, spiking an exploratory prototype, or polishing a UI layout.
 
-### 3. Proving the Work & Holding Up Under Questioning (`/proof`)
-Once implementation is complete, words are cheap. An agent saying "I am done" or handing you a list of modified files requires blind trust, which violates our primary rule: you must be able to 100% defend and own the code.
+Instead of forcing a single rigid dogma, these skills adapt to the work in front of you:
 
-[`/proof`](./proof/SKILL.md) is where the agent shows its work and you verify whether it truly did what you asked, the way you wanted it. There is no rigid report template here. Instead, both when presenting work and whenever you ask a verification question, the agent must ask itself two questions:
+### Translating Intent into Contracts (`/blueprint`)
+While `intent` belongs to you, [`blueprint`](./blueprint/SKILL.md) belongs to the agent. It reads your approved intent, inspects the codebase, and translates the goal into concrete technical contracts (`BP-[MODULE]-[INDEX]`), carrying your non-goals forward and pairing each contract with a fit-for-purpose implementation method, a verification check, and planned atomic commits. You can review and approve it in under 30 seconds.
+
+### Pragmatism Over Dogma (`/method`)
+[`method`](./method/SKILL.md) lets you or the blueprint pick the right construction technique for the job:
+* **`TDD`**: Red-green-refactor against public APIs when building well-understood domain logic or fixing reproducible bugs.
+* **`Characterization`**: Locking down existing behavior with golden-master or approval tests before touching messy, untested legacy code.
+* **`Test-After`**: Exploring uncertain shapes or prototypes first, then locking in behavior tests once the design settles.
+* **`Design by Contract`**: Enforcing explicit entry/exit invariants and boundary parsing (`Parse, Don't Validate`).
+* **`Integration / E2E`**: Verifying real boundary wiring across databases, queues, and HTTP endpoints.
+* **`Visual Testing`**: For front-end UI, we do not write brittle unit tests for CSS layout. [`method/VISUAL_TESTING.md`](./method/VISUAL_TESTING.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) and dispatches an isolated visual auditor subagent to inspect real Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports.
+
+### Hands-Free Execution with a Real Circuit Breaker (`/ship` & `/audit`)
+When you want the full loop, [`ship`](./ship/SKILL.md) walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) until you approve the plan, and then takes the wheel. It executes each contract via `/method`, commits atomically, and runs [`audit`](./audit/SKILL.md), spawning isolated, fresh-eyed subagents across three sequential stages:
+1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against your Intent, Blueprint (`BP-XXX`), and ADRs to catch missing requirements or unapproved scope creep.
+2. **`Resilience Auditor`** (`audit/RESILIENCE-AUDITOR.md`): Hunts for unhandled edge cases, broken invariants, race conditions, security flaws, and scaling bottlenecks like N+1 queries.
+3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to your engineering rules before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
+
+If an auditor finds a code or test defect, `/ship` fixes it and re-audits automatically. But if the agent hits a real conflict between the codebase and the approved plan, a circuit breaker trips: it stops immediately and brings you back into `/align` rather than silently improvising around your design.
+
+---
+
+## 3. A Cleaner Collaborator in Your Own Codebase
+
+You should not need Git worktree gymnastics, duplicate dependency builds, or temporary scratch files cluttering your repository just to collaborate with an agent. Everything happens cleanly in your live thread and your existing workspace.
+
+### Empirical Verification & Plain Honesty (`/proof` & `/review`)
+When implementation finishes, an agent saying *"I am done"* requires blind trust, which violates our core rule: you must be able to 100% defend and own every line of code in under 30 seconds.
+
+In [`proof`](./proof/SKILL.md), there is no rigid report template. Both when presenting work and whenever you poke at specific choices, the agent must ask itself two questions:
 1. *Did I actually do what was asked, the way it was wanted?*
 2. *Can I prove it right now?*
 
-If the agent cannot prove it, it must ask itself the first question again and check the actual code and runtime output rather than answering from memory or wishful thinking:
-* **Fit-for-Purpose Evidence**: Proves the work using whatever actually fits: running tests, executing the code in the terminal, showing real output, or walking through the exact code path.
-* **Interactive Verification**: As you poke at specific parts, question choices, and hold the work up against your intent and rules, the agent backs up its answers with real evidence.
-* **Plain Honesty When Something Was Missed**: When you ask about a part the agent forgot, misunderstood, or has not tested yet, it does not get defensive, make excuses, or quietly edit files on its own. It owns up to it plainly (*"I missed that part"* or *"I haven't actually tested that yet"*) so both of you see the real state of the work.
+It backs up its answers with real terminal output, passing tests, and exact code paths. And if you ask about a part the agent forgot, misunderstood, or has not tested yet, it does not get defensive, make excuses, or quietly edit files behind your back. It owns up plainly (*"I missed that part"* or *"I haven't actually tested that yet"*) so both of you see the real state of the work.
 
-### 4. Executing the Right Method & Verifying Real Pixels (`/method`)
-A one-word method label in a Blueprint is not enough to keep implementation disciplined. [`/method`](./method/SKILL.md) acts as a router that directs the agent to the exact step-by-step workflow for each contract (`TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, or `visual testing`).
+When you are looking at an incoming pull request or branch diff from a teammate, [`review`](./review/SKILL.md) brings that same clarity directly into conversation: tracing end-to-end execution flows, surfacing behavioral shifts, and separating real blocking risks from subjective style nits.
 
-For front-end work (`visual testing`), we do not write brittle unit tests for CSS layout or styling. Instead, [`method/VISUAL_TESTING.md`](./method/VISUAL_TESTING.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) to eliminate generic AI design tropes, then spawns an isolated visual auditor subagent to inspect actual Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports before calling the work done.
-
-### 5. Fresh-Eyed Audits Without Bias (`/audit`)
-After you and an agent have been working together in a chat session for an hour, both of you carry context bias. You start overlooking small oversights.
-
-[`/audit`](./audit/SKILL.md) solves this by spawning isolated subagents with clean context across three focused stages, either sequentially or selectively on demand:
-1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against Intent, Blueprint (`BP-XXX`), and ADRs to catch missing requirements or unapproved scope creep.
-2. **`Resilience Auditor`** (`audit/RESILIENCE-AUDITOR.md`): Hunts for unhandled edge cases, broken invariants, race conditions, security flaws, and scaling bottlenecks like N+1 queries.
-3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to our engineering rules and verification discipline before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
+### Deterministic Guardrails & Clean Project Memory (`/setup`, `/document`, `/adr`, `/rfc`, `/issue`, `/report`)
+* **`setup`** injects the shared engineering rules (AHA > DRY, deep modules, parse don't validate, behavior-driven public API testing, and bounded subagent exploration) into your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` via a deterministic Node.js script (`setup/scripts/inject-rules.mjs`) between `BEGIN`/`END` markers, preserving all of your personal instructions verbatim.
+* **`document`**, **`adr`**, **`rfc`**, **`issue`**, and **`report`** maintain a clean, modular `docs/` tree indexed by `docs/README.md` (with full respect for whether you track `docs/` in git, ignore it, or keep it in a nested repository).
 
 ---
 
 ## What This Looks Like in Practice
 
-Because the requirements and runbooks live on disk as context capsules, your daily prompts do not need to be long or complicated.
+Because your requirements and contracts live on disk as clean context capsules, your daily prompts do not need to be long or complicated.
 
-Here is an example of what a high-leverage prompt looks like when starting work on a real feature:
+You can use a single skill on the fly (like `/align` during a debugging session, `/method` for a quick TDD fix, or `/review` on a teammate's PR), run `/ship` for an end-to-end feature build, or point the agent at existing context files:
 
 ```text
 Check these files:
@@ -123,27 +114,25 @@ Notice what happens here:
 
 ## The Skills at a Glance
 
-### Thinking, Alignment & Understanding (The Center)
+### Listening, Alignment & Understanding
 * **`align`**: The core heartbeat. A router that picks the simplest kind of alignment the moment needs (understand, decide, or challenge) so both parties are in the exact same boat before or during any technical work.
+* **`intent`**: Captures user goals, rationale, and explicit boundaries in a fluid, template-free record in `docs/intent/`.
 * **`explain`**: Explains code, bugs, architecture, or technical concepts in the specific way the user thinks and learns (reading `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking first).
 * **`learn`**: Builds durable, transferable engineering knowledge across projects through cause-and-effect mechanics, trade-offs, isolated runnable scripts, and reproducible lesson playbooks in `docs/lesson/`.
 * **`research`**: Grounds technical investigations in actual dependencies and authoritative documentation rather than stale training data.
 
-### Scope Boundaries & Architecture
-* **`intent`**: Captures user goals, rationale, and explicit boundaries in a fluid, template-free record in `docs/intent/`.
+### Versatile Engineering & Execution
 * **`blueprint`**: Translates intent into technical contracts (`BP-[MODULE]-[INDEX]`), verification methods, and planned atomic commits in `docs/blueprint/`.
-* **`adr`**: Captures immutable Architecture Decision Records with evaluated trade-offs in `docs/decisions/`.
-* **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
-
-### Verification & Demonstration
-* **`ship`**: End-to-end orchestrator that walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) and then runs an autonomous execution and self-healing loop (`/method` per contract -> `/audit` subagent loop) until landing at `/proof`.
 * **`method`**: Router that guides contract implementation and verification across `TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, and `visual testing` (including brand grounding in `docs/design/brand.md` and dual-viewport Playwright visual audits).
-* **`proof`**: Interactive verification review in conversation where the agent proves its work with real evidence, answers your questions against your intent, and owns up plainly when something was missed.
-* **`audit`**: Spawns independent subagents to review diffs against Intent, Blueprint, and engineering rules.
-* **`review`**: Explains incoming pull requests and branch diffs directly in conversation through execution tracing, behavioral shifts, and risk assessment.
+* **`ship`**: End-to-end orchestrator that walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) and then runs an autonomous execution and self-healing loop (`/method` per contract -> `/audit` subagent loop) with an alignment circuit breaker until landing at `/proof`.
+* **`audit`**: Spawns independent subagents across Spec, Resilience, and Quality stages to review diffs against Intent, Blueprint, and engineering rules.
 
-### Tracking & Documentation
-* **`setup`**: Injects the shared engineering rules, UI verification rules, `docs/` conventions, and subagent boundaries into `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` at the project or global level without overwriting existing personal instructions.
+### Clean Collaboration, Verification & Documentation
+* **`proof`**: Interactive verification review in conversation where the agent proves its work with real evidence, answers your questions against your intent, and owns up plainly when something was missed.
+* **`review`**: Explains incoming pull requests and branch diffs directly in conversation through execution tracing, behavioral shifts, and risk assessment.
+* **`setup`**: Deterministically injects the shared engineering rules, UI verification rules, `docs/` conventions, and subagent boundaries into `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` at the project or global level without overwriting existing personal instructions.
+* **`adr`**: Captures Architecture Decision Records with evaluated trade-offs in `docs/decisions/`.
+* **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
 * **`issue`**: Converts bugs and architectural gaps into problem-first tracking issues with stable symbol pointers.
 * **`document`**: Maintains a clean, modular technical documentation tree cataloged in `docs/README.md`.
 * **`report`**: Generates standalone console-themed HTML reports with Chart.js and Mermaid diagrams in `docs/report/`.
@@ -197,7 +186,7 @@ skills/
 ├── research/     # Outward-facing technical research on dependencies
 ├── review/       # Conversational incoming PR & diff explanations
 ├── rfc/          # Engineering Requests for Comments in docs/rfc/
-├── setup/        # Non-destructive installer for shared rules in AGENTS.md / CLAUDE.md / GEMINI.md
+├── setup/        # Deterministic installer for shared rules in AGENTS.md / CLAUDE.md / GEMINI.md
 └── ship/         # End-to-end orchestrator & autonomous execution/audit loop
 ```
 

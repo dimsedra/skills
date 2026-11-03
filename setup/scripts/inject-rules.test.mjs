@@ -38,7 +38,7 @@ test('creates the instruction file with only the rules block when it does not ex
 
 test('appends the rules block below personal notes and keeps the notes untouched', () => {
   const target = join(makeTempDir(), 'CLAUDE.md');
-  const personalNotes = '# How to Work With Me\n\nCall me Eds.\n';
+  const personalNotes = '# How to Work With Me\n\nKeep answers concise.\n';
   writeFileSync(target, personalNotes);
 
   const result = runScript(target);

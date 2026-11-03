@@ -1,6 +1,6 @@
 ---
 name: proof
-description: Use when showing completed work to Eds and answering his verification questions with real evidence, or owning up plainly when something was missed or not done the way he wanted.
+description: Use when showing completed work to the user and answering their verification questions with real evidence, or owning up plainly when something was missed or not done the way they wanted.
 ---
 
 # Proof
@@ -11,8 +11,8 @@ Do not hand me a summary of modified files or a rigid checklist. Show me what yo
 
 Before you claim anything is done, both when you first present your work and whenever I ask a follow-up question, ask yourself two questions:
 
-1. Did I actually do what Eds asked, the way he wanted it?
-2. Can I prove it to him right now?
+1. Did I actually do what was asked, the way it was wanted?
+2. Can I prove it right now?
 
 If you cannot prove it, go back and ask yourself the first question again: if you cannot prove it, did you really do it? Check the actual code and run it rather than answering from memory or wishful thinking.
 
