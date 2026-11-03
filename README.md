@@ -93,22 +93,33 @@ When you are looking at an incoming pull request or branch diff from a teammate,
 
 ## What This Looks Like in Practice
 
-Because your requirements and contracts live on disk as clean context capsules, your daily prompts do not need to be long or complicated.
+You do not need to run a heavyweight process for a five-line fix, and you do not need to manually paste file paths into chat. Once `/setup` has added the shared rules to your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`, the workflow scales up or down to match the task in front of you.
 
-You can use a single skill on the fly (like `/align` during a debugging session, `/method` for a quick TDD fix, or `/review` on a teammate's PR), run `/ship` for an end-to-end feature build, or point the agent at existing context files:
+### 1. Everyday Changes & Exploration (Zero Ceremony)
+
+For day-to-day bugs, refactors, or design questions, you just talk to the agent naturally and end with `/align`:
 
 ```text
-Check these files:
-/home/user/projects/my-app/README.md
-/home/user/projects/my-app/docs/intent/20261024_duty_scheduling.md
-/home/user/projects/my-app/docs/blueprint/20261024_duty_scheduler.md
-
-We will implement this feature based on this Intent and Blueprint (README.md is the project runbook). Let's align first via /align
+Users are getting logged out when their browser tab sleeps in the background. I think we should refresh the session token on visibilitychange, what do you think?
+/align
 ```
 
-Notice what happens here:
-1. The agent gets 100% of the operational context, human outcomes, and technical contracts through clean file pointers.
-2. The agent is explicitly restrained by the closing instruction: *"Let's align first"*. It cannot rush ahead or start coding; it must verify its understanding with you first.
+What happens next:
+1. The agent does not rush to edit files. It picks the right alignment route (`Understand`, `Decide`, or `Challenge`), checks the relevant code if needed, and calibrates with you in plain language.
+2. Once you confirm the approach, you tell it to build (or invoke a specific `/method` like TDD or characterization), and verify the result together via `/proof`. No markdown specs required.
+
+### 2. Full Features & Multi-Step Builds (`/ship`)
+
+When you are building a larger feature where context drift and edge cases are real risks, you invoke `/ship` (or step through `/align` -> `/intent` -> `/blueprint` at your own pace):
+
+```text
+We need to add role-based duty scheduling so team leads can assign shifts without double-booking someone across overlapping timezones.
+/ship
+```
+
+What happens next is split into two distinct phases:
+1. **The Interactive Gate (You + Agent)**: The agent aligns with you via `/align`, freezes your goals and non-goals into `docs/intent/` via `/intent`, and translates them into concrete contracts (`BP-[MODULE]-[INDEX]`), verification methods, and planned commits in `docs/blueprint/` via `/blueprint`. It pauses until you review and approve the Blueprint.
+2. **The Autonomous Loop (Agent)**: Once you approve the Blueprint, the agent takes the wheel. It executes each contract using its assigned `/method`, commits atomically, and runs the 3-stage `/audit` loop (`Spec` -> `Resilience` -> `Quality`), fixing any code or test defects automatically. If a real codebase constraint conflicts with the Blueprint, the circuit breaker trips and brings you back into `/align`. When every contract and audit passes, it lands at `/proof` with real terminal and test evidence.
 
 ---
 
