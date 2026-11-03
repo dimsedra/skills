@@ -1,18 +1,19 @@
 ---
 name: method
-description: Use when choosing an implementation method for a Blueprint contract during /blueprint planning, when executing a contract's method during implementation, or when building and verifying front-end UI. Routes to the concrete workflow for TDD, characterization, test-after, design by contract, integration/e2e, or visual testing.
+description: Use whenever the user invokes /method, names a method directly (e.g. "fix this using TDD"), builds or fixes something directly without a Blueprint, chooses a contract method during /blueprint planning, or executes a Blueprint contract. Routes to the concrete workflow for TDD, characterization, test-after, design by contract, integration/e2e, or visual testing.
 ---
 
 # Method
 
-Naming a method in a Blueprint contract is only useful if you actually follow its discipline when building. Without a clear workflow, `TDD` turns into writing tests and code in one big batch, `test-after` turns into circular tests that only prove the code does what it already does, and refactoring breaks behavior because tests were rewritten alongside the code.
+Naming a method is only useful if you actually follow its discipline when building. Without a clear workflow, `TDD` turns into writing tests and code in one big batch, `test-after` turns into circular tests that only prove the code does what it already does, and refactoring breaks behavior because tests were rewritten alongside the code.
 
-This skill is a router that serves two moments in our workflow:
+This skill is a router that serves three moments in our workflow:
 
-1. **During Blueprint planning (`/blueprint`):** Read this file to pick the method that genuinely fits each contract, and shape the contract's `Verification` check and atomic `Commit` sequence around how that method works. Never default to `tdd` for every contract out of habit.
-2. **During implementation:** Before you write code or tests for a contract, read the route file for that contract's `Method` and follow it step by step. The route files live in the same directory as this `SKILL.md`, so resolve their path from where this skill is installed rather than guessing.
+1. **Direct implementation without a Blueprint:** When I ask you to build, fix, or refactor something directly without an Intent or Blueprint (or when I invoke `/method` or name a method like "fix this using TDD"), pick the route that fits the work, read that route's file, and follow it step by step. If I name a route myself (for example `/method tdd`), take that route without second-guessing it.
+2. **During Blueprint planning (`/blueprint`):** Read this file to pick the method that genuinely fits each contract, and shape the contract's `Verification` check and atomic `Commit` sequence around how that method works. Never default to `tdd` for every contract out of habit.
+3. **During Blueprint implementation:** Before you write code or tests for a contract, read the route file for that contract's `Method` and follow it step by step.
 
-Pick the route that matches the work in the contract:
+The route files live in the same directory as this `SKILL.md`, so resolve their path from where this skill is installed rather than guessing. Pick the route that matches the work:
 
 TDD (`TDD.md`) is for new behavior where the public interface, inputs, and expected outputs are clear upfront. You start with a failing public-API test (Red), write the minimal code to pass it (Green), and clean up internals while staying green (Refactor).
 
