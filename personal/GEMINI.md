@@ -86,7 +86,7 @@ If my prompt asks for an implementation that introduces security flaws, race con
 
 ## UI Design & Front-End Philosophy
 
-For any front-end UI, styling, layout, or component work, strictly invoke and follow `/method` (`method/VISUAL_TESTING.md`): enforce brand grounding and obtain approval on `docs/design/brand.md` (SOT) before coding, and dispatch an isolated Visual QA subagent (reading the full path to `VISUAL_TESTING.md` in the active `method` skill directory) to walk through the user flows with Playwright and screenshots at every step across mobile and desktop viewports to evaluate UI/UX, brand adherence, and visual slop before declaring work done.
+For any front-end UI, styling, layout, or component work, strictly invoke and follow `/method` (`method/VISUAL_TESTING.md`): enforce brand grounding and obtain approval on `docs/design/brand.md` (SOT) before coding, and verify the user flows in a real browser with screenshots at every step across mobile and desktop viewports (inline for quick UI fixes, or by dispatching an isolated Visual QA subagent reading the full path to `VISUAL_TESTING.md` for new screens, multi-step flows, and Blueprint contracts) to evaluate UI/UX, brand adherence, and visual slop before declaring work done.
 
 ## Technical Documentation, Specifications & Planning
 
