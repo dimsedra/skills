@@ -1,6 +1,6 @@
 # Proof Skill
 
-The author demonstration ritual: presenting completed work directly in conversation through tangible evidence, contract verification, directives self-defense, and radical transparency on any gaps.
+Interactive verification review in conversation: the agent shows real evidence for its completed work, answers the user's verification questions, and owns up plainly when something was missed or not done the way the user wanted.
 
 ## Install
 
@@ -10,16 +10,14 @@ npx skills add dimsedra/skills --skill proof
 
 ## Features
 
-- **Conversational, Not a Document**: Delivers proof directly through spoken dialogue, live commands, and real terminal output in the conversation.
-- **Contract-by-Contract Evidence**: Proves every `BP-[MODULE]-[INDEX]` contract with test outputs, inputs, and returned results through public boundaries.
-- **Engineering Directives Self-Defense**: The agent defends its own code (max 2 indentation levels, no boolean flags, boundary parsing, AHA) before the human has to review it.
-- **Observable Live Demonstration**: Runs the real software against sample data and displays unmocked output in chat.
-- **Dual Responsibility (Inward & Outward)**: Challenges its own beliefs and re-verifies as many times as needed, treating muddy explanations as a warning sign that the code or mental model has a hidden gap.
-- **Radical Transparency on Gaps**: Prizes honesty above all else by explicitly highlighting unimplemented contracts, known limitations, and edge-case boundaries.
+- **Interactive Review, Not a Checklist**: Delivers proof directly in conversation using whatever evidence actually fits the work (running tests, executing code in the terminal, showing real output, or walking through the code path).
+- **Two-Question Self-Check**: Before claiming anything is done, or when answering a follow-up question, the agent asks itself: *"Did I actually do what was asked, the way it was wanted?"* and *"Can I prove it right now?"* If it cannot prove it, it asks the first question again and checks the actual code rather than relying on memory.
+- **Holds Up Under Questioning**: Built for back-and-forth verification as the user pokes at specific parts, questions choices, and checks whether their intent and rules were truly met.
+- **Plain Honesty When Something Was Missed**: If the user asks about a part the agent forgot, misunderstood, or has not tested yet, the agent owns up to it plainly instead of making excuses or quietly editing code on its own.
 
 ## Usage
 
-Trigger via `/proof` after completing an implementation:
+Trigger via `/proof` when reviewing completed work:
 
 ```text
 /proof

@@ -24,7 +24,7 @@ I built this collection of skills to fix that specific problem.
 
 At the heart of this entire system is one skill: [`align`](./align/SKILL.md).
 
-`align` is not just another slash command in a toolbox. It is the gravitational center of how I work with an agent. 
+`align` is not just another slash command in a toolbox. It is the gravitational center of how I work with an agent.
 
 The principle is simple: **we never let the agent guess**.
 
@@ -38,6 +38,8 @@ Alignment comes in different shapes, and most of the time it only needs the simp
 * **Challenge**: When asked to stress-test an idea, or when the agent sees a concrete problem, it brings the few concerns that matter most, ordered by impact.
 
 The agent states which route it is taking in one line so you can redirect it, and it can switch routes as the conversation changes shape. Every other skill in this repository is designed to fall back to `align`. The moment a specification is ambiguous, the moment a test plan reveals an unexpected edge case, or the moment an architectural trade-off emerges, the agent is instructed to stop and say: *"Let's align on this first."*
+
+Beside `align` sits [`explain`](./explain/SKILL.md). While `align` makes sure the agent understands you, `explain` makes sure you genuinely understand the code, bug, or concept before making a call. Instead of dumping a generic textbook explanation, the agent reads your communication and cognitive framing rules from `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md` (or asks how you want it broken down) and explains how the system actually works in a way that clicks for how you think.
 
 ---
 
@@ -56,7 +58,7 @@ Instead of writing a dry corporate requirements document with rigid sections, [`
 * What we want vs what we explicitly do NOT want (boundaries and non-goals).
 * Any key invariants or guiding rules of thumb you mentioned.
 
-There are no rigid templates or mandatory pillars—it captures whatever was actually discussed so neither of us forgets or drifts. This is your domain: you define what you want and verify that it matches your vision.
+There are no rigid templates or mandatory pillars: it captures whatever was actually discussed so neither of us forgets or drifts. This is your domain: you define what you want and verify that it matches your vision.
 
 ### 2. The Agent's Technical Translation (`/blueprint`)
 While `intent` belongs to you, [`/blueprint`](./blueprint/SKILL.md) belongs to the agent.
@@ -64,33 +66,34 @@ While `intent` belongs to you, [`/blueprint`](./blueprint/SKILL.md) belongs to t
 The agent reads the approved intent, inspects the codebase, applies the engineering rules from your global instructions where design decides them, and translates the intent into a technical blueprint (`docs/blueprint/`) that the implementing agent follows together with the intent:
 * Contracts with unique identifiers (`BP-[MODULE]-[INDEX]`), each naming the part of the intent it serves.
 * The intent's non-goals carried forward, so the implementing agent knows what not to build.
-* Fit-for-purpose verification strategies for each contract, avoiding dogmatic TDD when other verification methods (tests written after, manual live runs, visual checks) are more appropriate.
+* Fit-for-purpose `Method` (`TDD`, `test-after`, `visual testing`, `design by contract`, `integration/e2e`) paired with the concrete `Verification` check that will be demonstrated in `/proof`.
+* Planned atomic `Commit` sequences per contract (such as `test: ...`, `feat: ...`), so the agent commits incrementally as each step is finished instead of piling everything into one giant commit at the end.
 
 If implementation later shows a contract does not hold, the agent stops, aligns with you, and updates the blueprint before continuing, so the document and the code never drift apart.
 
 The agent presents the Blueprint to you in chat: how it understood your intent technically, the key design decisions and why, and which part of the intent each contract covers. You review and approve it in under 30 seconds.
 
-### 3. Explaining by Proof in Conversation (`/proof`)
-Once implementation is complete, words are cheap. An agent saying "I am done" requires blind trust, which violates our primary rule: you must be able to 100% defend and own the code.
+### 3. Proving the Work & Holding Up Under Questioning (`/proof`)
+Once implementation is complete, words are cheap. An agent saying "I am done" or handing you a list of modified files requires blind trust, which violates our primary rule: you must be able to 100% defend and own the code.
 
-[`/proof`](./proof/SKILL.md) is the author's demonstration ritual. **Its output is NOT a document—it is delivered directly through words and live evidence in the conversation.**
+[`/proof`](./proof/SKILL.md) is where the agent shows its work and you verify whether it truly did what you asked, the way you wanted it. There is no rigid report template here. Instead, both when presenting work and whenever you ask a verification question, the agent must ask itself two questions:
+1. *Did I actually do what was asked, the way it was wanted?*
+2. *Can I prove it right now?*
 
-The agent puts itself on the witness stand and answers: *"Did I really build what the Blueprint contracted, and can I prove it to Eds right now?"*
-* **Contract-by-Contract Proof**: Executes verification commands in the terminal and shows actual inputs, state changes, and returned data for each `BP-XXX` contract.
-* **Unhappy Paths**: Triggers edge cases and invalid inputs to prove the system fails fast with zero silent fallbacks (`?? 0`).
-* **Directives Self-Defense**: Defends the implementation against our engineering rules before you have to review it.
-* **Observable Demonstration**: Runs the actual feature against real sample data and displays unmocked output in chat.
-* **Radical Transparency Above All**: Calls out any unfinished contracts, deferred work, or unhandled edge cases in the open. Transparency is prized over false completion.
+If the agent cannot prove it, it must ask itself the first question again and check the actual code and runtime output rather than answering from memory or wishful thinking:
+* **Fit-for-Purpose Evidence**: Proves the work using whatever actually fits: running tests, executing the code in the terminal, showing real output, or walking through the exact code path.
+* **Interactive Verification**: As you poke at specific parts, question choices, and hold the work up against your intent and rules, the agent backs up its answers with real evidence.
+* **Plain Honesty When Something Was Missed**: When you ask about a part the agent forgot, misunderstood, or has not tested yet, it does not get defensive, make excuses, or quietly edit files on its own. It owns up to it plainly (*"I missed that part"* or *"I haven't actually tested that yet"*) so both of you see the real state of the work.
 
 ### 4. Verifying Real Pixels Instead of Guessing (`/design`)
-Passing backend tests only proves that server logic runs; it says nothing about whether a user interface feels comfortable or distinct. 
+Passing backend tests only proves that server logic runs; it says nothing about whether a user interface feels comfortable or distinct.
 
 We do not write brittle unit tests for CSS layout or styling. Instead, [`/design`](./design/SKILL.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) to eliminate generic AI design tropes, then spawns an isolated visual auditor subagent to inspect actual Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports before calling the work done.
 
 ### 5. Fresh-Eyed Audits Without Bias (`/audit`)
 After you and an agent have been working together in a chat session for an hour, both of you carry context bias. You start overlooking small oversights.
 
-[`/audit`](./audit/SKILL.md) solves this by spawning isolated subagents with clean context across three focused stages—either sequentially or selectively on demand:
+[`/audit`](./audit/SKILL.md) solves this by spawning isolated subagents with clean context across three focused stages, either sequentially or selectively on demand:
 1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against Intent, Blueprint (`BP-XXX`), and ADRs to catch missing requirements or unapproved scope creep.
 2. **`Resilience Auditor`** (`audit/RESILIENCE-AUDITOR.md`): Hunts for unhandled edge cases, broken invariants, race conditions, security flaws, and scaling bottlenecks like N+1 queries.
 3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to our engineering rules and verification discipline before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
@@ -99,7 +102,7 @@ After you and an agent have been working together in a chat session for an hour,
 
 ## What This Looks Like in Practice
 
-Because the requirements and runbooks live on disk as context capsules, your daily prompts do not need to be long or complicated. 
+Because the requirements and runbooks live on disk as context capsules, your daily prompts do not need to be long or complicated.
 
 Here is an example of what a high-leverage prompt looks like when starting work on a real feature:
 
@@ -120,18 +123,19 @@ Notice what happens here:
 
 ## The Skills at a Glance
 
-### Thinking & Alignment (The Center)
+### Thinking, Alignment & Understanding (The Center)
 * **`align`**: The core heartbeat. A router that picks the simplest kind of alignment the moment needs (understand, decide, or challenge) so both parties are in the exact same boat before or during any technical work.
+* **`explain`**: Explains code, bugs, architecture, or technical concepts in the specific way the user thinks and learns (reading `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking first).
 * **`research`**: Grounds technical investigations in actual dependencies and authoritative documentation rather than stale training data.
 
 ### Scope Boundaries & Architecture
-* **`intent`**: Captures human narrative, codebase reality, and explicit non-goals in `docs/intent/`.
-* **`blueprint`**: Translates intent into technical contracts with unique `BP-[MODULE]-[INDEX]` IDs, each traced back to the intent, in `docs/blueprint/`.
+* **`intent`**: Captures user goals, rationale, and explicit boundaries in a fluid, template-free record in `docs/intent/`.
+* **`blueprint`**: Translates intent into technical contracts (`BP-[MODULE]-[INDEX]`), verification methods, and planned atomic commits in `docs/blueprint/`.
 * **`adr`**: Captures immutable Architecture Decision Records with evaluated trade-offs in `docs/decisions/`.
 * **`rfc`**: Proposes engineering initiatives and drives consensus across stakeholders in `docs/rfc/`.
 
 ### Verification & Demonstration
-* **`proof`**: The author's demonstration ritual—proving work in conversation through live commands, directives self-defense, and radical transparency on gaps.
+* **`proof`**: Interactive verification review in conversation where the agent proves its work with real evidence, answers your questions against your intent, and owns up plainly when something was missed.
 * **`audit`**: Spawns independent subagents to review diffs against Intent, Blueprint, and engineering rules.
 * **`review`**: Explains incoming pull requests and branch diffs directly in conversation through execution tracing, behavioral shifts, and risk assessment.
 * **`design`**: Enforces brand grounding (`brand.md`) and verifies rendered pixels via dual-viewport visual screenshot audits.
@@ -155,6 +159,7 @@ Or install individual skills as you need them:
 
 ```bash
 npx skills add dimsedra/skills --skill align
+npx skills add dimsedra/skills --skill explain
 npx skills add dimsedra/skills --skill intent
 npx skills add dimsedra/skills --skill blueprint
 npx skills add dimsedra/skills --skill proof
@@ -172,12 +177,13 @@ skills/
 ├── adr/          # Architecture Decision Records in docs/decisions/
 ├── align/        # Alignment router: understand, decide, challenge (The Center)
 ├── audit/        # Isolated subagent diff auditing & scaling checks
-├── blueprint/    # Technical architecture & public contracts in docs/blueprint/
+├── blueprint/    # Technical architecture, contracts & planned commits in docs/blueprint/
 ├── design/       # Brand grounding (brand.md) & visual screenshot audit
 ├── document/     # Modular technical documentation in docs/
-├── intent/       # Human narrative, codebase reality & intent in docs/intent/
+├── explain/      # User-tailored explanations of code, bugs & concepts
+├── intent/       # Fluid user goals, rationale & boundaries in docs/intent/
 ├── issue/        # Problem-first defect & gap tracking
-├── proof/        # Author demonstration & defense ritual in conversation
+├── proof/        # Interactive verification & honesty check in conversation
 ├── report/       # Standalone console HTML reports in docs/report/
 ├── research/     # Outward-facing technical research on dependencies
 ├── review/       # Conversational incoming PR & diff explanations
