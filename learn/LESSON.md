@@ -62,7 +62,7 @@ How to run `docs/lesson/<topic_slug>/<script_name>.<ext>`, what we used it to pr
 
 ### Step-by-Step Teaching Flow
 1. How we opened the lesson and anchored the problem.
-2. How and when to run the companion script(s) in `docs/lesson/<topic_slug>/`, including the exact output or code tweak that demonstrated the point.
+2. How and when to run the companion script(s) in `docs/lesson/<topic_slug>/`, walking through the exact lines of code in the script alongside the output (or code tweak) that demonstrated the point.
 3. The sequence of steps to walk me through so the lesson unfolds the same way it did when it first clicked.
 
 ### Verification Question

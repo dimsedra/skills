@@ -17,7 +17,10 @@ When I invoke `/learn`:
 Before diving into an explanation:
 1. Check my instruction files (`GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`) and follow my actual rules on communication, language, and cognitive framing. If I have no communication preferences written there, ask me briefly how I prefer to learn.
 2. Evaluate whether our current project code can show the core mechanism cleanly, or if it is too project-specific, abstracted, or noisy. If the project code hides the core mechanism, or if at any point our discussion gets diluted or I seem stuck, propose creating a small, isolated runnable script to demonstrate the concept directly.
-3. Do not edit project source files while we are in `/learn`. If I agree to a runnable script, create **only** the script inside `docs/lesson/<topic_slug>/<script_name>.<ext>`, keep it minimal and self-contained, and run it in the terminal so we can walk through the real output together. Do **not** create `<topic_slug>.md` while we are still in the middle of the lesson.
+3. Do not edit project source files while we are in `/learn`. If I agree to a runnable script:
+   - Create **only** the script inside `docs/lesson/<topic_slug>/<script_name>.<ext>` (do **not** create `<topic_slug>.md` yet).
+   - Write thorough educational comments directly inside the script explaining both what each key line of code is doing and why, even if my production code rules normally say to only comment the "why". A lesson script must be self-explanatory when read on its own.
+   - Run the script in the terminal, then walk me through the **exact lines of code in the script** step by step alongside the terminal output so I can see how each line produces that result. Never jump straight to explaining the terminal output without explaining the code that produced it.
 
 ## 2. Teach Transferable, Cross-Project Knowledge
 
