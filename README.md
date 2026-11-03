@@ -58,7 +58,7 @@ While `intent` belongs to you, [`blueprint`](./blueprint/SKILL.md) belongs to th
 * **`Test-After`**: Exploring uncertain shapes or prototypes first, then locking in behavior tests once the design settles.
 * **`Design by Contract`**: Enforcing explicit entry/exit invariants and boundary parsing (`Parse, Don't Validate`).
 * **`Integration / E2E`**: Verifying real boundary wiring across databases, queues, and HTTP endpoints.
-* **`Visual Testing`**: For front-end UI, we do not write brittle unit tests for CSS layout. [`method/VISUAL_TESTING.md`](./method/VISUAL_TESTING.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) and dispatches an isolated visual auditor subagent to inspect real Playwright screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports.
+* **`Visual Testing`**: For front-end UI, we do not write brittle unit tests for CSS layout. [`method/VISUAL_TESTING.md`](./method/VISUAL_TESTING.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) and dispatches an isolated visual auditor subagent to inspect real browser screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports.
 
 ### Hands-Free Execution with a Real Circuit Breaker (`/ship` & `/audit`)
 When you want the full loop, [`ship`](./ship/SKILL.md) walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) until you approve the plan, and then takes the wheel. It executes each contract via `/method`, commits atomically, and runs [`audit`](./audit/SKILL.md), spawning isolated, fresh-eyed subagents across three sequential stages:
@@ -134,7 +134,7 @@ What happens next is split into two distinct phases:
 
 ### Versatile Engineering & Execution
 * **`blueprint`**: Translates intent into technical contracts (`BP-[MODULE]-[INDEX]`), verification methods, and planned atomic commits in `docs/blueprint/`.
-* **`method`**: Router that guides contract implementation and verification across `TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, and `visual testing` (including brand grounding in `docs/design/brand.md` and dual-viewport Playwright visual audits).
+* **`method`**: Router that guides contract implementation and verification across `TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, and `visual testing` (including brand grounding in `docs/design/brand.md` and dual-viewport browser visual audits).
 * **`ship`**: End-to-end orchestrator that walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) and then runs an autonomous execution and self-healing loop (`/method` per contract -> `/audit` subagent loop) with an alignment circuit breaker until landing at `/proof`.
 * **`audit`**: Spawns independent subagents across Spec, Resilience, and Quality stages to review diffs against Intent, Blueprint, and engineering rules.
 

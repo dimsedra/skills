@@ -24,7 +24,7 @@ Design by Contract (`DESIGN_BY_CONTRACT.md`) is for system entry boundaries and 
 
 Integration / E2E (`INTEGRATION_E2E.md`) is for behavior that crosses module seams or real external input/output boundaries (databases, file systems, network protocols, subprocesses, or full user journeys) where mocking the boundary would hide the real bugs. You exercise the real wired components and assert on actual persisted state, responses, or output.
 
-Visual Testing (`VISUAL_TESTING.md`) is for front-end UI, layout, styling, and interactive component states. You never write unit tests for UI rendering or layout; instead, you build against `docs/design/brand.md` and spawn an isolated Visual QA subagent to walk through the user flows via Playwright (MCP or CLI), taking screenshots at every step across mobile and desktop viewports to evaluate UI/UX and brand adherence.
+Visual Testing (`VISUAL_TESTING.md`) is for front-end UI, layout, styling, and interactive component states. You never write unit tests for UI rendering or layout; instead, you build against `docs/design/brand.md` and spawn an isolated Visual QA subagent to walk through the user flows in a real browser, taking screenshots at every step across mobile and desktop viewports to evaluate UI/UX and brand adherence.
 
 If a single contract genuinely needs two methods working together (for example `design by contract` at the entry parser and `integration/e2e` for the database write), either split it into two focused contracts in the Blueprint or name the primary method and read both route files before building.
 

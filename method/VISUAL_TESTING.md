@@ -1,6 +1,6 @@
 # Method: Visual Testing
 
-Your job here is to build front-end user interfaces that genuinely fit my brand and serve my user, follow our engineering rules while coding, and verify the live interface by having an isolated subagent explore the user flow step by step with Playwright (MCP or CLI) and screenshots before calling the work done.
+Your job here is to build front-end user interfaces that genuinely fit my brand and serve my user, follow our engineering rules while coding, and verify the live interface by having an isolated subagent explore the user flow step by step using any available browser-automation tool and screenshots before calling the work done.
 
 ## How to Plan in the Blueprint
 
@@ -59,13 +59,20 @@ Keep the interface easy to read and navigate with a low cognitive barrier. Unles
 
 When writing the front-end code, stick to our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config/opencode/AGENTS.md`): keep markup, styling, and UI logic co-located in deep component files, do not extract micro-components until a pattern repeats at least 3 times, keep control flow flat without boolean prop traps, and do not write unit tests for UI rendering, layout, or styling.
 
-## 3. Visual QA via Playwright & an Isolated Subagent
+## 3. Visual QA via an Isolated Subagent & Browser Tool
 
-Do not verify your own rendered UI in our main conversation thread, because inspecting your own work leads to confirmation bias. Instead, make sure the app is running on a dev server or preview URL, then spawn an isolated Visual QA subagent to explore it like a new user. If no browser tool (Playwright MCP or CLI) is available in your environment, tell me plainly that the visual check could not run and fall back to a code review. Never pretend a visual check happened.
+Do not verify your own rendered UI in our main conversation thread, because inspecting your own work leads to confirmation bias. Instead, make sure the app is running on a dev server or preview URL, then spawn an isolated Visual QA subagent to explore it like a new user.
+
+Any browser-use tool, MCP server, CLI, or built-in harness browser capability is valid as long as it can open the live URL, resize to mobile (`360x640`) and desktop (`1280x800`) viewports, interact with elements, and capture screenshots at each step.
+
+If no browser-use tool or skill is available in your environment (including checking whether a local Playwright dependency already exists via `npx --no-install playwright --version`), do not silently install anything and do not pretend a visual check happened. Instead:
+1. Tell me plainly that no browser-use tool was found and ask for my permission to install Playwright CLI (`@playwright/cli`).
+2. If I approve, consult the official installation guide at `https://playwright.dev/agent-cli/installation` and run the installation steps that fit our environment and harness (for example, using `npx playwright cli` if Playwright is already in `package.json`, or running `npm install -g @playwright/cli@latest`, `playwright-cli install`, and `playwright-cli install --skills` for our harness).
+3. If I decline, or if installation is blocked by the environment, fall back to a code review and state clearly that a live visual check did not run.
 
 Give the subagent full absolute paths (never relative paths) to this `VISUAL_TESTING.md` file, `docs/design/brand.md`, the relevant Intent and Blueprint files, and the live preview URL.
 
-The subagent's job is to walk through the user flows via the public interface using Playwright (MCP or CLI) across both mobile (`360x640`) and desktop (`1280x800`) viewports, taking a screenshot at every step of the flow (initial state, clicking, typing, opening modals or menus, and triggering empty, loading, or error states). Stick strictly to bounded file reading and never wander into unrelated backend files. From those step-by-step screenshots, the subagent answers two questions:
+The subagent's job is to walk through the user flows via the public interface using the available browser tool across both mobile (`360x640`) and desktop (`1280x800`) viewports, taking a screenshot at every step of the flow (initial state, clicking, typing, opening modals or menus, and triggering empty, loading, or error states). Stick strictly to bounded file reading and never wander into unrelated backend files. From those step-by-step screenshots, the subagent answers two questions:
 
 1. Does the flow work cleanly at every step from a UI/UX perspective without clipped text, broken layouts, overlapping layers, or confusing transitions?
 2. Do the rendered pixels at every step follow `docs/design/brand.md` and avoid the visual slop listed in Section 2?
