@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Use when setting up or updating a user's AGENTS.md, CLAUDE.md, or GEMINI.md (at the project or global level) with the shared Engineering Rules, UI Design Philosophy, docs/ conventions, and Subagent rules required by this skill suite.
+description: "MANDATORY prerequisite that must never be skipped. Invoke whenever the user runs /setup, or automatically before running any other skill (/align, /intent, /blueprint, /method, /proof, /audit, /document, /learn, /explain, /report, /adr, /rfc, /review, /issue) if the user's AGENTS.md, CLAUDE.md, or GEMINI.md is missing the 'Engineering Rules & Directives' section."
 ---
 
 # Setup
