@@ -39,7 +39,7 @@ Alignment comes in different shapes, and most of the time it only needs the simp
 
 The agent states which route it is taking in one line so you can redirect it, and it can switch routes as the conversation changes shape. Every other skill in this repository is designed to fall back to `align`. The moment a specification is ambiguous, the moment a test plan reveals an unexpected edge case, or the moment an architectural trade-off emerges, the agent is instructed to stop and say: *"Let's align on this first."*
 
-Beside `align` sits [`explain`](./explain/SKILL.md). While `align` makes sure the agent understands you, `explain` makes sure you genuinely understand the code, bug, or concept before making a call. Instead of dumping a generic textbook explanation, the agent reads your communication and cognitive framing rules from `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md` (or asks how you want it broken down) and explains how the system actually works in a way that clicks for how you think.
+Beside `align` sit [`explain`](./explain/SKILL.md) and [`learn`](./learn/SKILL.md). While `align` makes sure the agent understands you, `explain` makes sure you genuinely understand the code, bug, or concept in front of you (reading your communication and cognitive framing rules from `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking how you want it broken down). And when you want to go beyond project-specific code so your own engineering foundation keeps growing, `learn` extracts durable, cross-project mental models, runnable example scripts, and reproducible lessons (`docs/lesson/<topic_slug>/`) that carry to any future codebase.
 
 ---
 
@@ -126,6 +126,7 @@ Notice what happens here:
 ### Thinking, Alignment & Understanding (The Center)
 * **`align`**: The core heartbeat. A router that picks the simplest kind of alignment the moment needs (understand, decide, or challenge) so both parties are in the exact same boat before or during any technical work.
 * **`explain`**: Explains code, bugs, architecture, or technical concepts in the specific way the user thinks and learns (reading `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking first).
+* **`learn`**: Builds durable, transferable engineering knowledge across projects through cause-and-effect mechanics, trade-offs, isolated runnable scripts, and reproducible lesson playbooks in `docs/lesson/`.
 * **`research`**: Grounds technical investigations in actual dependencies and authoritative documentation rather than stale training data.
 
 ### Scope Boundaries & Architecture
@@ -160,6 +161,7 @@ Or install individual skills as you need them:
 ```bash
 npx skills add dimsedra/skills --skill align
 npx skills add dimsedra/skills --skill explain
+npx skills add dimsedra/skills --skill learn
 npx skills add dimsedra/skills --skill intent
 npx skills add dimsedra/skills --skill blueprint
 npx skills add dimsedra/skills --skill proof
@@ -183,6 +185,7 @@ skills/
 ├── explain/      # User-tailored explanations of code, bugs & concepts
 ├── intent/       # Fluid user goals, rationale & boundaries in docs/intent/
 ├── issue/        # Problem-first defect & gap tracking
+├── learn/        # Transferable cross-project lessons & runnable scripts in docs/lesson/
 ├── proof/        # Interactive verification & honesty check in conversation
 ├── report/       # Standalone console HTML reports in docs/report/
 ├── research/     # Outward-facing technical research on dependencies
