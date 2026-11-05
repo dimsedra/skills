@@ -60,13 +60,15 @@ While `intent` belongs to you, [`blueprint`](./blueprint/SKILL.md) belongs to th
 * **`Integration / E2E`**: Verifying real boundary wiring across databases, queues, and HTTP endpoints.
 * **`Visual Testing`**: For front-end UI, we do not write brittle unit tests for CSS layout. [`method/VISUAL_TESTING.md`](./method/VISUAL_TESTING.md) grounds the UI in a brand Single Source of Truth (`docs/design/brand.md`) and dispatches an isolated visual auditor subagent to inspect real browser screenshots across mobile (`360x640`) and desktop (`1280x800`) viewports.
 
-### Hands-Free Execution with a Real Circuit Breaker (`/ship` & `/audit`)
-When you want the full loop, [`ship`](./ship/SKILL.md) walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) until you approve the plan, and then takes the wheel. It executes each contract via `/method`, commits atomically, and runs [`audit`](./audit/SKILL.md), spawning isolated, fresh-eyed subagents across three sequential stages:
-1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against your Intent, Blueprint (`BP-XXX`), and ADRs to catch missing requirements or unapproved scope creep.
-2. **`Resilience Auditor`** (`audit/RESILIENCE-AUDITOR.md`): Hunts for unhandled edge cases, broken invariants, race conditions, security flaws, and scaling bottlenecks like N+1 queries.
-3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to your engineering rules before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
+### Direct Execution or Full Autonomous Loop (`/implement`, `/ship` & `/audit`)
+Once you have aligned or approved a Blueprint, you choose how much automation you want:
+* **[`implement`](./implement/SKILL.md)**: Direct, step-by-step execution without the multi-subagent audit loop. It executes each contract or agreed change via `/method`, verifies it, and commits atomically while respecting the `/align` circuit breaker.
+* **[`ship`](./ship/SKILL.md)**: When you want the full loop, `/ship` walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) until you approve the plan, and then takes the wheel. It executes each contract via `/method`, commits atomically, and runs [`audit`](./audit/SKILL.md), spawning isolated, fresh-eyed subagents across three sequential stages:
+  1. **`Spec Auditor`** (`audit/SPEC-AUDITOR.md`): Cross-checks the diff against your Intent, Blueprint (`BP-XXX`), and ADRs to catch missing requirements or unapproved scope creep.
+  2. **`Resilience Auditor`** (`audit/RESILIENCE-AUDITOR.md`): Hunts for unhandled edge cases, broken invariants, race conditions, security flaws, and scaling bottlenecks like N+1 queries.
+  3. **`Quality Auditor`** (`audit/QUALITY-AUDITOR.md`): Holds both the code and the test suite to your engineering rules before returning an honest verdict: `BLOCKED`, `NEEDS POLISH`, or `CLEAN & MERGEABLE`.
 
-If an auditor finds a code or test defect, `/ship` fixes it and re-audits automatically. But if the agent hits a real conflict between the codebase and the approved plan, a circuit breaker trips: it stops immediately and brings you back into `/align` rather than silently improvising around your design.
+If an auditor finds a code or test defect, `/ship` fixes it and re-audits automatically. But if the agent hits a real conflict between the codebase and the approved plan during `/implement` or `/ship`, a circuit breaker trips: it stops immediately and brings you back into `/align` rather than silently improvising around your design.
 
 ---
 
@@ -106,11 +108,11 @@ Users are getting logged out when their browser tab sleeps in the background. I 
 
 What happens next:
 1. The agent does not rush to edit files. It picks the right alignment route (`Understand`, `Decide`, or `Challenge`), checks the relevant code if needed, and calibrates with you in plain language.
-2. Once you confirm the approach, you tell it to build (or invoke a specific `/method` like TDD or characterization), and verify the result together via `/proof`. No markdown specs required.
+2. Once you confirm the approach, you run `/implement` (or invoke a specific `/method` like TDD or characterization), and verify the result together via `/proof`. No markdown specs required.
 
-### 2. Full Features & Multi-Step Builds (`/ship`)
+### 2. Full Features & Multi-Step Builds (`/ship` or `/implement`)
 
-When you are building a larger feature where context drift and edge cases are real risks, you invoke `/ship` (or step through `/align` -> `/intent` -> `/blueprint` at your own pace):
+When you are building a larger feature where context drift and edge cases are real risks, you invoke `/ship` (or step through `/align` -> `/intent` -> `/blueprint` -> `/implement` at your own pace):
 
 ```text
 We need to add role-based duty scheduling so team leads can assign shifts without double-booking someone across overlapping timezones.
@@ -135,6 +137,7 @@ What happens next is split into two distinct phases:
 ### Versatile Engineering & Execution
 * **`blueprint`**: Translates intent into technical contracts (`BP-[MODULE]-[INDEX]`), verification methods, and planned atomic commits in `docs/blueprint/`.
 * **`method`**: Router that guides contract implementation and verification across `TDD`, `characterization`, `test-after`, `design by contract`, `integration/e2e`, and `visual testing` (including brand grounding in `docs/design/brand.md` and dual-viewport browser visual audits).
+* **`implement`**: Executes an approved Blueprint or aligned change step by step via `/method`, verifying each step and committing atomically without running the full `/ship` audit loop.
 * **`ship`**: End-to-end orchestrator that walks through the interactive gate (`/align` -> `/intent` -> `/blueprint`) and then runs an autonomous execution and self-healing loop (`/method` per contract -> `/audit` subagent loop) with an alignment circuit breaker until landing at `/proof`.
 * **`audit`**: Spawns independent subagents across Spec, Resilience, and Quality stages to review diffs against Intent, Blueprint, and engineering rules.
 
@@ -170,6 +173,7 @@ npx skills add dimsedra/skills --skill learn
 npx skills add dimsedra/skills --skill intent
 npx skills add dimsedra/skills --skill blueprint
 npx skills add dimsedra/skills --skill method
+npx skills add dimsedra/skills --skill implement
 npx skills add dimsedra/skills --skill ship
 npx skills add dimsedra/skills --skill proof
 npx skills add dimsedra/skills --skill audit
@@ -188,6 +192,7 @@ skills/
 ├── blueprint/    # Technical architecture, contracts & planned commits in docs/blueprint/
 ├── document/     # Modular technical documentation in docs/
 ├── explain/      # User-tailored explanations of code, bugs & concepts
+├── implement/    # Direct contract or change execution via /method without the /ship audit loop
 ├── intent/       # Fluid user goals, rationale & boundaries in docs/intent/
 ├── issue/        # Problem-first defect & gap tracking
 ├── learn/        # Transferable cross-project lessons & runnable scripts in docs/lesson/

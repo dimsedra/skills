@@ -1,11 +1,11 @@
 ---
 name: setup
-description: "MANDATORY prerequisite that must never be skipped. Invoke whenever the user runs /setup, or automatically before running any other skill (/align, /intent, /blueprint, /method, /ship, /proof, /audit, /document, /learn, /explain, /report, /adr, /rfc, /review, /issue) if the user's AGENTS.md, CLAUDE.md, or GEMINI.md is missing the 'Engineering Rules & Directives' section."
+description: "MANDATORY prerequisite that must never be skipped. Invoke whenever the user runs /setup, or automatically before running any other skill (/align, /intent, /blueprint, /method, /implement, /ship, /proof, /audit, /document, /learn, /explain, /report, /adr, /rfc, /review, /issue) if the user's AGENTS.md, CLAUDE.md, or GEMINI.md is missing the 'Engineering Rules & Directives' section."
 ---
 
 # Setup
 
-Our skills (`/blueprint`, `/method`, `/proof`, `/audit`, `/report`, `/document`, `/intent`, `/adr`, `/rfc`, and `/learn`) rely on a shared set of engineering rules, UI verification rules, `docs/` tracking rules, and subagent boundaries living in your instruction file (`AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`). Your job in `/setup` is to inject or update that exact shared block in the file(s) the user chooses without touching any of their existing personal or project instructions.
+Our skills (`/blueprint`, `/method`, `/implement`, `/ship`, `/proof`, `/audit`, `/report`, `/document`, `/intent`, `/adr`, `/rfc`, and `/learn`) rely on a shared set of engineering rules, UI verification rules, `docs/` tracking rules, and subagent boundaries living in your instruction file (`AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`). Your job in `/setup` is to inject or update that exact shared block in the file(s) the user chooses without touching any of their existing personal or project instructions.
 
 ## Step 1: Ask Scope and Target File(s)
 
