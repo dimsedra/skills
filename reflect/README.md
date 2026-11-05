@@ -1,6 +1,6 @@
 # Reflect Skill
 
-Looks back at your current working session together to surface how you think, communicate, and collaborate, then distills those confirmed traits into the personal section of your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` so every future agent in a fresh thread clicks with you from turn one.
+Looks back at your current session together (where you and the agent clicked, where you hit friction, and how you naturally think and work) and carries those lessons into the personal section of your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` so tomorrow's agent starts as a better partner on whatever you tackle next.
 
 ## Install
 
@@ -10,14 +10,15 @@ npx skills add dimsedra/skills --skill reflect
 
 ## Features
 
-- **Session-Grounded Reflection**: Recalls real moments from the conversation (where ideas clicked, where you pushed back, and how you framed problems) instead of asking you to fill out an abstract questionnaire on a blank page.
-- **The Fresh-Thread Filter**: Surfaces only durable cognitive, communication, and collaboration traits that make a brand-new agent with zero context immediately work better with you.
-- **Multiplier for All Other Skills**: Populates and sharpens the personal instructions that `/align`, `/explain`, `/learn`, `/review`, and `/proof` rely on to adapt to your mind and workflow.
-- **Safe Personal Updates**: Shows the draft in chat for your approval first and updates only your personal sections while leaving the `/setup` managed engineering block untouched.
+- **Compounding Partnership Across Sessions**: Stops every new thread from resetting your working relationship back to zero by turning real session moments into durable personal instructions.
+- **Honest Two-Way Reflection**: Looks at both sides of the session (how you frame problems and communicate, plus where the agent caused friction or misread you) instead of making you fill out a blank-page questionnaire.
+- **The Tomorrow Test**: Filters out one-off task details and keeps only the insights that will make a fresh agent a sharper partner on whatever completely different problem you tackle tomorrow.
+- **Multiplier for All Other Skills**: Builds and refines the personal context that `/align`, `/explain`, `/learn`, `/review`, and `/proof` rely on.
+- **Safe Personal Updates**: Drafts the changes in chat for your approval first and updates only your personal sections while leaving the `/setup` managed engineering block untouched.
 
 ## Usage
 
-Run `/reflect` at the end of a productive or revealing session:
+Run `/reflect` at the end of a session:
 
 ```text
 /reflect

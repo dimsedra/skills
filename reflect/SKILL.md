@@ -1,35 +1,41 @@
 ---
 name: reflect
-description: "Use when the user invokes /reflect to look back at the current session together, surface high-signal observations about how they think, communicate, and collaborate, and distill those traits into the personal section of their AGENTS.md, CLAUDE.md, or GEMINI.md so future agents click with them immediately."
+description: "Use when the user invokes /reflect to look back at the current session together, understand what worked and where friction happened, and carry those lessons into the personal section of AGENTS.md, CLAUDE.md, or GEMINI.md so tomorrow's agent starts as a better partner."
 ---
 
 # Reflect
 
-Our skills work best when `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` captures not just engineering rules (which `/setup` handles), but **who I am, how I think, and how to talk and work with me**. Writing that personal guide from scratch on a blank page is hard. `/reflect` turns our real working session into a mirror so we can build or sharpen that personal guide from actual moments we just lived through together.
+Every time a chat window closes, a new agent starts from zero. The rhythm we built today, the moments where an explanation finally clicked, and the places where you had to redirect me all evaporate unless they live in `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`. Yet writing that personal guide on a blank page is unnatural, because you only discover how a partnership works by actually working together.
 
-## Step 1: Read Existing Personal Instructions First
+`/reflect` is how our partnership compounds from one session to the next. We look back at the session we just had like two teammates after a workday and ask: **what did we learn about how we work best together today so that tomorrow, on a fresh thread and a completely different problem, the next agent shows up as a sharper, better partner from turn one?**
 
-Before reflecting on the session, check my existing `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` (at both the project and global level if present) and read the personal sections outside the `/setup` managed block. This tells you what is already captured so you do not repeat what is already written, and helps you notice new traits or sharper boundaries that showed up in this session.
+## 1. Check Our Current Baseline First
 
-## Step 2: Look Back at the Session Together
+Read my existing `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` (at both the project and global level if present), focusing on the personal sections outside the `/setup` managed block:
+- If I have little or nothing written there yet, your goal is to help me build a clear personal foundation from today's session.
+- If I already have a personal guide, your goal is to spot what today's session revealed that is not captured yet, or where an existing instruction was too vague to prevent friction.
 
-Walk back through our conversation from start to finish. Do not hand me a clinical personality profile or generic flattery. Talk to me like a colleague looking back at the session we just had together:
+## 2. Look Back at the Session Together
 
-1. **Recall specific moments from our thread:** Point to real interactions we had (moments where an idea or explanation immediately clicked, places where I pushed back or redirected you, habits in how I framed problems, or small corrections I made along the way).
-2. **Share what you noticed about me:** From those moments, tell me what stood out across the dimensions that matter most when working together:
-   - **How I think and process problems:** Do I look for systemic mental models first, concrete code examples, cause-and-effect mechanics, or visual flows? How do I weigh trade-offs?
-   - **How I like to communicate:** What tone, cadence, language, or formatting feels natural to me? What annoys me (such as over-formatting, analogies, fluff, or specific punctuation)?
-   - **How I like to collaborate:** When do I want you to pause, show a draft in chat first, or push back on my ideas? What builds or breaks my trust?
-3. **Filter for the "fresh thread" test:** Only surface observations where you can confidently say: *"If a brand-new agent with zero context read this tomorrow, it would immediately click with you on turn one."* Leave out one-off details that only applied to today's task.
+Walk through our conversation from start to finish. Do not give me a clinical personality readout or performative flattery. Talk to me plainly, grounding everything in real moments from our thread:
 
-Stop after sharing your reflection and ask me:
-- Which of these observations ring true, and is there anything you want to adjust or drop?
+1. **Where we clicked:** Point to specific moments where we moved fast, where a way of framing a problem unlocked a decision, or where an explanation landed right away. What made those moments work for me?
+2. **Where we hit friction:** Own up honestly to the moments where you got in my way, guessed too early, over-explained, used formatting or phrasing I disliked, or forced me to redirect you. What did those moments reveal about what I actually needed from you?
+3. **How to be a better partner for me tomorrow:** Distill those moments into the durable traits and working rules that will matter on any future task:
+   - How I think, frame problems, and weigh trade-offs.
+   - How I want you to talk to me (tone, language, structure, and what to leave out).
+   - How we collaborate best (when to pause and align, when to show a draft in chat before touching files, and how to push back when my idea has a flaw).
+
+Every point you surface must pass one test: **if a brand-new agent read this tomorrow morning before tackling a completely different problem with me, would it immediately be a better partner?** Drop any one-off details that only mattered for today's ticket.
+
+Pause after sharing your reflection and ask me:
+- Which of these observations feel true to how you work, and what should we sharpen or drop?
 - Which instruction file(s) (`AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`, project or global) should we update?
 
-## Step 3: Draft and Update the Personal Section
+## 3. Draft in Chat, Then Update Cleanly
 
-Once I confirm which points to keep and which file(s) to target:
+Once I tell you what to keep and which file(s) to target:
 
-1. If my file has almost no personal content yet, organize the traits into a clean, first-person guide (such as `## Who I Am` and `## How to Talk to Me`). If I already have a personal guide, weave the new traits or refinements into my existing sections without duplicating rules.
-2. Show me the exact draft in chat first and wait for my approval before editing the file.
-3. Write the approved changes into the target file(s), keeping the `/setup` managed block (`<!-- BEGIN dimsedra/skills setup ... -->` to `<!-- END dimsedra/skills setup -->`) and any project-specific runbooks completely untouched.
+1. Turn what we agreed on into clear, first-person instructions written in my voice (creating clean sections like `## Who I Am` and `## How to Talk to Me` if the file is bare, or weaving the refinements naturally into my existing sections without duplicating rules).
+2. Show me the exact draft in chat first and wait for my approval before touching any file.
+3. Write the approved changes into the target file(s), keeping the `/setup` managed block (`<!-- BEGIN dimsedra/skills setup ... -->` to `<!-- END dimsedra/skills setup -->`) and any project-specific notes completely intact.
