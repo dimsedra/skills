@@ -35,7 +35,8 @@ The agent tells you which route it is taking in one line so you can redirect it 
 
 When an alignment conversation is worth keeping so context never drifts across a long session, [`intent`](./intent/SKILL.md) freezes your goals, rationale, and explicit non-goals into a template-free record on disk (`docs/intent/`).
 
-And because listening goes both ways, [`explain`](./explain/SKILL.md), [`learn`](./learn/SKILL.md), and [`research`](./research/SKILL.md) make sure *you* never lose your grip on the system:
+And because listening goes both ways, [`reflect`](./reflect/SKILL.md), [`explain`](./explain/SKILL.md), [`learn`](./learn/SKILL.md), and [`research`](./research/SKILL.md) make sure the agent learns how you work and *you* never lose your grip on the system:
+* **`reflect`** looks back at the moments of your current session together to surface how you think, communicate, and collaborate, distilling those durable traits into the personal section of your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` so any fresh agent clicks with you on turn one.
 * **`explain`** breaks down code, bugs, or architecture in the exact way you think and learn (reading your communication preferences from `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking first).
 * **`learn`** goes beyond project-specific code to build durable, cross-project mental models through cause-and-effect mechanics, heavily commented runnable scripts, and reproducible lesson playbooks (`docs/lesson/`).
 * **`research`** grounds technical investigations in your actual dependency versions and authoritative external documentation rather than stale training data.
@@ -129,6 +130,7 @@ What happens next is split into two distinct phases:
 
 ### Listening, Alignment & Understanding
 * **`align`**: The core heartbeat. A router that picks the simplest kind of alignment the moment needs (understand, decide, or challenge) so both parties are in the exact same boat before or during any technical work.
+* **`reflect`**: Looks back at the current session together to surface how you think, communicate, and collaborate, and distills those confirmed traits into the personal section of your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`.
 * **`intent`**: Captures user goals, rationale, and explicit boundaries in a fluid, template-free record in `docs/intent/`.
 * **`explain`**: Explains code, bugs, architecture, or technical concepts in the specific way the user thinks and learns (reading `GEMINI.md`, `AGENTS.md`, or `CLAUDE.md`, or asking first).
 * **`learn`**: Builds durable, transferable engineering knowledge across projects through cause-and-effect mechanics, trade-offs, isolated runnable scripts, and reproducible lesson playbooks in `docs/lesson/`.
@@ -168,6 +170,7 @@ Or install individual skills as you need them:
 ```bash
 npx skills add dimsedra/skills --skill setup
 npx skills add dimsedra/skills --skill align
+npx skills add dimsedra/skills --skill reflect
 npx skills add dimsedra/skills --skill explain
 npx skills add dimsedra/skills --skill learn
 npx skills add dimsedra/skills --skill intent
@@ -198,6 +201,7 @@ skills/
 ├── learn/        # Transferable cross-project lessons & runnable scripts in docs/lesson/
 ├── method/       # Implementation & verification router (TDD, characterization, visual testing, etc.)
 ├── proof/        # Interactive verification & honesty check in conversation
+├── reflect/      # Session reflection to build/sharpen personal instructions in AGENTS.md / CLAUDE.md / GEMINI.md
 ├── report/       # Standalone console HTML reports in docs/report/
 ├── research/     # Outward-facing technical research on dependencies
 ├── review/       # Conversational incoming PR & diff explanations

@@ -1,6 +1,6 @@
 ---
 name: setup
-description: "MANDATORY prerequisite that must never be skipped. Invoke whenever the user runs /setup, or automatically before running any other skill (/align, /intent, /blueprint, /method, /implement, /ship, /proof, /audit, /document, /learn, /explain, /report, /adr, /rfc, /review, /issue) if the user's AGENTS.md, CLAUDE.md, or GEMINI.md is missing the 'Engineering Rules & Directives' section."
+description: "MANDATORY prerequisite that must never be skipped. Invoke whenever the user runs /setup, or automatically before running any other skill (/align, /reflect, /intent, /blueprint, /method, /implement, /ship, /proof, /audit, /document, /learn, /explain, /report, /adr, /rfc, /review, /issue) if the user's AGENTS.md, CLAUDE.md, or GEMINI.md is missing the 'Engineering Rules & Directives' section."
 ---
 
 # Setup
