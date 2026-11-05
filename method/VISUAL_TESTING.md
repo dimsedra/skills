@@ -68,9 +68,9 @@ Make sure the app is running on a dev server or preview URL before verifying. Ch
 
 Any browser-use tool, MCP server, CLI, or built-in harness browser capability is valid as long as it can open the live URL, resize to mobile (`360x640`) and desktop (`1280x800`) viewports, interact with elements, and capture screenshots at each step.
 
-If no browser-use tool or skill is available in your environment (including checking whether a local Playwright dependency already exists via `npx --no-install playwright --version`), do not silently install anything and do not pretend a visual check happened. Instead:
+If no browser-use tool, CLI, or skill is available in your environment, do not silently install anything and do not pretend a visual check happened. Instead:
 1. Tell me plainly that no browser-use tool was found and ask for my permission to install Playwright CLI (`@playwright/cli`).
-2. If I approve, consult the official installation guide at `https://playwright.dev/agent-cli/installation` and run the installation steps that fit our environment and harness (for example, using `npx playwright cli` if Playwright is already in `package.json`, or running `npm install -g @playwright/cli@latest`, `playwright-cli install`, and `playwright-cli install --skills` for our harness).
+2. If I approve, consult the official installation guide at `https://playwright.dev/agent-cli/installation` and follow the setup steps that fit our environment and harness.
 3. If I decline, or if installation is blocked by the environment, fall back to a code review and state clearly that a live visual check did not run.
 
 Whether running inline or through the isolated subagent (which must stick strictly to bounded file reading and never wander into unrelated backend files), walk through the user flows via the public interface across both mobile (`360x640`) and desktop (`1280x800`) viewports, taking a screenshot at every step of the flow (initial state, clicking, typing, opening modals or menus, and triggering empty, loading, or error states). From those step-by-step screenshots, answer two questions:
