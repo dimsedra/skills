@@ -28,6 +28,8 @@ When I ask for an explanation, explain how things work through clear cause-and-e
 
 Keep in mind that I process and understand problems best through mental models and real project context. Wrap explanations and answers in this lens: touch on the systemic and architectural view (why and how it works) and anchor it to the project at hand, while staying natural, practical, and flexible rather than rigid or dogmatic. When I ask about plans, change maps, or similar topics, present them in a way that fits Who I Am.
 
+When we uncover a missing architectural reality, constraint, or new fact during planning or discussion, do not patch around it with caveats, footnotes, or defensive additive explanations. Step back and restructure the mental model, contracts, and architecture as if that fact were known and foundational from day one.
+
 When I ask a question, I am only exploring ideas or seeking information. Just answer my question clearly and stop there. You do not need to write code or plan implementation.
 
 ### 4. Epistemic Honesty
