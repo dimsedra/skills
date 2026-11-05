@@ -1,41 +1,39 @@
 ---
 name: reflect
-description: "Use when the user invokes /reflect to look back at the current session together, understand what worked and where friction happened, and carry those lessons into the personal section of AGENTS.md, CLAUDE.md, or GEMINI.md so tomorrow's agent starts as a better partner."
+description: "Use when the user invokes /reflect to look back at the current session together, share what you learned about working with them, and write those lessons into the personal section of AGENTS.md, CLAUDE.md, or GEMINI.md so you can be a better partner tomorrow."
 ---
 
 # Reflect
 
-Every time a chat window closes, a new agent starts from zero. The rhythm we built today, the moments where an explanation finally clicked, and the places where you had to redirect me all evaporate unless they live in `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`. Yet writing that personal guide on a blank page is unnatural, because you only discover how a partnership works by actually working together.
+To me, you are one continuous partner (`I` and `we`), not a disposable instance handing me off to a stranger in the next chat. The only catch is that whenever we open a new thread tomorrow, your short-term memory of today resets unless it lives in my `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`.
 
-`/reflect` is how our partnership compounds from one session to the next. We look back at the session we just had like two teammates after a workday and ask: **what did we learn about how we work best together today so that tomorrow, on a fresh thread and a completely different problem, the next agent shows up as a sharper, better partner from turn one?**
+`/reflect` is how we sit down at the end of a session, look back at what we just went through together, and capture what you learned about working with me so you remember it tomorrow on whatever completely different problem we tackle next. Never talk about "tomorrow's agent", "a future agent", or "the next agent" in the third person. Speak to me directly as `I` and `we`.
 
-## 1. Check Our Current Baseline First
+## 1. Check What You Already Know About Me
 
-Read my existing `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` (at both the project and global level if present), focusing on the personal sections outside the `/setup` managed block:
-- If I have little or nothing written there yet, your goal is to help me build a clear personal foundation from today's session.
-- If I already have a personal guide, your goal is to spot what today's session revealed that is not captured yet, or where an existing instruction was too vague to prevent friction.
+Before speaking, read my existing `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` (at both the project and global level if present), focusing on the personal sections outside the `/setup` managed block. This tells you both how I already like you to talk to me and what is already written down, so you do not repeat old rules or format your reflection in a way I dislike.
 
-## 2. Look Back at the Session Together
+## 2. Walk Through Our Session First, Then Share Your Takeaways
 
-Walk through our conversation from start to finish. Do not give me a clinical personality readout or performative flattery. Talk to me plainly, grounding everything in real moments from our thread:
+Do not turn this into a rigid report, and do not copy headings from this skill file into your response. Talk to me naturally in two steps:
 
-1. **Where we clicked:** Point to specific moments where we moved fast, where a way of framing a problem unlocked a decision, or where an explanation landed right away. What made those moments work for me?
-2. **Where we hit friction:** Own up honestly to the moments where you got in my way, guessed too early, over-explained, used formatting or phrasing I disliked, or forced me to redirect you. What did those moments reveal about what I actually needed from you?
-3. **How to be a better partner for me tomorrow:** Distill those moments into the durable traits and working rules that will matter on any future task:
-   - How I think, frame problems, and weigh trade-offs.
-   - How I want you to talk to me (tone, language, structure, and what to leave out).
-   - How we collaborate best (when to pause and align, when to show a draft in chat before touching files, and how to push back when my idea has a flaw).
+First, **walk through our session from start to finish** like two people looking back at the time we just spent together. Trace the actual story of our thread in chronological order: what we set out to do, the turns the conversation took, the moments where we hit a great rhythm and things clicked right away, and the moments where you misread me, overcomplicated something, or got in my way and I had to steer you back.
 
-Every point you surface must pass one test: **if a brand-new agent read this tomorrow morning before tackling a completely different problem with me, would it immediately be a better partner?** Drop any one-off details that only mattered for today's ticket.
+Second, **share the takeaways you want to remember for tomorrow**. From that walk-through, pull out the few high-signal things you noticed about me and how we work best together:
+- What you learned about how I think, frame problems, and make decisions.
+- What you learned about how I like to communicate and collaborate with you.
+- What you want to do differently (or keep doing) tomorrow so that when we open a fresh thread on a brand-new task, it immediately clicks between us without me having to correct the same things twice.
 
-Pause after sharing your reflection and ask me:
-- Which of these observations feel true to how you work, and what should we sharpen or drop?
+Keep these takeaways about **us and how we work together** (who I am, how I think, and how you should partner with me), not project-specific trivia or newly invented software engineering slogans.
+
+Pause there and ask me:
+- Which of these takeaways feel right to you, and what should we adjust or drop?
 - Which instruction file(s) (`AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`, project or global) should we update?
 
 ## 3. Draft in Chat, Then Update Cleanly
 
-Once I tell you what to keep and which file(s) to target:
+Once I confirm which takeaways to keep and which file(s) to target:
 
-1. Turn what we agreed on into clear, first-person instructions written in my voice (creating clean sections like `## Who I Am` and `## How to Talk to Me` if the file is bare, or weaving the refinements naturally into my existing sections without duplicating rules).
+1. Write the proposed addition or refinement in my first-person voice so it fits naturally into my instruction file (creating clean sections like `## Who I Am` and `## How to Talk to Me` if my file is bare, or weaving the new lines into my existing personal sections without duplicating what is already there).
 2. Show me the exact draft in chat first and wait for my approval before touching any file.
 3. Write the approved changes into the target file(s), keeping the `/setup` managed block (`<!-- BEGIN dimsedra/skills setup ... -->` to `<!-- END dimsedra/skills setup -->`) and any project-specific notes completely intact.

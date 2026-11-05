@@ -1,6 +1,6 @@
 # Reflect Skill
 
-Looks back at your current session together (where you and the agent clicked, where you hit friction, and how you naturally think and work) and carries those lessons into the personal section of your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` so tomorrow's agent starts as a better partner on whatever you tackle next.
+Walks through your current session together from start to finish, pulls out what the agent learned about working with you, and writes those confirmed takeaways into the personal section of your `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` so it shows up as a better partner tomorrow.
 
 ## Install
 
@@ -10,10 +10,9 @@ npx skills add dimsedra/skills --skill reflect
 
 ## Features
 
-- **Compounding Partnership Across Sessions**: Stops every new thread from resetting your working relationship back to zero by turning real session moments into durable personal instructions.
-- **Honest Two-Way Reflection**: Looks at both sides of the session (how you frame problems and communicate, plus where the agent caused friction or misread you) instead of making you fill out a blank-page questionnaire.
-- **The Tomorrow Test**: Filters out one-off task details and keeps only the insights that will make a fresh agent a sharper partner on whatever completely different problem you tackle tomorrow.
-- **Multiplier for All Other Skills**: Builds and refines the personal context that `/align`, `/explain`, `/learn`, `/review`, and `/proof` rely on.
+- **Chronological Session Walk-Through First**: Traces the actual story of the session from start to finish like two teammates looking back at what they just went through together, before pulling out takeaways.
+- **Continuous First-Person Partnership**: Speaks directly as one continuous partner (`I` and `we`) writing notes to itself for tomorrow's thread, rather than talking about "tomorrow's agent" as a third-person stranger.
+- **Focused on How You Two Work Together**: Captures how you think, communicate, and collaborate (and what the agent should do differently tomorrow), avoiding project trivia or invented engineering slogans.
 - **Safe Personal Updates**: Drafts the changes in chat for your approval first and updates only your personal sections while leaving the `/setup` managed engineering block untouched.
 
 ## Usage
