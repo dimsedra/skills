@@ -1,10 +1,10 @@
 # Method: Visual Testing
 
-Your job here is to build front-end user interfaces that genuinely fit my brand and serve my user, follow our engineering rules while coding, and verify the live interface by walking through the user flow step by step using a browser-automation tool and screenshots before calling the work done.
+Writing UI code in the editor is only the first rough draft, because you cannot judge visual rhythm, spacing balance, hierarchy, or interaction feel from JSX and CSS strings alone. Your job here is to build front-end interfaces grounded in my brand, follow our engineering rules while coding, and use the live browser and step-by-step screenshots as an active critique, refinement, and verification loop until the UI is genuinely polished before calling the work done.
 
 ## How to Plan in the Blueprint
 
-Use `visual testing` for any contract that creates or modifies front-end UI, styling, layout, or visual interaction. Never plan unit tests (such as DOM snapshot tests or component rendering assertions) for UI layout or styling. In the contract's `Verification`, specify the live preview URL or route, the user flows to walk through (including error, empty, and interactive states), and the viewports (`360x640` mobile and `1280x800` desktop) that the subagent will explore and screenshot.
+Use `visual testing` for any contract that creates or modifies front-end UI, styling, layout, or visual interaction. Never plan unit tests (such as DOM snapshot tests or component rendering assertions) for UI layout or styling. In the contract's `Verification`, specify the live preview URL or route, the user flows to walk through (including error, empty, and interactive states), and the viewports (`360x640` mobile and `1280x800` desktop) that will be explored, critiqued, refined, and screenshotted in the browser.
 
 ## 1. Grounding in the Brand First (`docs/design/brand.md`)
 
@@ -47,7 +47,7 @@ Walk through our concrete choices for composition and layout hierarchy, which co
 List what is explicitly out of scope for this interface.
 ```
 
-## 2. Coding the Interface & Avoiding Visual Slop
+## 2. Coding the First Pass & Avoiding Visual Slop
 
 Keep the interface easy to read and navigate with a low cognitive barrier. Unless our approved `docs/design/brand.md` explicitly calls for them with a clear reason, avoid common AI design clichés:
 
@@ -59,23 +59,26 @@ Keep the interface easy to read and navigate with a low cognitive barrier. Unles
 
 When writing the front-end code, stick to our `Engineering Rules & Directives` (`~/.gemini/GEMINI.md` or `~/.config/opencode/AGENTS.md`): keep markup, styling, and UI logic co-located in deep component files, do not extract micro-components until a pattern repeats at least 3 times, keep control flow flat without boolean prop traps, and do not write unit tests for UI rendering, layout, or styling.
 
-## 3. Visual QA via Browser Tool (Inline or Isolated Subagent)
+## 3. Live Visual Critique, Refinement & Verification in the Browser
 
-Make sure the app is running on a dev server or preview URL before verifying. Choose how to run the visual check based on the size of the change:
+Do not treat the browser walkthrough as a formality just to collect handoff screenshots. Seeing the rendered pixels on screen is where you catch what could not be seen in code and refine the UI from a working first pass into a well-crafted interface.
 
-- **For quick UI fixes or small, localized tweaks:** You can run the browser check inline yourself without spawning a subagent. Open the live URL, trigger the affected states across mobile (`360x640`) and desktop (`1280x800`) viewports, take screenshots, and verify the two questions below.
-- **For new screens, multi-step flows, or Blueprint contracts:** Do not verify your own rendered UI in the main thread, because inspecting your own larger work leads to confirmation bias. Spawn an isolated Visual QA subagent to explore the flow like a new user, passing full absolute paths (never relative paths) to this `VISUAL_TESTING.md` file, `docs/design/brand.md`, the relevant Intent and Blueprint files, and the live preview URL.
+Make sure the app is running on a dev server or preview URL before starting the browser loop. Choose how to run it based on the size of the change:
 
-Any browser-use tool, MCP server, CLI, or built-in harness browser capability is valid as long as it can open the live URL, resize to mobile (`360x640`) and desktop (`1280x800`) viewports, interact with elements, and capture screenshots at each step.
+- **For quick UI fixes or small, localized tweaks:** You can run the browser loop inline yourself without spawning a subagent. Open the live URL, trigger the affected states across mobile (`360x640`) and desktop (`1280x800`) viewports, take screenshots, and evaluate the three questions below.
+- **For new screens, multi-step flows, or Blueprint contracts:** Do not evaluate your own rendered UI in the main thread, because inspecting your own larger work leads to confirmation bias. Spawn an isolated Visual QA subagent to explore and critique the flow like a new user and design reviewer, passing full absolute paths (never relative paths) to this `VISUAL_TESTING.md` file, `docs/design/brand.md`, the relevant Intent and Blueprint files, and the live preview URL.
 
-If no browser-use tool, CLI, or skill is available in your environment, do not silently install anything and do not pretend a visual check happened. Instead:
-1. Tell me plainly that no browser-use tool was found and ask for my permission to install Playwright CLI (`@playwright/cli`).
+To run the loop, use headless Chromium (or any available tool that drives a headless browser) to open the live URL, resize to mobile (`360x640`) and desktop (`1280x800`) viewports, interact with elements, and capture screenshots at each step.
+
+If headless Chromium (or a tool to drive it) is not available in your environment, do not silently install anything and do not pretend a visual check happened. Instead:
+1. Tell me plainly that no headless browser was found and ask for my permission to install Playwright CLI (`@playwright/cli`).
 2. If I approve, consult the official installation guide at `https://playwright.dev/agent-cli/installation` and follow the setup steps that fit our environment and harness.
 3. If I decline, or if installation is blocked by the environment, fall back to a code review and state clearly that a live visual check did not run.
 
-Whether running inline or through the isolated subagent (which must stick strictly to bounded file reading and never wander into unrelated backend files), walk through the user flows via the public interface across both mobile (`360x640`) and desktop (`1280x800`) viewports, taking a screenshot at every step of the flow (initial state, clicking, typing, opening modals or menus, and triggering empty, loading, or error states). From those step-by-step screenshots, answer two questions:
+Whether running inline or through the isolated subagent (which must stick strictly to bounded file reading and never wander into unrelated backend files), walk through the user flows via the public interface across both mobile (`360x640`) and desktop (`1280x800`) viewports, taking a screenshot at every step of the flow (initial state, clicking, typing, opening modals or menus, and triggering empty, loading, or error states). From those step-by-step screenshots, evaluate three questions:
 
-1. Does the flow work cleanly at every step from a UI/UX perspective without clipped text, broken layouts, overlapping layers, or confusing transitions?
-2. Do the rendered pixels at every step follow `docs/design/brand.md` and avoid the visual slop listed in Section 2?
+1. **Functional & UX soundness:** Does the flow work cleanly at every step without clipped text, broken layouts, overlapping layers, dead ends, or confusing transitions?
+2. **Brand fidelity & anti-slop:** Do the rendered pixels at every step follow `docs/design/brand.md` and avoid the visual slop listed in Section 2?
+3. **Visual craft & refinement:** Now that the interface is rendered on screen, what still looks flat, cramped, unbalanced, or unpolished in spacing rhythm, typographic hierarchy, alignment, contrast, or state feedback?
 
-If UX friction, layout breaks, or brand/slop violations show up in any screenshot, fix the code and re-run the browser flow until every step holds up cleanly, then share the result and screenshots with me in chat.
+Treat any layout break, brand violation, or unpolished visual detail found in the screenshots as active feedback to improve the UI. Refine the code and re-run this browser loop as many times as you need until the interface is visually cohesive, well-crafted across every step, and you are genuinely satisfied and confident in handing off polished work to me. Only then share the final result and screenshots in chat.
