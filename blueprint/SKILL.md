@@ -17,9 +17,11 @@ Carry the Intent's non-goals forward explicitly. They tell the implementing agen
 
 Before presenting, check coverage in both directions: every contract traces back to the Intent, and every goal in the Intent is covered by at least one contract or is openly marked as not covered yet, with the reason. If the Intent is silent or ambiguous on something the design needs, do not fill the gap with your own assumption. Bring it to me through `/align`.
 
-## Ground in the Codebase
+## Ground Through Research
 
-Read the actual code in the areas we are touching before designing anything: existing files, types, data flows, and patterns. Design against what exists, and follow established patterns rather than inventing new ones.
+Before designing any contracts, consult the `/research` skill (`research/SKILL.md`) and investigate until you are genuinely confident. Never write a Blueprint from a shallow skim or static model memory:
+- Follow `research/INTERNAL.md` to trace the actual code and `docs/` in the areas we are touching: existing files, types, data flows, callers, and patterns. Design against what exists, and follow established patterns rather than inventing new ones.
+- Whenever the Blueprint touches installed dependencies, external APIs, or unfamiliar ecosystem patterns, also follow `research/EXTERNAL.md` so contract inputs, outputs, and failure modes match how those tools actually behave.
 
 Check whether the Intent maps to one cohesive module or crosses separate lifecycles (for example a user-facing flow and a background job) that deserve separate Blueprints. If the split is not obvious, align with me before writing.
 

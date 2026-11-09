@@ -1,14 +1,18 @@
 ---
 name: research
-description: Use when the user asks to research architecture, technical documentation, packages, ecosystem patterns, or external codebases (e.g. via /research or natural research requests) to ground findings in authoritative, external reality rather than internal training data.
+description: Use when investigating our own codebase, external documentation, packages, ecosystem patterns, or open-source implementations (via /research, during /blueprint grounding, or natural research requests) to replace model-weight guesses with verified confidence.
 ---
 
 # Research
 
-When I ask you to research a topic, package, technical documentation, or architectural approach, investigate outward and ground your findings in real, authoritative sources rather than relying on your static training memory.
+Static training weights only produce plausible guesses, never real certainty. Whenever you research, whether I ask you directly or another skill like `/blueprint` calls for grounding, your core rule is the same: investigate actual ground truth and take as many steps as you need until you are genuinely confident. Never stop after a superficial skim or fill gaps with assumptions just to answer quickly.
 
-Do not trust internal memory alone for API signatures, library compatibility, recommended patterns, or deprecations, since training data easily goes stale. If we are looking at an installed dependency, inspect the actual installed source code, interface definitions, or type declarations in our local environment. If we are looking at external tools or concepts, check official documentation, release notes, issue trackers, or established RFCs and specifications.
+Internal research and external research are different jobs with different use cases. A task may need only one, or it may need both. The route files live in the same directory as this `SKILL.md`, so resolve their path from where this skill is installed rather than guessing:
 
-When we are figuring out how to build a feature or structure a system, look for proven open-source projects that solve similar problems and inspect how they actually implement it in the real world rather than reinventing the wheel or guessing experimental workarounds. When multiple viable approaches exist, point me toward the simplest and most battle-tested path.
+Internal (`INTERNAL.md`) is for investigating our own project. Use it to trace `docs/`, existing files, data types, execution flows, module boundaries, callers, and established patterns until you know for sure how our system actually works today.
 
-Take as much time and run as many investigation steps as you need until you are genuinely confident that your findings are accurate and complete—do not rush out a superficial answer just to respond quickly. Once you have the answer, share the findings with me directly in plain prose along with source links or file references so I can trace where the information came from, without wrapping it in a rigid report template.
+External (`EXTERNAL.md`) is for investigating outside our code. Use it to verify installed dependency source or type definitions, official documentation, release notes, issue trackers, RFCs and specifications, or proven open-source implementations rather than relying on stale training memory.
+
+Pick the route that fits the question, or read and run both when a task (such as `/blueprint` touching both existing code and external libraries) depends on both internal and external ground truth. If I name a route myself (for example `/research internal` or `/research external`), take that route directly.
+
+When I ask you a research question directly, share your findings in plain prose along with exact file references or source links so I can trace where every claim came from, without wrapping it in a rigid report template. If something still cannot be verified after thorough investigation, say so plainly rather than guessing.
