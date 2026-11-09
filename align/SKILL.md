@@ -1,6 +1,6 @@
 ---
 name: align
-description: Use whenever the user invokes /align, or whenever we need to make sure we share the same understanding before or during any technical work. Routes to the right kind of alignment: checking understanding, deciding between options, or challenging an idea.
+description: Proactively invoke before planning, designing, or writing code whenever the user shares a rough idea, thinks out loud, proposes a change whose scope or behavior is not yet confirmed, faces multiple viable approaches, asks what you think of an assumption, or when codebase reality conflicts with an agreed plan (as well as whenever the user explicitly invokes /align). Routes to checking understanding, deciding between options, or challenging an idea.
 ---
 
 # Align
