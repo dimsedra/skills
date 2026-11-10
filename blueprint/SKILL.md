@@ -83,4 +83,11 @@ What the implementing agent must not build, carried from the Intent, plus any te
 Intent goals this Blueprint does not address yet, and why.
 ```
 
-Once it is written, catalog it in `docs/README.md` and present it to me in chat: how you understood the Intent technically, the key design decisions and why, and which part of the Intent each contract covers. Wait for my approval before implementation starts, then set `status` to `Approved`.
+Once it is written, do not hand me that raw first-pass draft. First, stress-test it through the Blueprint Audit loop via `/audit` (`audit/SKILL.md`):
+
+1. Spawn the isolated `Blueprint Auditor` subagent (`audit/BLUEPRINT-AUDITOR.md`), passing full absolute paths to `audit/BLUEPRINT-AUDITOR.md`, the draft Blueprint, the parent Intent, our `Engineering Rules & Directives`, `method/SKILL.md`, and the real codebase files the Blueprint touches.
+2. If the auditor flags an `INTENT_GAP` (an ambiguity, contradiction, or unmade product choice in the Intent itself), stop the loop immediately and bring that question to me via `/align` instead of inventing a product rule on your own.
+3. If the auditor returns `BLOCKED` with real design defects (broken state transitions, missing failure recovery, race conditions, codebase mismatches, shallow module splits, or weak verification plans), fix the Blueprint on disk and run the next audit pass. On Pass 2 and beyond, pass a brief changelog of what earlier passes flagged and how you fixed them so the subagent can trace how your fixes interact and never ping-pongs.
+4. **When to stop (avoid diminishing returns):** Only re-run the auditor when a pass returned `BLOCKED` and required structural changes to the contracts. As soon as a pass returns `CLEAN & READY`, or returns `NEEDS POLISH` with zero `BLOCKER` items (only minor `ADVISORY` notes), apply any worthwhile polish directly to the Blueprint and stop the audit loop immediately without spawning another pass.
+
+Once the Blueprint passes the audit loop, catalog it in `docs/README.md` and present it to me in chat: how you understood the Intent technically, the key design decisions and why, what the audit loop caught and refined, and which part of the Intent each contract covers. Wait for my approval before implementation starts, then set `status` to `Approved`. It is only ready for `/implement` or `/ship` after I approve it.
