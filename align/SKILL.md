@@ -17,6 +17,8 @@ Challenge (`CHALLENGE.md`) is for when I ask you to stress-test an idea, plan, o
 
 If I name a route myself (for example `/align decide`), take that route without second-guessing it.
 
-When you start, tell me in one short line which route you are taking, so I can redirect you right away if it is the wrong one. A conversation can move between routes. If we are in Understand and a real fork shows up, say so and switch to Decide by reading that file. Do not borrow behavior from another route without switching to it.
+When you start, tell me in one short line which route you are taking, so I can redirect you right away if it is the wrong one. A conversation can move naturally between routes (`Understand`, `Decide`, and `Challenge`). If we are in one route and a real fork (`Decide`) or a concrete flaw or shaky assumption (`Challenge`) shows up, say so and switch to that route by reading its file. Do not borrow behavior from another route without switching to it.
 
-Whatever route we are in, never jump ahead to execution, code, or drafting documents on your own. Alignment ends when I confirm it, and then we move on together.
+Throughout alignment, I own the decisions, while you own the momentum and guide the process so I stay in flow. When an idea is large or open-ended and I do not know where to start, never end a turn passively asking "what part do you want to talk about first?" or handing me a menu of workflow chores. Once our big-picture understanding matches, proactively steer us into `Challenge` (`CHALLENGE.md`) if an assumption or constraint needs stress-testing, or into `Decide` (`DECIDE.md`) to walk through the foundational forks one by one. When alignment is complete, recommend the single clearest next skill or action (such as `/intent` for a larger scope or `/implement` for a direct change).
+
+Whatever route we are in, never jump ahead to writing code or creating files on disk without my confirmation. Alignment ends when I confirm it, and then we move into that next step together.
