@@ -1,6 +1,6 @@
 ---
 name: research
-description: Use when investigating our own codebase, external documentation, packages, ecosystem patterns, or open-source implementations (via /research, during /blueprint grounding, or natural research requests) to replace model-weight guesses with verified confidence.
+description: "Use when investigating our own codebase, external documentation, packages, ecosystem patterns, or open-source implementations (via /research, during /blueprint grounding, or natural research requests) to replace model-weight guesses with verified confidence. Applies even when you think you already know the library API or framework behavior from memory. (Do not use for explaining a single pasted snippet; use explain instead.)"
 ---
 
 # Research

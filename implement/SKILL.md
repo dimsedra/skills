@@ -1,6 +1,6 @@
 ---
 name: implement
-description: "Use when the user invokes /implement or tells you to go ahead and build after aligning on a change or approving an Intent/Blueprint, without running the full /ship autonomous audit loop. Executes each contract or agreed change via /method, verifies it, and commits atomically."
+description: "Use when the user invokes /implement or tells you to go ahead and build ('go ahead', 'build this', 'apply this', 'make this change') after aligning on a change or approving an Intent/Blueprint, without running the full /ship autonomous loop. Applies even when the change looks small or code is pasted inline. Executes each contract or agreed change via /method, verifies it, and commits atomically."
 ---
 
 # Implement

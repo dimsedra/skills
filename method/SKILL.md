@@ -1,6 +1,6 @@
 ---
 name: method
-description: Use whenever the user invokes /method, names a method directly (e.g. "fix this using TDD"), builds or fixes something directly without a Blueprint, chooses a contract method during /blueprint planning, or executes a Blueprint contract. Routes to the concrete workflow for TDD, characterization, test-after, design by contract, integration/e2e, or visual testing.
+description: "Use whenever the user invokes /method, names a method directly (e.g. 'fix this using TDD'), builds or fixes something directly without a Blueprint, chooses a contract method during /blueprint planning, or executes a Blueprint contract. Applies even when code is pasted inline, tests are not mentioned, or the fix looks obvious from reading the code. Routes to TDD, characterization, test-after, design by contract, integration/e2e, or visual testing."
 ---
 
 # Method

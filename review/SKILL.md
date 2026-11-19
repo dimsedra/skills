@@ -1,6 +1,6 @@
 ---
 name: review
-description: Use when reviewing and understanding an incoming Pull Request, Merge Request, or branch diff from a teammate or contributor, explaining its execution flow, behavioral changes, and risks directly in conversation.
+description: "Use when the user asks to review, walk through, or check an incoming pull request, merge request, or branch diff ('review this PR', 'what changed here'). Applies even when the diff is pasted inline or looks quick to summarize from reading it. (For deep multi-subagent audits, use audit instead.)"
 ---
 
 # Review

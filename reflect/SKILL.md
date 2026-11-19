@@ -1,6 +1,6 @@
 ---
 name: reflect
-description: "Use when the user invokes /reflect to look back at the current session together, share what you learned about working with them, and write those lessons into the personal section of AGENTS.md, CLAUDE.md, or GEMINI.md so you can be a better partner tomorrow."
+description: "Use when the user invokes /reflect or asks to wrap up a session, review what worked or did not work, or save personal working-style lessons ('remember this for next time') into AGENTS.md, CLAUDE.md, or GEMINI.md."
 ---
 
 # Reflect

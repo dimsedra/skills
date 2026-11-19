@@ -1,6 +1,6 @@
 ---
 name: explain
-description: Use when the user invokes /explain or asks to understand how something works in a way that fits how they think and learn.
+description: "Use when the user invokes /explain or asks how something works, what a codebase or function does, or why something behaves a certain way. Applies even when code is pasted inline or the answer looks quick to summarize directly. (Do not use for external library lookups; use research instead.)"
 ---
 
 # Explain

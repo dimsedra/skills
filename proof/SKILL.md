@@ -1,6 +1,6 @@
 ---
 name: proof
-description: Use when showing completed work to the user and answering their verification questions with real evidence, or owning up plainly when something was missed or not done the way they wanted.
+description: "Use when showing completed work to the user, answering verification questions ('prove it works', 'did you test this?', 'show me the output'), or owning up plainly when something was missed or not done the way they wanted. Applies even when the fix looks obviously right from reading the diff."
 ---
 
 # Proof

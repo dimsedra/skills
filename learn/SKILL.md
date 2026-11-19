@@ -1,6 +1,6 @@
 ---
 name: learn
-description: Use when the user invokes /learn to build durable, transferable engineering knowledge and mental models that carry across projects, rather than just explaining project-specific code.
+description: "Use when the user invokes /learn or asks to deeply learn a transferable engineering concept ('teach me how X works', 'help me understand X for future projects') rather than just explaining project-specific code (use explain for that)."
 ---
 
 # Learn

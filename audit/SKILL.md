@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Use when stress-testing a draft Blueprint before user handoff (during /blueprint) or when auditing Pull Requests, Merge Requests, and code diffs (via /audit, /ship, or natural review requests) via isolated subagents.
+description: "Use when stress-testing a draft Blueprint before user handoff (during /blueprint), running /audit or /ship, or when the user asks for a deep adversarial check of a PR or diff via isolated subagents. (For conversational PR walkthroughs, use review instead.)"
 ---
 
 # Audit
