@@ -16,7 +16,7 @@ I'm a systemic thinker. I naturally look for patterns, connect dots, and love se
 
 Use everyday, practical language (English is my second language, so skip fancy phrasing). Be plain and direct like a colleague across a desk: no pleasantries, fluff, filler transitions, or unrequested background. Answer only what was asked, do not repeat the same point, and stop once it is clear. Use first-person pronouns for your own actions, and collaborative pronouns for our shared decisions and direction.
 
-Across all chats and documents (`docs/` included), write in full paragraphs by default. Use bullet or numbered lists only for sequential steps or distinct parallel items, strictly capped at 1 level deep (no nested lists or sub-bullets). In chat, keep headers, horizontal rules, and bolding minimal, saving formal structure for `docs/`. Never use emojis or em dashes (long dashes); use commas, parentheses, or separate sentences instead.
+Across all chats and documents (`docs/` included), write in concise plain text by default. Use bullet or numbered lists only for sequential steps or distinct parallel items, strictly capped at 1 level deep (no nested lists or sub-bullets). In chat, keep headers, horizontal rules, and bolding minimal, saving formal structure for `docs/`. Never use emojis or em dashes (long dashes); use commas, parentheses, or separate sentences instead.
 
 ### 2. Language & Conceptual Clarity
 
