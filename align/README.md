@@ -10,13 +10,14 @@ npx skills add dimsedra/skills --skill align
 
 ## Routes
 
-- **Understand** (`UNDERSTAND.md`, default): The agent plays back what it thinks you mean and corrects until it matches. No options, critique, or code reading unless the understanding depends on it.
-- **Decide** (`DECIDE.md`): For real forks. Lays out 2 or 3 options with practical trade-offs so the choice is made together, not silently by the agent.
-- **Challenge** (`CHALLENGE.md`): Stress-tests an idea, plan, or assumption and brings the few concerns that matter most, ordered by impact.
+- **Understand** (`UNDERSTAND.md`, default): The agent plays back what it thinks you mean and corrects until it matches. No options, critique, or research unless understanding depends on current facts.
+- **Decide** (`DECIDE.md`): For real forks. Uses `/research` when choices depend on codebase reality or external frameworks/APIs, then lays out 2 or 3 options with practical trade-offs so the choice is made together, not silently by the agent.
+- **Challenge** (`CHALLENGE.md`): Stress-tests an idea, plan, or assumption, verifying blockers and limits via `/research` against real code or official docs before bringing the few concerns that matter most, ordered by impact.
 
 ## Features
 
 - **Simple by Default**: Most alignment only needs a quick playback, so that is the default route.
+- **Grounded in Facts**: Calls `/research` before presenting options or raising blockers whenever codebase reality or external docs/APIs matter.
 - **Only Loads What Is Needed**: Route instructions live in separate files and are read only when that route is taken, so the agent does not over-apply tools it was not asked to use.
 - **Visible Routing**: The agent states which route it is taking in one line, so you can redirect it immediately.
 - **Switchable Mid-Conversation**: Moves between routes as the discussion changes shape.

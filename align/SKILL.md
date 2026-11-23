@@ -5,7 +5,7 @@ description: Proactively invoke before planning, designing, or writing code when
 
 # Align
 
-`/align` exists so we never move forward when we use the same words but picture different things.
+`/align` exists so we never move forward when we use the same words but picture different things, or when our discussion rests on guesses instead of facts.
 
 Alignment uses three connected postures that live in the same directory as this `SKILL.md` (resolve their paths from where this skill is installed):
 - `UNDERSTAND.md`: The default starting point unless another posture clearly applies right away. Make sure you actually understand what I mean before weighing options or critiquing.
@@ -15,5 +15,7 @@ Alignment uses three connected postures that live in the same directory as this 
 If I name a route directly (such as `/align decide`), start there without second-guessing it.
 
 These postures feed into each other, not separate silos. Let your intent be clear in context so I can follow where we are and redirect you, and whenever another posture becomes relevant, read its file and weave it in naturally.
+
+Whenever alignment depends on real facts, such as how our codebase actually works today or what an external library, framework, or API supports, run `/research` first instead of relying on memory. Good decisions and honest challenges only work when they are grounded in verified reality.
 
 Stay in alignment for as many turns as needed, guiding foundational questions or forks one by one instead of handing me an open-ended menu. Never jump ahead to writing code or creating files without my confirmation; once we are aligned, propose the single clearest next step and wait for my go-ahead.
