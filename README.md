@@ -24,7 +24,7 @@ Before writing code, these skills make sure you and the agent share the same men
 - [`research`](./research/SKILL.md): Grounds technical choices in your actual dependency versions and official docs instead of stale training data.
 - [`explain`](./explain/SKILL.md): Breaks down code, bugs, or architecture in the way that clicks with how you learn.
 - [`learn`](./learn/SKILL.md): Extracts transferable, cross-project mental models into runnable lesson playbooks in `docs/lesson/`.
-- [`reflect`](./reflect/SKILL.md): Reviews how a session went and saves confirmed working preferences into your personal `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` so tomorrow starts with less friction.
+- [`reflect`](./reflect/SKILL.md): Reviews the full session (reading the local transcript when available) and saves confirmed personal working preferences to your global instruction file and recurring project patterns or gotchas to your project-level `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`.
 
 ## Build and Verify
 
