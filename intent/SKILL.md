@@ -1,6 +1,6 @@
 ---
 name: intent
-description: Use when capturing user goals, intentions, rationale, and boundaries (what they want and what they do not want) from discussion into a clear, flexible record of intent on disk.
+description: Use when capturing user goals, intentions, rationale, and boundaries (what they want and what they do not want) from discussion into a clear, flexible record of intent on disk, whether explicitly invoked or when locking down an aligned direction before planning or building is the clearest next step.
 ---
 
 # Intent
