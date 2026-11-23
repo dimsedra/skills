@@ -19,7 +19,7 @@ npx skills add dimsedra/skills --skill align
 - **Simple by Default**: Most alignment only needs a quick playback, so that is the default route.
 - **Grounded in Facts**: Calls `/research` before presenting options or raising blockers whenever codebase reality or external docs/APIs matter.
 - **Only Loads What Is Needed**: Route instructions live in separate files and are read only when that route is taken, so the agent does not over-apply tools it was not asked to use.
-- **Visible Routing**: The agent states which route it is taking in one line, so you can redirect it immediately.
+- **Clear Intent**: Keeps its intent clear in context rather than announcing scripted route labels, so you can follow where the discussion is and redirect it naturally.
 - **Switchable Mid-Conversation**: Moves between routes as the discussion changes shape.
 - **Collaborative Green Light**: Never jumps ahead to execution until you confirm.
 
