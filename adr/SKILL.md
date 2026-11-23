@@ -1,6 +1,6 @@
 ---
 name: adr
-description: Use when recording, evaluating, or superseding an Architectural Decision Record (ADR) to document significant technical choices, rationale, trade-offs, and consequences.
+description: Use when recording, evaluating, or superseding an Architectural Decision Record (ADR) to document significant technical choices, rationale, trade-offs, and consequences, whether explicitly invoked or when an alignment discussion settles a lasting architectural decision worth preserving.
 ---
 
 # ADR (Architecture Decision Record)

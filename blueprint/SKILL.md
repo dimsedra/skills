@@ -1,6 +1,6 @@
 ---
 name: blueprint
-description: Use when translating an approved Intent document into a technical blueprint (module boundaries, contracts, and how each will be verified) that the implementing agent follows together with the Intent.
+description: Use when translating an approved Intent document into a technical blueprint (module boundaries, contracts, and how each will be verified) that the implementing agent follows together with the Intent, whether explicitly invoked or when turning an approved Intent into an implementation plan is the clearest next step.
 ---
 
 # Blueprint

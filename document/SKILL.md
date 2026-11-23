@@ -1,6 +1,6 @@
 ---
 name: document
-description: Use when documenting architecture, decisions, workflows, concepts, or technical specifications into a modular, traceable, and easily maintainable docs/ structure.
+description: Use when documenting architecture, decisions, workflows, concepts, or technical specifications into a modular, traceable, and easily maintainable docs/ structure, whether explicitly invoked or when capturing a newly approved abstraction, workflow, or system change in docs/ is the clearest next step.
 ---
 
 # Document

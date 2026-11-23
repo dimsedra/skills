@@ -1,6 +1,6 @@
 ---
 name: issue
-description: Use when converting a debugging session, bug report, architectural gap, or problem discussion into a clean, user-centered tracking issue.
+description: Use when converting a debugging session, bug report, architectural gap, or problem discussion into a clean, user-centered tracking issue, whether explicitly invoked or when logging a deferred bug or gap for later work is the clearest next step.
 ---
 
 # Issue
