@@ -11,33 +11,36 @@ npx skills add dimsedra/skills --skill issue
 ## Features
 
 - **Problem-First Framing**: Formulates descriptive, problem-first titles instead of premature solution labels.
-- **Cold Re-Orientation Context**: Includes 1–2 high-level system context sentences so anyone can understand the issue weeks later.
+- **Flexible, Convention-First Structure**: Follows the repository's existing issue templates and ticketing conventions when present, or adapts sections to fit the ticket type (such as reproduction steps and expected vs actual behavior for bugs).
+- **Cold Re-Orientation**: Includes enough context so a maintainer reading it weeks later can understand the problem and act on it without prior chat history.
 - **Durable Symbol Pointers**: Uses stable semantic identifiers (`path/to/file` -> `SymbolName()`) instead of rotting line numbers or decaying code block snapshots.
 - **Cognitive Slicing**: Splits multi-layer or multi-bug problems into independent, focused tracking issues.
-- **GitHub CLI Integration**: Formats ready-to-run `gh issue create` commands while requiring explicit user confirmation before remote publishing.
+- **Issue Tracker CLI Support**: Formats ready-to-run commands (such as `gh issue create` or `glab issue create`) while requiring explicit user confirmation before remote publishing.
 
 ## Example Output
 
-Here is what a generated issue looks like:
+Here is one example of a generated bug report (actual structure adapts to the repository's templates and ticket type):
 
 ```markdown
 Title: Authentication token expiration bypasses database validation on high-concurrency requests
 
-## Context
-The session management subsystem validates inbound user session tokens against Redis cache with a database fallback for expired cache entries.
-
-## Problem Description
+## Problem
 When Redis cache misses occur under high concurrency, parallel requests with expired tokens bypass the database validity check because the fallback lock fails to acquire, allowing unverified tokens to pass through.
+
+## Steps to Reproduce
+1. Expire an active user session token in both Redis and the database.
+2. Send 20+ concurrent authenticated requests with that token.
+3. Observe that requests hitting the fallback path while the lock is held succeed instead of returning 401.
+
+## Expected vs Actual
+- Expected: All concurrent requests with an expired token fail with 401 Unauthorized.
+- Actual: Requests that fail to acquire the fallback lock skip database validation and pass through.
 
 ## Affected Locations
 - `src/auth/session_manager.py` -> `SessionManager.validate_token()`
 - `src/auth/token_store.py` -> `TokenStore.get_fallback_lock()`
-
-## Proposed Direction
-Implement a distributed mutex around database fallback verification and return an explicit unauthorized state on lock contention timeout. Add a concurrency test suite simulating simultaneous token expirations to verify lock acquisition failure.
 ```
 
 ## Files Reference
 
-- `SKILL.md`: Core invariants, phase gates (Target Resolution, Draft Generation, Confirmation), rationalization counters, and guardrails.
-- `ISSUE-FORMAT.md`: Standard markdown issue schema, GitHub CLI publishing snippet, and archetype examples (Bug Report, Architectural Gap, Security Boundary).
+- `SKILL.md`: Framing principles, flexible convention-first structure guidelines, and draft-before-publish workflow.
