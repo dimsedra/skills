@@ -37,6 +37,7 @@ Once the picture is clear, execution becomes deliberate and verifiable.
 - [`ship`](./ship/SKILL.md) and [`audit`](./audit/SKILL.md): Runs the full build autonomously after alignment, spawning three fresh-eyed auditor subagents to catch and fix defects.
 - [`proof`](./proof/SKILL.md): Verifies completed work in chat using real terminal output and test runs, owning up plainly to anything missed or untested.
 - [`review`](./review/SKILL.md): Applies the same evidence-first walkthrough to incoming pull requests and branch diffs.
+- [`pr`](./pr/SKILL.md): Turns branch diffs and commits into a reviewer-ready pull request description that follows the repository's PR templates and conventions.
 
 ## Setup and Project Docs
 
